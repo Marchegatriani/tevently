@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        app('router')->aliasMiddleware('admin', \App\Http\Middleware\Admin::class);
+        //app('router')->aliasMiddleware('organizer', \App\Http\Middleware\OrganizerMiddleware::class);
+        //app('router')->aliasMiddleware('approved', \App\Http\Middleware\ApprovedOrganizerMiddleware::class);
     }
 }

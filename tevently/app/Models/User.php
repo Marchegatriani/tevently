@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_approved',
     ];
 
     /**
@@ -43,6 +44,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
+    }
+
+    // ========== RELATIONSHIPS ==========
+    
+    // User bisa punya banyak events (sebagai organizer)
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
+    }
+
+    // User bisa punya banyak orders
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // User bisa favorite banyak events
+    public function favoriteEvents()
+    {
+        return $this->belongsToMany(Event::class, 'favorites')
+                    ->withTimestamps();
     }
 }

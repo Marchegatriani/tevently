@@ -1,18 +1,101 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrganizerRequestController;
 use Illuminate\Support\Facades\Route;
+
+// ========================================
+// GUEST ROUTES (Public - Tanpa Login)
+// ========================================
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::middleware('auth')->group(function () {
+// Event Catalog & Detail (akan dibuat nanti)
+// Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+// Route::get('/events/{event}', [App\Http\Controllers\EventController::class, 'show'])->name('events.show');
+
+
+// ========================================
+// AUTH ROUTES (Login/Register)
+// ========================================
+require __DIR__.'/auth.php';
+
+
+// ========================================
+// USER ROUTES (Authenticated Users)
+// ========================================
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Dashboard User
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Request to become organizer - PENTING INI HARUS ADA!
+    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
+        ->name('organizer.request');
+
+    // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Orders (Booking) - akan dibuat nanti
+    // Route::resource('orders', App\Http\Controllers\User\OrderController::class);
+    
+    // Favorites - akan dibuat nanti
+    // Route::post('/favorites/{event}', [App\Http\Controllers\User\FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    // Route::get('/favorites', [App\Http\Controllers\User\FavoriteController::class, 'index'])->name('favorites.index');
 });
 
-require __DIR__.'/auth.php';
+
+// ========================================
+// ORGANIZER ROUTES
+// ========================================
+
+// Organizer Dashboard & Features (harus approved)
+Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('organizer.dashboard');
+    })->name('dashboard');
+
+    // Events Management - akan dibuat nanti
+    // Route::resource('events', App\Http\Controllers\Organizer\EventController::class);
+    
+    // Tickets Management - akan dibuat nanti
+    // Route::resource('events.tickets', App\Http\Controllers\Organizer\TicketController::class);
+    
+    // Orders Management - akan dibuat nanti
+    // Route::get('orders', [App\Http\Controllers\Organizer\OrderController::class, 'index'])->name('orders.index');
+    // Route::patch('orders/{order}/confirm', [App\Http\Controllers\Organizer\OrderController::class, 'confirm'])->name('orders.confirm');
+    // Route::patch('orders/{order}/cancel', [App\Http\Controllers\Organizer\OrderController::class, 'cancel'])->name('orders.cancel');
+});
+
+
+// ========================================
+// ADMIN ROUTES
+// ========================================
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Dashboard
+    Route::get('dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    // Users Management - akan dibuat nanti
+    // Route::get('users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    // Route::patch('users/{user}/approve', [App\Http\Controllers\Admin\UserController::class, 'approve'])->name('users.approve');
+    // Route::patch('users/{user}/reject', [App\Http\Controllers\Admin\UserController::class, 'reject'])->name('users.reject');
+    
+    // Events Management - akan dibuat nanti
+    // Route::resource('events', App\Http\Controllers\Admin\EventController::class);
+    
+    // Reports - akan dibuat nanti
+    // Route::get('reports', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+});

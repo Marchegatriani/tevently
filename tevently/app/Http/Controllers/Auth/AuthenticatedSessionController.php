@@ -28,7 +28,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Ambil user dari request
+        $user = $request->user();
+
+        // Redirect based on role
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        if ($user->role === 'organizer' && $user->status === 'approved') {
+            return redirect()->intended(route('organizer.dashboard'));
+        }
+
+        // Default ke dashboard (untuk user & organizer pending/rejected)
+        return redirect()->intended(route('dashboard'));
     }
 
     /**

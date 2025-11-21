@@ -2,12 +2,39 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['title', 'description', 'location', 'event_date', 'start_time', 'end_time', 'image_url', 'max_attendees', 'organizer_id', 'category_id', 'status'];
+    use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'location',
+        'event_date',
+        'start_time',
+        'end_time',
+        'image_url',
+        'max_attendees',
+        'organizer_id',
+        'category_id',
+        'status',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'event_date' => 'date',
+            'start_time' => 'datetime',
+            'end_time' => 'datetime',
+            'max_attendees' => 'integer',
+        ];
+    }
+
+    // ========== RELATIONSHIPS ==========
+    
     public function organizer()
     {
         return $this->belongsTo(User::class, 'organizer_id');
@@ -28,8 +55,22 @@ class Event extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function favorites()
+    public function favoritedBy()
     {
-        return $this->hasMany(Favorite::class);
+        return $this->belongsToMany(User::class, 'favorites')
+                    ->withTimestamps();
+    }
+
+    // ========== SCOPES (masih OK di model) ==========
+    
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
+    }
+
+    public function scopeUpcoming($query)
+    {
+        return $query->where('event_date', '>=', now()->toDateString())
+                    ->where('status', 'published');
     }
 }
