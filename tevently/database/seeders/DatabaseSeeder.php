@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         // Jalankan AdminSeeder
         $this->call([
             AdminSeeder::class,
+            CategorySeeder::class,
+            EventSeeder::class,
         ]);
     }
 }

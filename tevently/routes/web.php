@@ -2,16 +2,20 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizerRequestController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\EventCatalogController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Guest\EventController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
 // GUEST ROUTES (Public - Tanpa Login)
 // ========================================
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
+Route::get('/', [EventController::class, 'home'])->name('home');
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+// Event Catalog & Detail
 // Event Catalog & Detail (akan dibuat nanti)
 // Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
 // Route::get('/events/{event}', [App\Http\Controllers\EventController::class, 'show'])->name('events.show');
@@ -87,6 +91,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     // Users Management - akan dibuat nanti
     // Route::get('users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
