@@ -128,18 +128,18 @@
                                         </td>
 
                                         <!-- Status -->
-<td class="px-6 py-4 whitespace-nowrap">
-    @if($user->status === 'pending' || $user->status === 'approved' || $user->status === 'rejected')
-        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-            {{ $user->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-            {{ $user->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
-            {{ $user->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}">
-            {{ ucfirst($user->status) }}
-        </span>
-    @else
-        <span class="text-gray-400 text-sm">-</span>
-    @endif
-</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($user->status === 'pending' || $user->status === 'approved' || $user->status === 'rejected')
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                    {{ $user->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                                    {{ $user->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
+                                                    {{ $user->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}">
+                                                    {{ ucfirst($user->status) }}
+                                                </span>
+                                            @else
+                                                <span class="text-gray-400 text-sm">-</span>
+                                            @endif
+                                        </td>
 
                                         <!-- Joined Date -->
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -173,7 +173,6 @@
                                             @else
                                                 <span class="text-gray-400">-</span>
                                             @endif
-                                        </td>
                                         </td>
                                     </tr>
                                 @empty

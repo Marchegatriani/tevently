@@ -3,9 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\EventCatalogController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Guest\EventController;
+use App\Http\Controllers\Organizer\OrgEventController;
+use App\Http\Controllers\Organizer\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -38,7 +38,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Request to become organizer - PENTING INI HARUS ADA!
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
         ->name('organizer.request');
 
@@ -68,6 +67,11 @@ Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.'
         return view('organizer.dashboard');
     })->name('dashboard');
 
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Events Management (Resource Controller)
+    Route::resource('events', OrgEventController::class);
     // Events Management - akan dibuat nanti
     // Route::resource('events', App\Http\Controllers\Organizer\EventController::class);
     
@@ -94,6 +98,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::patch('users/{user}/approve', [UserController::class, 'approve'])->name('users.approve');
+    Route::patch('users/{user}/reject', [UserController::class, 'reject'])->name('users.reject');
     // Users Management - akan dibuat nanti
     // Route::get('users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
     // Route::patch('users/{user}/approve', [App\Http\Controllers\Admin\UserController::class, 'approve'])->name('users.approve');

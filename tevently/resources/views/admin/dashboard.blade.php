@@ -45,7 +45,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-600">Pending Organizers</p>
-                                <p class="text-2xl font-bold text-gray-900">{{ \App\Models\User::where('role', 'organizer')->where('status', 'pending')->count() }}</p>
+                                <p class="text-2xl font-bold text-gray-900">{{ \App\Models\User::where('role', 'user')->where('status', 'pending')->count() }}</p>
                             </div>
                         </div>
                     </div>

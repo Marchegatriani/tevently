@@ -22,7 +22,6 @@ class AdminSeeder extends Seeder
                 'email' => 'admin@tevently.com',
                 'password' => Hash::make('admin1123'),
                 'role' => 'admin',
-                'status' => null,
                 'email_verified_at' => now(),
             ]);
 
