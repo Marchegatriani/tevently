@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Organizer\OrgEventController;
 use App\Http\Controllers\Organizer\DashboardController;
-use App\Http\Controllers\Organizer\TicketController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use Illuminate\Support\Facades\Route;

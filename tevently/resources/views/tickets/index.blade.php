@@ -1,4 +1,6 @@
-@extends('layouts.organizer')
+@extends(Auth::user()->role === 'admin' ? 'layouts.admin' : 'layouts.organizer')
+
+@section('title', 'Manage Tickets - ' . $event->title)
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
