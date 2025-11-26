@@ -9,8 +9,8 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    // Add fillable/casts/relationships/helpers to match migration and controllers
     protected $fillable = [
-        'event_id',
         'name',
         'description',
         'price',
@@ -20,31 +20,55 @@ class Ticket extends Model
         'sales_end',
         'max_per_order',
         'is_active',
+        'event_id',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'price' => 'decimal:2',
-            'quantity_available' => 'integer',
-            'quantity_sold' => 'integer',
-            'max_per_order' => 'integer',
-            'sales_start' => 'datetime',
-            'sales_end' => 'datetime',
-            'is_active' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'quantity_available' => 'integer',
+        'quantity_sold' => 'integer',
+        'price' => 'decimal:2',
+        'is_active' => 'boolean',
+        'sales_start' => 'datetime',
+        'sales_end' => 'datetime',
+    ];
 
-    // ========== RELATIONSHIPS ==========
-    
+    // Ticket belongs to an Event
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
 
-    public function orderItems()
+    // Ticket has many Orders (used by controllers/views)
+    public function orders()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(Order::class);
+    }
+
+    // Remaining tickets accessor
+    public function getRemainingAttribute()
+    {
+        return max(0, ($this->quantity_available ?? 0) - ($this->quantity_sold ?? 0));
+    }
+
+    // Friendly availability status used in views
+    public function getAvailabilityStatus()
+    {
+        if (! $this->is_active) {
+            return 'Inactive';
+        }
+
+        if (($this->quantity_sold ?? 0) >= ($this->quantity_available ?? 0)) {
+            return 'Sold out';
+        }
+
+        $remaining = $this->remaining;
+        // low stock when remaining <= 10% or <= 5 items (adjust as needed)
+        $threshold = max(5, (int) ceil(($this->quantity_available ?? 0) * 0.10));
+        if ($remaining <= $threshold) {
+            return 'Low stock';
+        }
+
+        return 'Available';
     }
 
     // ========== SCOPES ==========

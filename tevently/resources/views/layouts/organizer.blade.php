@@ -17,7 +17,8 @@
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
                         <a href="{{ route('organizer.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara Saya</a>
                         <a href="{{ route('organizer.orders.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan Tiket</a>
-                        <a href="{{ route('organizer.reports.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
+                        {{-- <a href="{{ route('organizer.reports.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
+                    --}}
                     </nav>
                 </div>
 
@@ -41,7 +42,8 @@
             <nav class="flex flex-col gap-1 text-sm text-gray-700">
                 <a href="{{ route('organizer.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Acara Saya</a>
                 <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan Tiket</a>
-                <a href="{{ route('organizer.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
+                {{-- <a href="{{ route('organizer.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
+             --}}
             </nav>
         </div>
     </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.organizer')
 
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-3xl">
@@ -8,7 +8,7 @@
             <a href="{{ route('organizer.events.index') }}" class="hover:text-blue-600">My Events</a>
             <span class="mx-2">/</span>
             <a href="{{ route('organizer.events.tickets.index', $event) }}" class="hover:text-blue-600">
-                {{ $event->name }}
+                {{ $event->title }}
             </a>
             <span class="mx-2">/</span>
             <span class="font-medium text-gray-800">Create Ticket</span>
@@ -82,17 +82,17 @@
                 <!-- Quota -->
                 <div>
                     <label for="quota" class="block text-sm font-medium text-gray-700 mb-2">
-                        Total Quota <span class="text-red-500">*</span>
+                        Quantity Available <span class="text-red-500">*</span>
                     </label>
                     <input type="number" 
-                           id="quota" 
-                           name="quota" 
-                           value="{{ old('quota') }}"
+                           id="quantity_available" 
+                           name="quantity_available" 
+                           value="{{ old('quantity_available') }}"
                            min="1"
                            placeholder="100"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('quota') border-red-500 @enderror" 
                            required>
-                    @error('quota')
+                    @error('quantity_available')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

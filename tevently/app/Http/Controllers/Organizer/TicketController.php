@@ -18,8 +18,8 @@ class TicketController extends Controller
         // Make sure organizer owns this event menggunakan Eloquent
         $this->authorizeEvent($event);
 
+        // Ambil tiket tanpa withCount karena tabel orders mungkin tidak memiliki foreign key ticket_id
         $tickets = $event->tickets()
-            ->withCount(['orders as total_orders'])
             ->latest()
             ->get();
 
@@ -49,20 +49,20 @@ class TicketController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'quota' => 'required|integer|min:1',
+            'quantity_available' => 'required|integer|min:1',
             'max_per_order' => 'required|integer|min:1',
-            'sales_start' => 'nullable|date',
-            'sales_end' => 'nullable|date|after_or_equal:sales_start',
+            'sales_start' => 'required|date',
+            'sales_end' => 'required|date|after_or_equal:sales_start',
             'is_active' => 'boolean',
         ]);
 
-        // Create ticket menggunakan Eloquent relationship
+        // Create ticket menggunakan Eloquent relationship (sesuai migration)
         $event->tickets()->create([
             'name' => $validated['name'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'price' => $validated['price'],
-            'quota' => $validated['quota'],
-            'quota_remaining' => $validated['quota'], // Set quota_remaining sama dengan quota
+            'quantity_available' => $validated['quantity_available'],
+            // quantity_sold default 0 (migration default)
             'max_per_order' => $validated['max_per_order'],
             'sales_start' => $validated['sales_start'],
             'sales_end' => $validated['sales_end'],
@@ -97,24 +97,24 @@ class TicketController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'quota' => 'required|integer|min:1',
+            'quantity_available' => 'required|integer|min:1',
             'max_per_order' => 'required|integer|min:1',
-            'sales_start' => 'nullable|date',
-            'sales_end' => 'nullable|date|after_or_equal:sales_start',
+            'sales_start' => 'required|date',
+            'sales_end' => 'required|date|after_or_equal:sales_start',
             'is_active' => 'boolean',
         ]);
 
-        // Calculate new quota_remaining
-        $quotaDiff = $validated['quota'] - $ticket->quota;
-        $newQuotaRemaining = max(0, $ticket->quota_remaining + $quotaDiff);
+        // Ensure we don't set availability below already sold quantity
+        if ($validated['quantity_available'] < $ticket->quantity_sold) {
+            return back()->withInput()->with('error', 'Quantity available cannot be less than already sold tickets.');
+        }
 
-        // Update menggunakan Eloquent
+        // Update menggunakan Eloquent sesuai migration
         $ticket->update([
             'name' => $validated['name'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'price' => $validated['price'],
-            'quota' => $validated['quota'],
-            'quota_remaining' => $newQuotaRemaining,
+            'quantity_available' => $validated['quantity_available'],
             'max_per_order' => $validated['max_per_order'],
             'sales_start' => $validated['sales_start'],
             'sales_end' => $validated['sales_end'],

@@ -30,6 +30,46 @@
         </div>
     </div>
 
+    <!-- Become Organizer CTA (show for guest or eligible users) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @auth
+            @php $role = auth()->user()->role; $status = auth()->user()->status ?? null; @endphp
+            @if(! in_array($role, ['organizer','admin']))
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-900">🎉 Ingin Menyelenggarakan Acara?</h3>
+                        <p class="text-gray-700">Daftarkan diri sebagai Event Organizer dan mulailah membuat acara Anda sendiri.</p>
+                    </div>
+                    <div>
+                        @if($status === 'pending')
+                            <button disabled class="px-4 py-2 bg-yellow-400 text-white rounded-md cursor-not-allowed">Request Pending</button>
+                        @elseif($status === 'approved')
+                            <a href="{{ route('organizer.dashboard') }}" class="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Go to Organizer Dashboard</a>
+                        @elseif($status === 'rejected')
+                            <form method="POST" action="{{ route('organizer.request') }}" class="inline-block">
+                                @csrf
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Re-apply as Organizer</button>
+                            </form>
+                        @else
+                            <form method="POST" action="{{ route('organizer.request') }}" class="inline-block">
+                                @csrf
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Become an Organizer</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        @else
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+                <p class="text-gray-700 mb-4">Mau jadi penyelenggara? Silakan login atau daftar dulu.</p>
+                <div class="flex justify-center gap-3">
+                    <a href="{{ route('login') }}" class="px-4 py-2 bg-white text-indigo-600 border border-indigo-600 rounded-md hover:bg-indigo-50">Login</a>
+                    <a href="{{ route('register') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Register</a>
+                </div>
+            </div>
+        @endauth
+    </div>
+
     <!-- Featured Events -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex justify-between items-center mb-8">
@@ -86,11 +126,4 @@
             </div>
         @endif
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Tevently. All rights reserved.</p>
-        </div>
-    </footer>
 @endsection

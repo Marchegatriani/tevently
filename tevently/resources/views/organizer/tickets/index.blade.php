@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.organizer')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
@@ -7,7 +7,7 @@
         <nav class="text-sm text-gray-600">
             <a href="{{ route('organizer.events.index') }}" class="hover:text-blue-600">My Events</a>
             <span class="mx-2">/</span>
-            <span class="font-medium text-gray-800">{{ $event->name }}</span>
+            <span class="font-medium text-gray-800">{{ $event->title }}</span>
             <span class="mx-2">/</span>
             <span class="font-medium text-gray-800">Tickets</span>
         </nav>
@@ -58,7 +58,7 @@
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ticket Name</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quota</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Available</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sold</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -77,11 +77,11 @@
                                 Rp {{ number_format($ticket->price, 0, ',', '.') }}
                             </td>
                             <td class="px-6 py-4 text-gray-700">
-                                {{ $ticket->quota }}
+                                {{ $ticket->quantity_available }}
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-gray-700">{{ $ticket->quota - $ticket->quota_remaining }}</div>
-                                <div class="text-xs text-gray-500">Remaining: {{ $ticket->quota_remaining }}</div>
+                                <div class="text-gray-700">{{ $ticket->quantity_sold }}</div>
+                                <div class="text-xs text-gray-500">Remaining: {{ $ticket->quantity_available - $ticket->quantity_sold }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 @if($ticket->is_active)

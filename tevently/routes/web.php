@@ -43,7 +43,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
-        ->name('organizer.request');
+    ->name('organizer.request')
+    ->middleware('auth');
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
