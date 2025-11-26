@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\EventController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Organizer\OrgEventController;
 use App\Http\Controllers\Organizer\DashboardController;
 use App\Http\Controllers\Organizer\TicketController;
@@ -122,10 +125,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Route::get('users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
     // Route::patch('users/{user}/approve', [App\Http\Controllers\Admin\UserController::class, 'approve'])->name('users.approve');
     // Route::patch('users/{user}/reject', [App\Http\Controllers\Admin\UserController::class, 'reject'])->name('users.reject');
-    
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('index');
+        Route::get('/{order}', [AdminOrderController::class, 'show'])->name('show');
+        //Route::post('/{order}/approve', [OrderController::class, 'approve'])->name('approve');
+        //Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('cancel');
+    });
+
     // Events Management - akan dibuat nanti
     // Route::resource('events', App\Http\Controllers\Admin\EventController::class);
-    
+    Route::resource('events', AdminEventController::class);
     // Reports - akan dibuat nanti
+    // Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [AdminReportController::class, 'index'])->name('index');
+        Route::get('/sales', [AdminReportController::class, 'sales'])->name('sales');
+        Route::get('/events', [AdminReportController::class, 'events'])->name('events');
+        Route::get('/users', [AdminReportController::class, 'users'])->name('users');
+    });
     // Route::get('reports', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
 });

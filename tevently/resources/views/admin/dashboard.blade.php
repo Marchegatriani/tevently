@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'User Dashboard')
-@section('heading', 'User Dashboard')
+@section('title', 'Dashboard')
+@section('heading', 'Dashboard')
 @section('subheading', 'Ringkasan dan kontrol administrasi')
 
 @section('content')

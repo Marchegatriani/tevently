@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
-@section('heading', 'Admin Dashboard')
-@section('subheading', 'Ringkasan dan kontrol administrasi')
+@section('title', 'Manage Users')
+@section('heading', 'Manage Users')
+@section('subheading', 'Kontrol User')
 
 @section('header-actions')
 	<a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">
@@ -12,7 +12,7 @@
 
 @section('content')
 
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             <!-- Alert Messages -->

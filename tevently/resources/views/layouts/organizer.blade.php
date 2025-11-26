@@ -6,29 +6,18 @@
     <title>@yield('title', 'Organizer Dashboard') - Tevently</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo dan Navigasi -->
-                <div class="flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600">Tevently</a>
-                    
-                    <!-- Navigasi Horizontal -->
-                    <nav class="hidden md:flex items-center space-x-1">
-                        <a href="{{ route('organizer.dashboard') }}" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.dashboard') ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }}">
-                            Dashboard
-                        </a>
-                        <a href="{{ route('organizer.events.index') }}" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }}">
-                            Acara Saya
-                        </a>
-                        <a href="{{ route('organizer.orders.index') }}" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }}">
-                            Pemesanan
-                        </a>
-                        {{-- <a href="{{ route('organizer.reports.index') }}" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }}">
-                            Laporan
-                        </a> --}}
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4 flex-nowrap">
+                    <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
+
+                    <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
+                        <a href="{{ route('organizer.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara Saya</a>
+                        <a href="{{ route('organizer.orders.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan Tiket</a>
+                        <a href="{{ route('organizer.reports.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
                     </nav>
                 </div>
 
@@ -50,10 +39,9 @@
     <div id="org-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
         <div class="max-w-7xl mx-auto px-4 py-2">
             <nav class="flex flex-col gap-1 text-sm text-gray-700">
-                <a href="{{ route('organizer.dashboard') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50">Beranda</a>
                 <a href="{{ route('organizer.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Acara Saya</a>
-                <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Tiket</a>
-                {{-- <a href="{{ route('organizer.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a> --}}
+                <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan Tiket</a>
+                <a href="{{ route('organizer.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a>
             </nav>
         </div>
     </div>
@@ -71,4 +59,18 @@
             </p>
         </div>
     </footer>
-</
+
+    <script>
+        (() => {
+            const btn = document.getElementById('org-nav-toggle');
+            const panel = document.getElementById('org-mobile-nav');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', () => {
+                panel.classList.toggle('hidden');
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', (!expanded).toString());
+            });
+        })();
+    </script>
+</body>
+</html>
