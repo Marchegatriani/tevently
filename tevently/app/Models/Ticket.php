@@ -61,4 +61,23 @@ class Ticket extends Model
                     ->where('sales_start', '<=', now())
                     ->where('sales_end', '>=', now());
     }
+
+    /**
+ * Get available tickets for this event
+ */
+public function availableTickets()
+{
+    return $this->tickets()
+        ->where('is_active', true)
+        ->where('quota_remaining', '>', 0)
+        ->where(function($query) {
+            $query->whereNull('sales_start')
+                  ->orWhere('sales_start', '<=', now());
+        })
+        ->where(function($query) {
+            $query->whereNull('sales_end')
+                  ->orWhere('sales_end', '>=', now());
+        });
+}
+
 }

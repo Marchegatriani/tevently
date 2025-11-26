@@ -1,20 +1,7 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Event Details') }}
-            </h2>
-            <div class="flex gap-2">
-                <a href="{{ route('organizer.events.edit', $event) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-semibold">
-                    Edit Event
-                </a>
-                <a href="{{ route('organizer.events.index') }}" class="text-gray-600 hover:text-gray-900">
-                    ← Back to Events
-                </a>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.organizer')
 
+@section('title', 'Event Management')
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
@@ -76,9 +63,10 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl font-bold text-gray-900">Tickets</h2>
-                            <button class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
+                            <a href="{{ route('organizer.events.tickets.create', $event) }}" 
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-semibold text-sm">
                                 + Add Ticket
-                            </button>
+                            </a>
                         </div>
 
                         @if($event->tickets->count() > 0)
@@ -155,4 +143,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

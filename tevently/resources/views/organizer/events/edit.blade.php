@@ -1,15 +1,7 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Edit Event') }}
-            </h2>
-            <a href="{{ route('organizer.events.index') }}" class="text-gray-600 hover:text-gray-900">
-                ← Back to Events
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.organizer')
 
+@section('title', 'Event Management')
+@section('content')
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -233,4 +225,4 @@
             }
         });
     </script>
-</x-app-layout>
+@endsection
