@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $user = $request->user();
-        
-        $stats = [
-            'total_orders' => $user->orders()->count(),
-            'total_favorites' => $user->favoriteEvents()->count(),
-        ];
+        // Get featured events (published events)
+        $featuredEvents = Event::where('status', 'published')
+            ->with('category')
+            ->latest()
+            ->take(6)
+            ->get();
 
-        return view('dashboard', $stats);
+        // Get user stats
+        $user = Auth::user();
+        return view('user.index', compact('featuredEvents'));
     }
 }

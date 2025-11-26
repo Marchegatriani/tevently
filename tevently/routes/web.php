@@ -8,6 +8,7 @@ use App\Http\Controllers\Organizer\OrgEventController;
 use App\Http\Controllers\Organizer\DashboardController;
 use App\Http\Controllers\Organizer\TicketController;
 use App\Http\Controllers\Organizer\OrderController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -36,9 +37,7 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Dashboard User
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
         ->name('organizer.request');
@@ -52,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('orders', App\Http\Controllers\User\OrderController::class);
     
     // Favorites - akan dibuat nanti
+    Route::get('/favorites', function () {
+        return view('user.favorites');
+    })->name('favorites');
     // Route::post('/favorites/{event}', [App\Http\Controllers\User\FavoriteController::class, 'toggle'])->name('favorites.toggle');
     // Route::get('/favorites', [App\Http\Controllers\User\FavoriteController::class, 'index'])->name('favorites.index');
 });

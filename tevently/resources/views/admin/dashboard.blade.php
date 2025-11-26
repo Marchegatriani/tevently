@@ -1,14 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
-@section('heading', 'Admin Dashboard')
+@section('title', 'User Dashboard')
+@section('heading', 'User Dashboard')
 @section('subheading', 'Ringkasan dan kontrol administrasi')
-
-@section('header-actions')
-	<a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">
-		Manage Users
-	</a>
-@endsection
 
 @section('content')
 	<!-- Welcome -->
