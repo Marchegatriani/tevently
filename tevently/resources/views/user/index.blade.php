@@ -82,7 +82,16 @@
         @if($featuredEvents->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($featuredEvents as $event)
-                    <a href="{{ route('events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                    @php
+                        // try find first available active ticket for quick booking (fallback to event details)
+                        $ticketsCollection = $event->tickets ?? collect();
+                        $availableTicket = $ticketsCollection->first(function ($t) {
+                            return ($t->is_active ?? false) && (($t->quantity_available ?? 0) - ($t->quantity_sold ?? 0)) > 0;
+                        });
+                        $quickHref = $availableTicket ? route('bookings.create', [$event, $availableTicket]) : route('events.show', $event);
+                        $quickLabel = $availableTicket ? 'Book Now' : 'View Details →';
+                    @endphp
+                    <a href="{{ $quickHref }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
                         <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
                             @if($event->image_url)
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
@@ -114,7 +123,7 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-500">By {{ $event->organizer->name }}</span>
-                                <span class="text-indigo-600 font-semibold">View Details →</span>
+                                <span class="text-indigo-600 font-semibold">{{ $quickLabel }}</span>
                             </div>
                         </div>
                     </a>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Organizer\DashboardController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\BookingController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -41,6 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Dashboard User
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    
+    // Bookings (user checkout)
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('bookings.create');
+    Route::post('/events/{event}/tickets/{ticket}/book', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{order}', [BookingController::class, 'show'])->name('bookings.show');
 
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
     ->name('organizer.request')

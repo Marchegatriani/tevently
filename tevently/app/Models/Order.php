@@ -10,13 +10,16 @@ class Order extends Model
 {
     use HasFactory;
 
+    // add fillable fields used by controller/database
     protected $fillable = [
         'user_id',
         'event_id',
-        'order_number',
-        'total_amount',
+        'ticket_id',
+        'quantity',
         'total_tickets',
+        'total_amount',
         'status',
+        'order_number',
         'order_date',
         'expired_at',
     ];
@@ -24,10 +27,14 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'total_amount' => 'decimal:2',
+            'user_id'      => 'integer',
+            'event_id'     => 'integer',
+            'ticket_id'    => 'integer',
+            'quantity'     => 'integer',
             'total_tickets' => 'integer',
-            'order_date' => 'datetime',
-            'expired_at' => 'datetime',
+            'total_amount' => 'decimal:2',
+            'order_date'   => 'datetime',
+            'expired_at'   => 'datetime',
         ];
     }
 
@@ -53,14 +60,20 @@ class Order extends Model
 
     // ========== RELATIONSHIPS ==========
     
-    public function user()
+    // Relation: order belongs to ticket
+    public function ticket()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Ticket::class);
     }
 
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function orderItems()
