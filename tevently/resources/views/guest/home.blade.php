@@ -38,7 +38,7 @@
                         <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600">
                             Login
                         </a>
-                        <a href="{{ route('register') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
+                        <a href="{{ route('register') }}" class="bg-indigo-800 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
                             Sign Up
                         </a>
                     @endauth
@@ -48,7 +48,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+    <div class="bg-gradient-to-r from-slate-700 to-indigo-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6">
@@ -64,8 +64,8 @@
                         <input type="text" 
                                name="search" 
                                placeholder="Search events or locations..." 
-                               class="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button type="submit" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">
+                               class="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-700">
+                        <button type="submit" class="bg-white text-indigo-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">
                             Search
                         </button>
                     </div>
@@ -78,7 +78,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-900">Featured Events</h2>
-            <a href="{{ route('events.index') }}" class="text-indigo-600 hover:text-indigo-700 font-semibold">
+            <a href="{{ route('events.index') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
                 View All →
             </a>
         </div>
@@ -87,7 +87,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($featuredEvents as $event)
                     <a href="{{ route('events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                        <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                        <div class="h-48 bg-gradient-to-br from-slate-700 to-indigo-800 flex items-center justify-center">
                             @if($event->image_url)
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
                             @else

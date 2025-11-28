@@ -13,21 +13,40 @@ class OrganizerRequestController extends Controller
     {
         $user = $request->user();
 
-        // Cek apakah user sudah punya request pending
+        // already organizer/admin → no action
+        if (in_array($user->role, ['organizer','admin'])) {
+            return redirect()->back()->with('info', 'Your account already has organizer access.');
+        }
+
+        // if already pending, keep user on pending page
         if ($user->status === 'pending') {
-            return redirect()->route('dashboard')->with('info', 'You already have an organizer request pending.');
+            return redirect()->route('organizer.pending')->with('info', 'Organizer request already pending.');
         }
 
-        // Cek apakah user sudah jadi organizer
-        if ($user->role === 'organizer') {
-            return redirect()->route('dashboard')->with('info', 'You are already an organizer.');
+        // mark user as pending
+        $user->status = 'pending';
+        $user->save();
+
+        // optionally: notify admins / create request record (not implemented here)
+
+        // redirect to pending page with message
+        return redirect()->route('organizer.pending')->with('success', 'Organizer request submitted — please wait for admin approval.');
+    }
+
+    /**
+     * Cancel organizer request — set status back to null (user keeps account).
+     */
+    public function cancel(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user->status !== 'pending') {
+            return redirect()->route('dashboard')->with('info', 'Tidak ada permintaan yang sedang ditinjau.');
         }
 
-        // Set status jadi pending (role masih 'user')
-        $user->update([
-            'status' => 'pending', // ← Role TIDAK BERUBAH, masih 'user'
-        ]);
+        $user->status = null;
+        $user->save();
 
-        return redirect()->route('dashboard')->with('success', 'Your request to become an organizer has been submitted!');
+        return redirect()->route('dashboard')->with('success', 'Permintaan organizer dibatalkan.');
     }
 }

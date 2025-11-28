@@ -9,17 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get featured events (published events)
-        $featuredEvents = Event::where('status', 'published')
-            ->with('category')
-            ->latest()
-            ->take(6)
-            ->get();
-
-        // Get user stats
-        $user = Auth::user();
-        return view('user.index', compact('featuredEvents'));
+        $user = $request->user();
+        
+        // Otomatis redirect berdasarkan status
+        if ($user->status === 'pending') {
+            return redirect()->route('organizer.pending');
+        }
+        
+        if ($user->status === 'rejected') {
+            return redirect()->route('organizer.rejected');
+        }
+    
+        // Lanjut dashboard normal
+        // gunakan view dashboard utama (resources/views/dashboard.blade.php)
+        return view('dashboard', [
+            'user' => $user
+        ]);
     }
 }
