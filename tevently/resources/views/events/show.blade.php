@@ -66,7 +66,7 @@
             <div class="lg:col-span-2">
                 <!-- Event Image -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-                    <div class="h-96 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                    <div class="h-96 bg-gradient-to-br from-slate-700 to-indigo-800 flex items-center justify-center">
                         @if($event->image_url)
                             <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
                         @else
@@ -92,7 +92,7 @@
                         <!-- Date & Time -->
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-indigo-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
@@ -106,7 +106,7 @@
                         <!-- Location -->
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-indigo-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
@@ -120,7 +120,7 @@
                         <!-- Max Attendees -->
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-indigo-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
@@ -133,7 +133,7 @@
                         <!-- Organizer -->
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-indigo-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
@@ -173,7 +173,7 @@
                                             </div>
                                         </div>
                                         <div class="text-right ml-4">
-                                            <p class="text-2xl font-bold text-indigo-600">Rp {{ number_format($ticket->price, 0, ',', '.') }}</p>
+                                            <p class="text-2xl font-bold text-indigo-800">Rp {{ number_format($ticket->price, 0, ',', '.') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                     
                     @auth
                         <!-- User sudah login -->
-                        <a href="#" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
+                        <a href="#" class="block w-full bg-indigo-800 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
                             Book Now
                         </a>
                         
@@ -200,35 +200,19 @@
                         </button>
                     @else
                         <!-- Guest belum login -->
-                        <a href="{{ route('login') }}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
+                        <a href="{{ route('login') }}" class="block w-full bg-indigo-800 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
                             Login to Book
                         </a>
                         
                         <p class="text-sm text-gray-600 text-center">
                             Don't have an account? 
-                            <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-700 font-semibold">
+                            <a href="{{ route('register') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
                                 Sign up
                             </a>
                         </p>
                     @endauth
 
                     <hr class="my-6">
-
-                    <!-- Share -->
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-3">Share This Event</h4>
-                        <div class="flex gap-2">
-                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold">
-                                Facebook
-                            </button>
-                            <button class="flex-1 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded text-sm font-semibold">
-                                Twitter
-                            </button>
-                            <button class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold">
-                                WhatsApp
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
