@@ -3,59 +3,83 @@
 @section('title', $event->title)
 
 @section('content')
-<div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">{{ $event->title }}</h1>
-        <div>
-            <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-warning">Edit</a>
-            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">Back</a>
+<div class="py-6">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{ $event->title }}</h1>
+                <p class="text-gray-600">{{ $event->category->name }} • {{ $event->location }}</p>
+            </div>
+            <div class="flex space-x-2">
+                <a href="{{ route('admin.events.edit', $event) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600">
+                    Edit
+                </a>
+                <a href="{{ route('admin.events.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                    Back
+                </a>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm p-6">
                     @if($event->image_url)
-                        <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="img-fluid rounded mb-3">
+                        <img src="{{ asset('storage/' . $event->image_url) }}" 
+                             alt="{{ $event->title }}" 
+                             class="w-full h-64 object-cover rounded-lg mb-4">
                     @endif
                     
-                    <p><strong>Description:</strong></p>
-                    <p>{{ $event->description }}</p>
+                    <h3 class="text-lg font-semibold mb-3">Description</h3>
+                    <p class="text-gray-700 whitespace-pre-line">{{ $event->description }}</p>
 
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <p><strong>Category:</strong> {{ $event->category->name }}</p>
-                            <p><strong>Location:</strong> {{ $event->location }}</p>
-                            <p><strong>Date:</strong> {{ $event->event_date->format('F d, Y') }}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div class="space-y-2">
+                            <p><strong class="text-gray-700">Category:</strong> {{ $event->category->name }}</p>
+                            <p><strong class="text-gray-700">Location:</strong> {{ $event->location }}</p>
+                            <p><strong class="text-gray-700">Date:</strong> {{ $event->event_date->format('F d, Y') }}</p>
                         </div>
-                        <div class="col-md-6">
-                            <p><strong>Time:</strong> {{ $event->start_time->format('h:i A') }} - {{ $event->end_time->format('h:i A') }}</p>
-                            <p><strong>Max Attendees:</strong> {{ number_format($event->max_attendees) }}</p>
-                            <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
-                            <p><strong>Status:</strong> 
-                                <span class="badge bg-{{ $event->status === 'published' ? 'success' : 'warning' }}">
-                                    {{ ucfirst($event->status) }}
-                                </span>
-                            </p>
+                        <div class="space-y-2">
+                            <p><strong class="text-gray-700">Time:</strong> {{ $event->start_time->format('h:i A') }} - {{ $event->end_time->format('h:i A') }}</p>
+                            <p><strong class="text-gray-700">Max Attendees:</strong> {{ number_format($event->max_attendees) }}</p>
+                            <p><strong class="text-gray-700">Organizer:</strong> {{ $event->organizer->name }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Event Statistics</h5>
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Status Card -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Event Status</h3>
+                    <span class="px-3 py-1 rounded-full text-sm font-medium
+                        {{ $event->status === 'published' ? 'bg-green-100 text-green-800' : '' }}
+                        {{ $event->status === 'draft' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                        {{ $event->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}
+                        {{ $event->status === 'completed' ? 'bg-gray-100 text-gray-800' : '' }}">
+                        {{ ucfirst($event->status) }}
+                    </span>
                 </div>
-                <div class="card-body">
-                    <p><strong>Tickets:</strong> {{ $event->tickets->count() }}</p>
-                    <p><strong>Total Quota:</strong> {{ $event->tickets->sum('quota') }}</p>
-                    <p><strong>Tickets Sold:</strong> {{ $event->tickets->sum('quantity_sold') }}</p>
-                    <hr>
-                    <p><strong>Created:</strong> {{ $event->created_at->format('M d, Y') }}</p>
-                    <p><strong>Last Updated:</strong> {{ $event->updated_at->format('M d, Y') }}</p>
+
+                <!-- Statistics Card -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Statistics</h3>
+                    <div class="space-y-2">
+                        <p><strong class="text-gray-700">Tickets:</strong> {{ $event->tickets->count() }}</p>
+                        <p><strong class="text-gray-700">Total Quota:</strong> {{ $event->tickets->sum('quota') }}</p>
+                        <p><strong class="text-gray-700">Tickets Sold:</strong> {{ $event->tickets->sum('quantity_sold') }}</p>
+                    </div>
+                </div>
+
+                <!-- Meta Info -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Event Info</h3>
+                    <div class="space-y-2">
+                        <p><strong class="text-gray-700">Created:</strong> {{ $event->created_at->format('M d, Y') }}</p>
+                        <p><strong class="text-gray-700">Last Updated:</strong> {{ $event->updated_at->format('M d, Y') }}</p>
+                    </div>
                 </div>
             </div>
         </div>
