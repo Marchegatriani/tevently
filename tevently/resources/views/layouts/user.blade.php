@@ -18,10 +18,8 @@
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
                         <a href="{{ route('home') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
                         <a href="{{ route('events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
-                        {{-- <a href="{{ route('user.favorites') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
-                         --}}
-                        {{-- <a href="{{ route('user.orders') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a>
-                     --}}
+                        <a href="{{ route('user.favorites') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
+                        <a href="{{ route('user.orders') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a>
                     </nav>
 
                     {{-- mobile toggle --}}
@@ -51,8 +49,8 @@
                 <nav class="flex flex-col gap-1 text-sm text-gray-700">
                     <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
                     <a href="{{ route('events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
-                    {{-- <a href="{{ route('user.favorites') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
-                    <a href="{{ route('user.orders') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a> --}}
+                    <a href="{{ route('user.favorites') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
+                    <a href="{{ route('user.orders') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a>
 
                     {{-- mobile logout --}}
                     <form method="POST" action="{{ route('logout') }}" class="mt-2 px-3">

@@ -12,6 +12,8 @@ use App\Http\Controllers\Organizer\DashboardController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\User\FavoriteController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -59,6 +61,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Organizer Request
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
+
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('user.favorites');
+    Route::post('/favorites/{event}', [FavoriteController::class, 'store'])->name('user.favorites.store');
+    Route::delete('/favorites/{event}', [FavoriteController::class, 'destroy'])->name('user.favorites.destroy');
+    Route::post('/favorites/{event}/toggle', [FavoriteController::class, 'toggle'])->name('user.favorites.toggle');
+    Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('user.favorites.count');
+    Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('user.favorites.clear');
+
+    Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders');
+    Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
+    Route::post('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('user.orders.cancel');
+    Route::get('/orders/{order}/download-ticket', [UserOrderController::class, 'downloadTicket'])->name('user.orders.download-ticket');
+    Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('user.orders.statistics');
 });
 
 // ========================================
