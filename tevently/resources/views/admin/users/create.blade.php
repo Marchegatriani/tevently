@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.partials.sidebar')
 
 @section('title', 'Create User')
 @section('heading', 'Create User')

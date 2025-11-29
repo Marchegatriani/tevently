@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.partials.sidebar')
 
 @section('title', 'Ticket Orders')
 @section('heading', 'Ticket Orders')

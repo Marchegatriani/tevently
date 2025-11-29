@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.partials.sidebar')
 
 @section('title', 'Sales Report')
 @section('heading', 'Sales Report')

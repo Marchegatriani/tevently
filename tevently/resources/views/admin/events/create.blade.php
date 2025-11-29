@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.partials.sidebar')
 
 @section('title', 'Create Event')
 
@@ -145,7 +145,7 @@
 let ticketCount = 1;
 function addTicket() {
     const container = document.getElementById('tickets-container');
-    const template = `@include('admin.events.partials.ticket-form', ['index' => '${ticketCount}', 'ticket' => null, 'removable' => true])`;
+    const template = `@include('admin.partials.ticket-form', ['index' => '${ticketCount}', 'ticket' => null, 'removable' => true])`;
     container.insertAdjacentHTML('beforeend', template);
     ticketCount++;
 }
