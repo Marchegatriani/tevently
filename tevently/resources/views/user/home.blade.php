@@ -89,7 +89,7 @@
                                     <span class="text-gray-500">Free</span>
                                 @endif
                                 
-                                <a href="{{ route('events.show', $event) }}" 
+                                <a href="{{ route('user.detailEvent', $event) }}" 
                                    class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
                                     Details
                                 </a>

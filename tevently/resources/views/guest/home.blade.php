@@ -78,7 +78,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-900">Featured Events</h2>
-            <a href="{{ route('events.index') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
+            <a href="{{ route('guest.eventDetail') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
                 View All →
             </a>
         </div>

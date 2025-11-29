@@ -95,7 +95,7 @@
         <div class="p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg font-semibold text-gray-900">Acara Terbaru</h3>
-                <a href="{{ route('organizer.events.index') }}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center">
+                <a href="{{ route('organizer.events') }}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center">
                     Lihat Semua
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -138,7 +138,7 @@
                                     {{ $event->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
                                     {{ ucfirst($event->status) }}
                                 </span>
-                                <a href="{{ route('organizer.events.show', $event) }}" 
+                                <a href="{{ route('events.show', $event) }}" 
                                    class="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center">
                                     Lihat
                                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +155,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <p class="text-gray-500 text-lg mb-4">Belum ada acara</p>
-                    <a href="{{ route('organizer.events.create') }}" 
+                    <a href="{{ route('events.create') }}" 
                        class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
                         Buat Acara Pertama
                     </a>

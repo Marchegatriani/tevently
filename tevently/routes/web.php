@@ -14,15 +14,16 @@ use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\Admin\EventController as GuestEventController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
 // GUEST ROUTES (Public - Tanpa Login)
 // ========================================
 
-Route::get('/', [EventController::class, 'home'])->name('home');
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::get('/', [GuestEventController::class, 'home'])->name('home');
+Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
+Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
 
 // ========================================
 // AUTH ROUTES (Login/Register - dari Breeze)

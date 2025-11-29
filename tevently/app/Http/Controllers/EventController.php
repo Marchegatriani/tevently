@@ -72,7 +72,7 @@ class EventController extends Controller
         // Get all categories
         $categories = Category::all();
 
-        return view('events.index', compact('events', 'categories'));
+        return view('guest.home', compact('events', 'categories'));
     }
 
     /**

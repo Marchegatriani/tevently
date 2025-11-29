@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.organizer')
 
 @section('title', 'Create Event')
 
@@ -7,30 +7,16 @@
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Create New Event</h1>
-            <p class="text-gray-600">Create event with organizer and tickets</p>
+            <h1 class="text-2xl font-bold text-gray-900">Create Your Event</h1>
+            <p class="text-gray-600">Create event with multiple ticket options</p>
         </div>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('organizer.events.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <!-- Event Basic Info -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <!-- Organizer -->
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Organizer *</label>
-                        <select name="organizer_id" class="w-full rounded-md border-gray-300" required>
-                            <option value="">Select Organizer</option>
-                            @foreach($organizers as $org)
-                                <option value="{{ $org->id }}" {{ old('organizer_id') == $org->id ? 'selected' : '' }}>
-                                    {{ $org->name }} ({{ $org->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('organizer_id')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
-                    </div>
-
                     <!-- Title & Category -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
@@ -62,7 +48,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Max Attendees *</label>
-                        <input type="number" name="max_attendees" value="{{ old('max_attendees', 100) }}" 
+                        <input type="number" name="max_attendees" value="{{ old('max_attendees', 50) }}" 
                                min="1" class="w-full rounded-md border-gray-300" required>
                         @error('max_attendees')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
@@ -100,8 +86,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                         <select name="status" class="w-full rounded-md border-gray-300">
-                            <option value="draft">Draft</option>
-                            <option value="published" selected>Published</option>
+                            <option value="draft" selected>Draft</option>
+                            <option value="published">Publish Now</option>
                         </select>
                     </div>
 
@@ -115,7 +101,7 @@
                 <!-- Tickets Section -->
                 <div class="border-t pt-6 mt-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Tickets</h2>
+                        <h2 class="text-lg font-semibold">Ticket Options</h2>
                         <button type="button" onclick="addTicket()" 
                                 class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm">
                             + Add Ticket
@@ -123,7 +109,7 @@
                     </div>
                     
                     <div id="tickets-container">
-                        @include('admin.events.partials.ticket-form', ['index' => 0, 'ticket' => null])
+                        @include('organizer.events.partials.ticket-form', ['index' => 0, 'ticket' => null])
                     </div>
                 </div>
 
@@ -132,7 +118,7 @@
                     <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
                         Create Event
                     </button>
-                    <a href="{{ route('admin.events.index') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400">
+                    <a href="{{ route('organizer.events.index') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400">
                         Cancel
                     </a>
                 </div>
@@ -141,13 +127,43 @@
     </div>
 </div>
 
+@push('scripts')
 <script>
 let ticketCount = 1;
 function addTicket() {
     const container = document.getElementById('tickets-container');
-    const template = `@include('admin.events.partials.ticket-form', ['index' => '${ticketCount}', 'ticket' => null, 'removable' => true])`;
-    container.insertAdjacentHTML('beforeend', template);
+    const newTicket = document.createElement('div');
+    newTicket.className = 'ticket-item bg-gray-50 p-4 rounded-lg mb-4 border';
+    newTicket.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                <input type="text" name="tickets[${ticketCount}][name]" class="w-full rounded-md border-gray-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+                <input type="number" name="tickets[${ticketCount}][price]" min="0" class="w-full rounded-md border-gray-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
+                <input type="number" name="tickets[${ticketCount}][quantity_available]" min="1" class="w-full rounded-md border-gray-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Max/Order</label>
+                <input type="number" name="tickets[${ticketCount}][max_per_order]" min="1" value="4" class="w-full rounded-md border-gray-300">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea name="tickets[${ticketCount}][description]" rows="2" class="w-full rounded-md border-gray-300"></textarea>
+            </div>
+        </div>
+        <div class="flex justify-end mt-2">
+            <button type="button" onclick="this.closest('.ticket-item').remove()" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+        </div>
+    `;
+    container.appendChild(newTicket);
     ticketCount++;
 }
 </script>
+@endpush
 @endsection
