@@ -1,244 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $event->title }} - {{ config('app.name') }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-indigo-600">
-                        Tevently
-                    </a>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('events.index') }}" class="text-gray-700 hover:text-indigo-600">
-                        Browse Events
-                    </a>
-                    @auth
-                        @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Admin Dashboard
-                            </a>
-                        @elseif(auth()->user()->role === 'organizer' && auth()->user()->status === 'approved')
-                            <a href="{{ route('organizer.dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Organizer Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Dashboard
-                            </a>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
-                            Sign Up
-                        </a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.guest')
 
-    <!-- Breadcrumb -->
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center gap-2 text-sm text-gray-600">
-                <a href="{{ route('home') }}" class="hover:text-indigo-600">Home</a>
-                <span>/</span>
-                <a href="{{ route('events.index') }}" class="hover:text-indigo-600">Events</a>
-                <span>/</span>
-                <span class="text-gray-900">{{ $event->title }}</span>
-            </div>
-        </div>
-    </div>
+@section('title', 'Event Detail')
 
+@section('content')
+    <!-- Event Detail -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm">
+                    <li>
+                        <a href="/" class="text-gray-500 hover:text-indigo-600">Home</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-400">/</span>
+                    </li>
+                    <li>
+                        <a href="{{ route('guest.events.index') }}" class="text-gray-500 hover:text-indigo-600">Events</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-400">/</span>
+                    </li>
+                    <li class="text-gray-900 font-medium">{{ Str::limit($event->name, 30) }}</li>
+                </ol>
+            </nav>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
             <div class="lg:col-span-2">
                 <!-- Event Image -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-                    <div class="h-96 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
-                        @if($event->image_url)
-                            <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
-                        @else
-                            <span class="text-white text-6xl font-bold">{{ substr($event->title, 0, 2) }}</span>
-                        @endif
-                    </div>
+                    @if($event->image)
+                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-96 object-cover">
+                    @else
+                        <div class="w-full h-96 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                            <span class="text-white text-6xl font-bold">{{ substr($event->name, 0, 2) }}</span>
+                        </div>
+                    @endif
                 </div>
 
-                <!-- Event Details -->
+                <!-- Event Info -->
                 <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                     <div class="flex items-center gap-2 mb-4">
                         <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-semibold rounded">
                             {{ $event->category->name }}
                         </span>
-                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
-                            {{ ucfirst($event->status) }}
-                        </span>
+                        @if(\Carbon\Carbon::parse($event->date)->isFuture())
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
+                                Upcoming
+                            </span>
+                        @else
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-semibold rounded">
+                                Past Event
+                            </span>
+                        @endif
                     </div>
 
-                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $event->title }}</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $event->name }}</h1>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <!-- Date & Time -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Date & Time</p>
-                                <p class="text-gray-600">{{ $event->event_date->format('l, F d, Y') }}</p>
-                                <p class="text-gray-600">{{ $event->start_time->format('h:i A') }} - {{ $event->end_time->format('h:i A') }}</p>
-                            </div>
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 text-gray-700">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="font-medium">{{ \Carbon\Carbon::parse($event->date)->format('l, F d, Y') }}</span>
                         </div>
 
-                        <!-- Location -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Location</p>
-                                <p class="text-gray-600">{{ $event->location }}</p>
-                            </div>
+                        <div class="flex items-center gap-3 text-gray-700">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="font-medium">{{ \Carbon\Carbon::parse($event->date)->format('h:i A') }}</span>
                         </div>
 
-                        <!-- Max Attendees -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Max Attendees</p>
-                                <p class="text-gray-600">{{ number_format($event->max_attendees) }} people</p>
-                            </div>
+                        <div class="flex items-center gap-3 text-gray-700">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>{{ $event->location }}</span>
                         </div>
 
-                        <!-- Organizer -->
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 mt-1">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Organized By</p>
-                                <p class="text-gray-600">{{ $event->organizer->name }}</p>
-                            </div>
+                        <div class="flex items-center gap-3 text-gray-700">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span>Organized by <strong>{{ $event->organizer->name }}</strong></span>
                         </div>
                     </div>
 
-                    <hr class="my-6">
-
-                    <!-- Description -->
-                    <div>
+                    <div class="border-t pt-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-3">About This Event</h2>
-                        <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ $event->description }}</p>
+                        <div class="text-gray-700 leading-relaxed whitespace-pre-line">{{ $event->description }}</div>
                     </div>
                 </div>
-
-                <!-- Available Tickets -->
-                @if($event->tickets->count() > 0)
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <h2 class="text-xl font-bold text-gray-900 mb-4">Available Tickets</h2>
-                        <div class="space-y-4">
-                            @foreach($event->tickets as $ticket)
-                                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1">
-                                            <h3 class="font-semibold text-gray-900 text-lg">{{ $ticket->name }}</h3>
-                                            @if($ticket->description)
-                                                <p class="text-gray-600 text-sm mt-1">{{ $ticket->description }}</p>
-                                            @endif
-                                            <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                                                <span>Available: {{ $ticket->quantity_available - $ticket->quantity_sold }}</span>
-                                                <span>•</span>
-                                                <span>Max {{ $ticket->max_per_order }} per order</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-right ml-4">
-                                            <p class="text-2xl font-bold text-indigo-600">Rp {{ number_format($ticket->price, 0, ',', '.') }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
             </div>
 
             <!-- Sidebar -->
             <div class="lg:col-span-1">
+                <!-- Ticket Options -->
                 <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Get Your Tickets</h3>
-                    
-                    @auth
-                        <!-- User sudah login -->
-                        <a href="#" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
-                            Book Now
-                        </a>
-                        
-                        <!-- Favorite Button -->
-                        <button class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 text-center px-6 py-3 rounded-lg font-semibold">
-                            ❤️ Add to Favorites
-                        </button>
-                    @else
-                        <!-- Guest belum login -->
-                        <a href="{{ route('login') }}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center px-6 py-3 rounded-lg font-semibold mb-3">
-                            Login to Book
-                        </a>
-                        
-                        <p class="text-sm text-gray-600 text-center">
-                            Don't have an account? 
-                            <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-700 font-semibold">
-                                Sign up
-                            </a>
-                        </p>
-                    @endauth
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Available Tickets</h2>
 
-                    <hr class="my-6">
+                    @if($event->tickets->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($event->tickets as $ticket)
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">{{ $ticket->type }}</h3>
+                                            <p class="text-sm text-gray-600">{{ $ticket->description }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center mt-3">
+                                        <div>
+                                            <p class="text-2xl font-bold text-indigo-600">
+                                                Rp {{ number_format($ticket->price, 0, ',', '.') }}
+                                            </p>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $ticket->available_quantity }} / {{ $ticket->quantity }} left
+                                            </p>
+                                        </div>
+                                        
+                                        @auth
+                                            @if($ticket->available_quantity > 0 && \Carbon\Carbon::parse($event->date)->isFuture())
+                                                <a href="{{ route('tickets.order', $ticket) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">
+                                                    Buy Now
+                                                </a>
+                                            @else
+                                                <button disabled class="bg-gray-300 text-gray-500 px-4 py-2 rounded-md text-sm font-semibold cursor-not-allowed">
+                                                    Sold Out
+                                                </button>
+                                            @endif
+                                        @else
+                                            <a href="{{ route('login') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold">
+                                                Login to Buy
+                                            </a>
+                                        @endauth
+                                    </div>
 
-                    <!-- Share -->
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-3">Share This Event</h4>
-                        <div class="flex gap-2">
-                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold">
-                                Facebook
-                            </button>
-                            <button class="flex-1 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded text-sm font-semibold">
-                                Twitter
-                            </button>
-                            <button class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold">
-                                WhatsApp
-                            </button>
+                                    @if($ticket->available_quantity > 0 && $ticket->available_quantity <= 10)
+                                        <div class="mt-2 text-xs text-orange-600 font-medium">
+                                            ⚠️ Only {{ $ticket->available_quantity }} tickets left!
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+                    @else
+                        <div class="text-center py-8">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                            <p class="mt-2 text-gray-500">No tickets available yet</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Tevently. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+@endsection

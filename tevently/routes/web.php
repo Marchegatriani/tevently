@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\EventController;
+use App\Http\Controllers\Guest\EventController as GuestEventController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
@@ -14,17 +14,18 @@ use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
-use App\Http\Controllers\Admin\EventController as GuestEventController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
 // GUEST ROUTES (Public - Tanpa Login)
 // ========================================
 
+// PERBAIKAN: Gunakan EventController biasa untuk guest, bukan Admin EventController
+Route::name('guest.')->group(function () {
 Route::get('/', [GuestEventController::class, 'home'])->name('home');
 Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
-
+});
 // ========================================
 // AUTH ROUTES (Login/Register - dari Breeze)
 // ========================================
@@ -63,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Organizer Request
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
 
+    // Favorites
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('user.favorites');
     Route::post('/favorites/{event}', [FavoriteController::class, 'store'])->name('user.favorites.store');
     Route::delete('/favorites/{event}', [FavoriteController::class, 'destroy'])->name('user.favorites.destroy');
@@ -70,6 +72,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('user.favorites.count');
     Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('user.favorites.clear');
 
+    // User Orders
     Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders');
     Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
     Route::post('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('user.orders.cancel');
@@ -81,7 +84,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // ORGANIZER ROUTES
 // ========================================
 
-// HAPUS 'approved' dari middleware - hanya gunakan 'organizer'
 Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.')->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

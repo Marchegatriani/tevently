@@ -1,30 +1,161 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Tevently') - Event Management Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4 flex-nowrap">
+                    <a href="/" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+                    {{-- desktop nav: inline, no-wrap --}}
+                    <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
+                        <a href="/" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->is('/') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
+                        <a href="{{ route('guest.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('guest.events.*') ? 'bg-gray-100 font-medium' : '' }}">Jelajahi Event</a>
+                    </nav>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+                    {{-- mobile toggle --}}
+                    <div class="md:hidden">
+                        <button id="guest-nav-toggle" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none" aria-expanded="false" aria-controls="guest-mobile-nav">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
+                {{-- auth buttons (desktop) --}}
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:text-indigo-600 font-medium">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition">
+                        Daftar
+                    </a>
+                </div>
+             </div>
+         </div>
+
+        {{-- mobile panel --}}
+        <div id="guest-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
+            <div class="max-w-7xl mx-auto px-4 py-2">
+                <nav class="flex flex-col gap-1 text-sm text-gray-700">
+                    <a href="/" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->is('/') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
+                    <a href="{{ route('guest.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('guest.events.*') ? 'bg-gray-100 font-medium' : '' }}">Jelajah Event</a>
+
+                    {{-- mobile auth buttons --}}
+                    <div class="mt-2 pt-2 border-t">
+                        <a href="{{ route('login') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 text-gray-700 font-medium">
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}" class="block mx-3 my-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-center font-semibold">
+                            Daftar
+                        </a>
+                    </div>
+                 </nav>
+             </div>
+         </div>
+
+        <script>
+            (() => {
+                const btn = document.getElementById('guest-nav-toggle');
+                const panel = document.getElementById('guest-mobile-nav');
+                if (!btn || !panel) return;
+                btn.addEventListener('click', () => {
+                    panel.classList.toggle('hidden');
+                    const expanded = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', (!expanded).toString());
+                });
+            })();
+        </script>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Tevently</h3>
+                    <p class="text-gray-300 text-sm">Platform manajemen event terpercaya untuk menemukan dan mengatur acara impian Anda.</p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Link Cepat</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="text-gray-300 hover:text-white transition">Beranda</a></li>
+                        <li><a href="{{ route('guest.events.index') }}" class="text-gray-300 hover:text-white transition">Jelajah Event</a></li>
+                        <li><a href="{{ route('login') }}" class="text-gray-300 hover:text-white transition">Login</a></li>
+                        <li><a href="{{ route('register') }}" class="text-gray-300 hover:text-white transition">Daftar</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Kategori</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li>Musik & Konser</li>
+                        <li>Olahraga</li>
+                        <li>Workshop</li>
+                        <li>Seminar</li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Kontak</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            info@tevently.com
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            +62 123 4567 890
+                        </li>
+                    </ul>
+                    <!-- Social Media -->
+                    <div class="flex gap-3 mt-4">
+                        <a href="#" class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+            
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; {{ date('Y') }} Tevently. All rights reserved.</p>
             </div>
         </div>
-    </body>
+    </footer>
+</body>
 </html>

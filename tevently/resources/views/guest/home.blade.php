@@ -1,52 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} - Discover Amazing Events</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-indigo-600">
-                        Tevently
-                    </a>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('events.index') }}" class="text-gray-700 hover:text-indigo-600">
-                        Browse Events
-                    </a>
-                    @auth
-                        @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Admin Dashboard
-                            </a>
-                        @elseif(auth()->user()->role === 'organizer' && auth()->user()->status === 'approved')
-                            <a href="{{ route('organizer.dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Organizer Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-indigo-600">
-                                Dashboard
-                            </a>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}" class="bg-indigo-800 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
-                            Sign Up
-                        </a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.guest')
 
+@section('title', 'Beranda')
+
+@section('content')
     <!-- Hero Section -->
     <div class="bg-gradient-to-r from-slate-700 to-indigo-800  text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -59,7 +15,7 @@
                 </p>
                 
                 <!-- Search Bar -->
-                <form action="{{ route('events.index') }}" method="GET" class="max-w-2xl mx-auto">
+                <form action="{{ route('guest.events.index') }}" method="GET" class="max-w-2xl mx-auto">
                     <div class="flex gap-2">
                         <input type="text" 
                                name="search" 
@@ -78,7 +34,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-900">Featured Events</h2>
-            <a href="{{ route('guest.eventDetail') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
+            <a href="{{ route('guest.events.index') }}" class="text-indigo-800 hover:text-indigo-700 font-semibold">
                 View All →
             </a>
         </div>
@@ -86,7 +42,7 @@
         @if($featuredEvents->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($featuredEvents as $event)
-                    <a href="{{ route('events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                    <a href="{{ route('guest.events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
                         <div class="h-48 bg-gradient-to-br from-slate-700 to-indigo-800 flex items-center justify-center">
                             @if($event->image_url)
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
@@ -130,12 +86,4 @@
             </div>
         @endif
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Tevently. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+@endsection
