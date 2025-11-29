@@ -47,8 +47,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->from-slate-700 to-indigo-800
-    <div class="bg-gradient-to-r  text-white">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-slate-700 to-indigo-800  text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6">

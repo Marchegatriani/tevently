@@ -23,7 +23,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Main Content -->
-            <div class="lg:col-span-2">
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Event Details -->
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     @if($event->image_url)
                         <img src="{{ asset('storage/' . $event->image_url) }}" 
@@ -47,6 +48,50 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tickets Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Tickets</h3>
+                    @if($event->tickets->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($event->tickets as $ticket)
+                                <div class="border rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-semibold text-lg">{{ $ticket->name }}</h4>
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                                            Rp {{ number_format($ticket->price) }}
+                                        </span>
+                                    </div>
+                                    @if($ticket->description)
+                                        <p class="text-gray-600 text-sm mb-3">{{ $ticket->description }}</p>
+                                    @endif
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                        <div>
+                                            <span class="text-gray-500">Available:</span>
+                                            <span class="font-semibold">{{ $ticket->quantity_available - $ticket->quantity_sold }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-500">Sold:</span>
+                                            <span class="font-semibold">{{ $ticket->quantity_sold }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-500">Total:</span>
+                                            <span class="font-semibold">{{ $ticket->quantity_available }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-500">Status:</span>
+                                            <span class="font-semibold {{ $ticket->is_active ? 'text-green-600' : 'text-red-600' }}">
+                                                {{ $ticket->is_active ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 text-center py-4">No tickets available for this event.</p>
+                    @endif
+                </div>
             </div>
 
             <!-- Sidebar -->
@@ -67,9 +112,10 @@
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <h3 class="text-lg font-semibold mb-4">Statistics</h3>
                     <div class="space-y-2">
-                        <p><strong class="text-gray-700">Tickets:</strong> {{ $event->tickets->count() }}</p>
-                        <p><strong class="text-gray-700">Total Quota:</strong> {{ $event->tickets->sum('quota') }}</p>
-                        <p><strong class="text-gray-700">Tickets Sold:</strong> {{ $event->tickets->sum('quantity_sold') }}</p>
+                        <p><strong class="text-gray-700">Total Tickets:</strong> {{ $event->tickets->count() }}</p>
+                        <p><strong class="text-gray-700">Total Available:</strong> {{ $event->tickets->sum('quantity_available') - $event->tickets->sum('quantity_sold') }}</p>
+                        <p><strong class="text-gray-700">Total Sold:</strong> {{ $event->tickets->sum('quantity_sold') }}</p>
+                        <p><strong class="text-gray-700">Total Revenue:</strong> Rp {{ number_format($event->tickets->sum(function($ticket) { return $ticket->price * $ticket->quantity_sold; })) }}</p>
                     </div>
                 </div>
 

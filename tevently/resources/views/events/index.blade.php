@@ -138,7 +138,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach($events as $event)
                             <a href="{{ route('events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                                <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                                <div class="h-48 bg-gradient-to-br from-slate-700 to-indigo-800 flex items-center justify-center">
                                     @if($event->image_url)
                                         <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
                                     @else
@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm text-gray-500">By {{ $event->organizer->name }}</span>
-                                        <span class="text-indigo-600 font-semibold">Details →</span>
+                                        <span class="text-indigo-800 font-semibold">Details →</span>
                                     </div>
                                 </div>
                             </a>
