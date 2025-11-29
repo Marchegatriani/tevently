@@ -40,7 +40,7 @@ class OrgEventController extends Controller
         ];
 
         // PERBAIKAN: Langsung ke organizer/events.blade.php
-        return view('organizer.events', compact('events', 'stats'));
+        return view('organizer.events.index', compact('events', 'stats'));
     }
 
     /**
@@ -50,7 +50,7 @@ class OrgEventController extends Controller
     {
         $categories = Category::all();
         // PERBAIKAN: Langsung ke organizer/events-create.blade.php atau events/create.blade.php
-        return view('events.create', compact('categories'));
+        return view('organizer.events.create', compact('categories'));
     }
 
     /**
@@ -130,7 +130,7 @@ class OrgEventController extends Controller
         $event->load(['category', 'tickets']);
 
         // PERBAIKAN: Langsung ke organizer/events-show.blade.php atau events/show.blade.php
-        return view('events.show', compact('event'));
+        return view('organizer.events.show', compact('event'));
     }
 
     /**
@@ -145,7 +145,7 @@ class OrgEventController extends Controller
 
         $categories = Category::all();
         // PERBAIKAN: Langsung ke organizer/events-edit.blade.php atau events/edit.blade.php
-        return view('events.edit', compact('event', 'categories'));
+        return view('organizer.events.edit', compact('event', 'categories'));
     }
 
     /**

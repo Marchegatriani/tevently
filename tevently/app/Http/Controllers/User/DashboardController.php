@@ -24,7 +24,7 @@ class DashboardController extends Controller
     
         // Lanjut dashboard normal
         // gunakan view dashboard utama (resources/views/dashboard.blade.php)
-        return view('dashboard', [
+        return view('user.home', [
             'user' => $user
         ]);
     }

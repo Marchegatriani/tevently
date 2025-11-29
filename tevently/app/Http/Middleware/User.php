@@ -6,42 +6,39 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckOrganizerStatusOrganizer
+class CheckUserStatus
 {
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
 
-        // Not logged in -> redirect to login
+        // Jika tidak login, lanjutkan
         if (!$user) {
-            return redirect()->route('login');
+            return $next($request);
         }
 
-        // Izinkan akses ke pending/rejected page dan logout/cancel
+        // Route yang diizinkan untuk pending/rejected users
         $allowedRoutes = [
             'organizer.pending',
             'organizer.rejected',
             'organizer.cancel',
+            'organizer.request',
             'logout'
         ];
 
+        // Jika sedang mengakses route yang diizinkan, lanjutkan
         if ($request->routeIs($allowedRoutes)) {
             return $next($request);
         }
 
-        // Check organizer status - PENDING
+        // Jika user PENDING - BLOKIR semua akses kecuali pending page
         if ($user->status === 'pending') {
             return redirect()->route('organizer.pending');
         }
 
-        // Check organizer status - REJECTED
+        // Jika user REJECTED - BLOKIR semua akses kecuali rejected page
         if ($user->status === 'rejected') {
             return redirect()->route('organizer.rejected');
-        }
-
-        // Check if user is organizer with approved status
-        if ($user->role !== 'organizer' || $user->status !== 'approved') {
-            abort(403, 'Unauthorized access. Approved organizer only.');
         }
 
         return $next($request);

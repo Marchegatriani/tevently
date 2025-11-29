@@ -12,12 +12,12 @@
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4 flex-nowrap">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
+                    <a href="{{ route('organizer.dashboard') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
 
                     {{-- desktop nav --}}
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
                         <a href="{{ route('organizer.dashboard') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.dashboard') ? 'bg-gray-100 font-medium' : '' }}">Dashboard</a>
-                        <a href="{{ route('organizer.events') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara</a>
+                        <a href="{{ route('organizer.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara</a>
                         <a href="{{ route('organizer.orders.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan</a>
                         {{-- <a href="{{ route('organizer.reports.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a> --}}
                     </nav>
@@ -48,7 +48,7 @@
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-gray-700">
                     <a href="{{ route('organizer.dashboard') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.dashboard') ? 'bg-gray-100 font-medium' : '' }}">Dashboard</a>
-                    <a href="{{ route('organizer.events') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara</a>
+                    <a href="{{ route('organizer.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.events.*') ? 'bg-gray-100 font-medium' : '' }}">Kelola Acara</a>
                     <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Pemesanan</a>
                     {{-- <a href="{{ route('organizer.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('organizer.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Laporan</a> --}}
 

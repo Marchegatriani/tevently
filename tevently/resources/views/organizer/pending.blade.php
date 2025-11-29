@@ -25,6 +25,13 @@
                 Biasanya membutuhkan waktu 1-2 hari kerja.
             </p>
 
+            <!-- User Info -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                <h3 class="font-semibold text-gray-900 mb-2 text-sm">👤 Informasi Pemohon</h3>
+                <p class="text-sm text-gray-700">Nama: {{ auth()->user()->name }}</p>
+                <p class="text-sm text-gray-700">Email: {{ auth()->user()->email }}</p>
+            </div>
+
             <!-- Status Badge -->
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-3 mb-6">
                 <div class="flex items-center justify-center space-x-2 text-yellow-700">
@@ -38,19 +45,25 @@
                 {{-- Cancel request --}}
                 <form method="POST" action="{{ route('organizer.cancel') }}" onsubmit="return confirm('Yakin ingin membatalkan permintaan menjadi organizer?');">
                     @csrf
-                    <button type="submit" class="w-full text-sm bg-gray-100 text-gray-800 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200">
+                    <button type="submit" class="w-full text-sm bg-gray-100 text-gray-800 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
                         Batalkan Permintaan
                     </button>
                 </form>
 
-                {{-- Delete account (danger) --}}
-                <form method="POST" action="{{ route('organizer.delete-account') }}" onsubmit="return confirm('Yakin ingin menghapus akun Anda? Tindakan ini permanen.');">
+                {{-- Logout --}}
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="w-full text-sm text-red-600 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50">
-                        Hapus Akun
+                    <button type="submit" class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                        Logout
                     </button>
                 </form>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-xs text-gray-500">
+                    Butuh bantuan? Hubungi: <a href="mailto:admin@tevently.com" class="text-indigo-600 hover:underline">admin@tevently.com</a>
+                </p>
             </div>
         </div>
     </div>

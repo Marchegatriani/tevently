@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4 flex-nowrap">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
+                    <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
 
                     {{-- desktop nav: inline, no-wrap --}}
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\EventController as GuestEventController;
+use App\Http\Controllers\User\EventController as UserEventController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
@@ -20,33 +21,73 @@ use Illuminate\Support\Facades\Route;
 // GUEST ROUTES (Public - Tanpa Login)
 // ========================================
 
-// PERBAIKAN: Gunakan EventController biasa untuk guest, bukan Admin EventController
 Route::name('guest.')->group(function () {
-Route::get('/', [GuestEventController::class, 'home'])->name('home');
-Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
-Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
+    Route::get('/', [GuestEventController::class, 'home'])->name('home');
+    Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
+    Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
 });
+
 // ========================================
 // AUTH ROUTES (Login/Register - dari Breeze)
 // ========================================
 require __DIR__.'/auth.php';
 
 // ========================================
-// AUTHENTICATED USER ROUTES
+// ORGANIZER STATUS ROUTES (Pending/Rejected)
+// Harus di atas authenticated routes agar tidak tertimpa middleware
 // ========================================
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/organizer/pending', function () {
+        $user = auth()->user();
+        if ($user->status !== 'pending') {
+            return redirect()->route('dashboard');
+        }
+        return view('organizer.pending');
+    })->name('organizer.pending');
+    
+    Route::get('/organizer/rejected', function () {
+        $user = auth()->user();
+        if ($user->status !== 'rejected') {
+            return redirect()->route('dashboard');
+        }
+        return view('organizer.rejected');
+    })->name('organizer.rejected');
+    
+    // Cancel organizer request
+    Route::post('/organizer/cancel-request', [OrganizerRequestController::class, 'cancel'])
+        ->name('organizer.cancel');
+    
+    // Organizer Request (untuk apply jadi organizer)
+    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
+        ->name('organizer.request');
+});
+
+// ========================================
+// AUTHENTICATED USER ROUTES
+// ========================================
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Dashboard redirect
     Route::get('/dashboard', function () {
         $user = auth()->user();
         
+        // Cek status pending/rejected PERTAMA
+        if ($user->status === 'pending') {
+            return redirect()->route('organizer.pending');
+        }
+        
+        if ($user->status === 'rejected') {
+            return redirect()->route('organizer.rejected');
+        }
+        
+        // Redirect berdasarkan role
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         } elseif ($user->role === 'organizer') {
             return redirect()->route('organizer.dashboard');
         } else {
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
     })->name('dashboard');
 
@@ -55,41 +96,50 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // User Bookings
+    // USER ROUTES GROUP
+    Route::prefix('user')->name('user.')->group(function () {
+        // HOME
+        Route::get('/', [UserEventController::class, 'home'])->name('home');
+        
+        // Events
+        Route::get('/events', [UserEventController::class, 'index'])->name('events.index');
+        Route::get('/events/search', [UserEventController::class, 'search'])->name('events.search');
+        Route::get('/events/category/{category:slug}', [UserEventController::class, 'byCategory'])->name('events.category');
+        Route::get('/events/{event}', [UserEventController::class, 'show'])->name('events.show');
+        
+        // Favorites
+        Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
+        Route::post('/favorites/{event}', [FavoriteController::class, 'store'])->name('favorites.store');
+        Route::delete('/favorites/{event}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+        Route::post('/favorites/{event}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+        Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('favorites.count');
+        Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('favorites.clear');
+        
+        // Orders
+        Route::get('/orders', [UserOrderController::class, 'index'])->name('orders');
+        Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
+        Route::post('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel');
+        Route::get('/orders/{order}/download-ticket', [UserOrderController::class, 'downloadTicket'])->name('orders.download-ticket');
+        Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics');
+    });
+
+    // Bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/events/{event}/tickets/{ticket}/book', [BookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{order}', [BookingController::class, 'show'])->name('bookings.show');
-
-    // Organizer Request
-    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
-
-    // Favorites
-    Route::get('/favorites', [FavoriteController::class, 'index'])->name('user.favorites');
-    Route::post('/favorites/{event}', [FavoriteController::class, 'store'])->name('user.favorites.store');
-    Route::delete('/favorites/{event}', [FavoriteController::class, 'destroy'])->name('user.favorites.destroy');
-    Route::post('/favorites/{event}/toggle', [FavoriteController::class, 'toggle'])->name('user.favorites.toggle');
-    Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('user.favorites.count');
-    Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('user.favorites.clear');
-
-    // User Orders
-    Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders');
-    Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
-    Route::post('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('user.orders.cancel');
-    Route::get('/orders/{order}/download-ticket', [UserOrderController::class, 'downloadTicket'])->name('user.orders.download-ticket');
-    Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('user.orders.statistics');
 });
 
 // ========================================
 // ORGANIZER ROUTES
 // ========================================
 
-Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.')->group(function () {
+Route::middleware(['auth', 'verified', 'organizer'])->prefix('organizer')->name('organizer.')->group(function () {
     
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Events Management
-    Route::get('/events', [OrgEventController::class, 'index'])->name('events');
+    Route::get('/events', [OrgEventController::class, 'index'])->name('events.index');
     Route::get('/events/create', [OrgEventController::class, 'create'])->name('events.create');
     Route::post('/events', [OrgEventController::class, 'store'])->name('events.store');
     Route::get('/events/{event}', [OrgEventController::class, 'show'])->name('events.show');
@@ -115,7 +165,7 @@ Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.'
 // ADMIN ROUTES
 // ========================================
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
@@ -142,30 +192,4 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/events', [AdminReportController::class, 'events'])->name('events');
         Route::get('/users', [AdminReportController::class, 'users'])->name('users');
     });
-});
-
-// ========================================
-// ORGANIZER STATUS ROUTES
-// ========================================
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/organizer/pending', function () {
-        $user = auth()->user();
-        if ($user->status !== 'pending') {
-            return redirect()->route('dashboard');
-        }
-        return view('organizer.pending');
-    })->name('organizer.pending');
-    
-    Route::get('/organizer/rejected', function () {
-        $user = auth()->user();
-        if ($user->status !== 'rejected') {
-            return redirect()->route('dashboard');
-        }
-        return view('organizer.rejected');
-    })->name('organizer.rejected');
-    
-    // Cancel organizer request
-    Route::post('/organizer/cancel-request', [OrganizerRequestController::class, 'cancel'])
-        ->name('organizer.cancel');
 });

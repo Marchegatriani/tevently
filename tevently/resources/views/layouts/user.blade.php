@@ -12,12 +12,12 @@
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4 flex-nowrap">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
+                    <a href="{{ route('user.home') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
 
                     {{-- desktop nav: inline, no-wrap --}}
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
-                        <a href="{{ route('home') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
-                        <a href="{{ route('events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
+                        <a href="{{ route('user.home') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
+                        <a href="{{ route('user.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
                         <a href="{{ route('user.favorites') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
                         <a href="{{ route('user.orders') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a>
                     </nav>
@@ -47,8 +47,8 @@
         <div id="user-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-gray-700">
-                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
-                    <a href="{{ route('events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
+                    <a href="{{ route('user.home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('home') ? 'bg-gray-100 font-medium' : '' }}">Beranda</a>
+                    <a href="{{ route('user.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('events.*') ? 'bg-gray-100 font-medium' : '' }}">Daftar Acara</a>
                     <a href="{{ route('user.favorites') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.favorites') ? 'bg-gray-100 font-medium' : '' }}">Favorit Saya</a>
                     <a href="{{ route('user.orders') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders') ? 'bg-gray-100 font-medium' : '' }}">Riwayat Pesanan</a>
 

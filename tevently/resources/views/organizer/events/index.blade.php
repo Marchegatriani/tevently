@@ -34,7 +34,7 @@
 
             <!-- Filters -->
             <div class="bg-white rounded-lg shadow mb-6 p-4">
-                <form method="GET" action="{{ route('organizer.events') }}" class="flex gap-4">
+                <form method="GET" action="{{ route('organizer.events.index') }}" class="flex gap-4">
                     <input type="text" 
                            name="search" 
                            value="{{ request('search') }}"
@@ -52,7 +52,7 @@
                     <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md">
                         Filter
                     </button>
-                    <a href="{{ route('organizer.events') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-md">
+                    <a href="{{ route('organizer.events.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-md">
                         Clear
                     </a>
                 </form>
