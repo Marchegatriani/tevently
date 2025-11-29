@@ -42,14 +42,6 @@
 
             <!-- Actions -->
             <div class="space-y-3">
-                {{-- Cancel request --}}
-                <form method="POST" action="{{ route('organizer.cancel') }}" onsubmit="return confirm('Yakin ingin membatalkan permintaan menjadi organizer?');">
-                    @csrf
-                    <button type="submit" class="w-full text-sm bg-gray-100 text-gray-800 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
-                        Batalkan Permintaan
-                    </button>
-                </form>
-
                 {{-- Logout --}}
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

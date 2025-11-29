@@ -17,7 +17,8 @@ class OrderController extends Controller
     {
         $organizerId = Auth::id();
 
-        $orders = Order::with(['event', 'ticket', 'user'])
+        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
+        $orders = Order::with(['event', 'orderItems.ticket', 'user'])
             ->whereHas('event', function ($q) use ($organizerId) {
                 $q->where('organizer_id', $organizerId);
             })
@@ -48,7 +49,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with(['event', 'ticket', 'user'])->findOrFail($id);
+        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
+        $order = Order::with(['event', 'orderItems.ticket', 'user'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
             abort(404);
@@ -84,7 +86,8 @@ class OrderController extends Controller
     // Approve / confirm order
     public function approve($id)
     {
-        $order = Order::with(['event', 'ticket'])->findOrFail($id);
+        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
+        $order = Order::with(['event', 'orderItems.ticket'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
             abort(404);
@@ -103,7 +106,8 @@ class OrderController extends Controller
     // Cancel order and release tickets (decrement quantity_sold)
     public function cancel($id)
     {
-        $order = Order::with('ticket', 'event')->findOrFail($id);
+        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
+        $order = Order::with(['event', 'orderItems.ticket'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
             abort(404);
@@ -114,11 +118,12 @@ class OrderController extends Controller
         }
 
         DB::transaction(function () use ($order) {
-            // decrement ticket sold count safely
-            if ($order->ticket) {
-                $decrement = (int)($order->total_tickets ?? $order->quantity ?? 0);
-                $order->ticket->quantity_sold = max(0, $order->ticket->quantity_sold - $decrement);
-                $order->ticket->save();
+            // PERBAIKAN: Loop melalui orderItems untuk mengembalikan tiket
+            foreach ($order->orderItems as $item) {
+                if ($item->ticket) {
+                    $item->ticket->quantity_sold = max(0, $item->ticket->quantity_sold - $item->quantity);
+                    $item->ticket->save();
+                }
             }
 
             $order->status = 'cancelled';

@@ -86,45 +86,4 @@
             </div>
         @endif
     </div>
-
-    <!-- CTA untuk Apply Organizer -->
-    @if(auth()->user()->role === 'user')
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            @if(auth()->user()->status === 'pending')
-                <!-- User sudah apply, redirect ke pending page -->
-                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-                    <h3 class="text-lg font-semibold mb-2">⏳ Permohonan Organizer Sedang Diproses</h3>
-                    <p class="text-gray-700 mb-4">Klik tombol di bawah untuk melihat status permohonan Anda</p>
-                    <a href="{{ route('organizer.pending') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-semibold">
-                        Lihat Status Permohonan
-                    </a>
-                </div>
-            @elseif(auth()->user()->status === 'rejected')
-                <!-- User ditolak, redirect ke rejected page -->
-                <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <h3 class="text-lg font-semibold mb-2">❌ Permohonan Ditolak</h3>
-                    <p class="text-gray-700 mb-4">Klik tombol di bawah untuk melihat detail penolakan</p>
-                    <a href="{{ route('organizer.rejected') }}" class="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded font-semibold">
-                        Lihat Detail Penolakan
-                    </a>
-                </div>
-            @else
-                <!-- User biasa yang belum apply -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-                    <h3 class="text-lg font-semibold mb-2">🎉 Ingin Jadi Organizer?</h3>
-                    <p class="text-gray-700 mb-4">Mulai buat acara Anda sendiri dan kelola tiket dengan mudah</p>
-                    
-                    <form method="POST" action="{{ route('organizer.request') }}">
-                        @csrf
-                        <button type="submit" 
-                                class="bg-blue-600 text-white px-6 py-2 rounded font-semibold hover:bg-blue-700 transition"
-                                onclick="return confirm('Ingin daftar sebagai Event Organizer?\n\nAnda akan dialihkan ke halaman pending untuk menunggu persetujuan admin.')">
-                            🚀 Daftar sebagai Organizer
-                        </button>
-                    </form>
-                    <p class="text-sm text-gray-600 mt-2">Ajukan permohonan untuk menjadi event organizer</p>
-                </div>
-            @endif
-        </div>
-    @endif
 @endsection

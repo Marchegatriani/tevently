@@ -10,16 +10,13 @@ class Order extends Model
 {
     use HasFactory;
 
-    // add fillable fields used by controller/database
+    // HANYA field yang ada di table orders
     protected $fillable = [
         'user_id',
         'event_id',
-        'ticket_id',
-        'quantity',
-        'total_tickets',
         'total_amount',
         'status',
-        'order_number',
+        'order_number', 
         'order_date',
         'expired_at',
     ];
@@ -29,16 +26,12 @@ class Order extends Model
         return [
             'user_id'      => 'integer',
             'event_id'     => 'integer',
-            'ticket_id'    => 'integer',
-            'quantity'     => 'integer',
-            'total_tickets' => 'integer',
             'total_amount' => 'decimal:2',
             'order_date'   => 'datetime',
             'expired_at'   => 'datetime',
         ];
     }
 
-    // Auto generate order number
     protected static function boot()
     {
         parent::boot();
@@ -53,19 +46,13 @@ class Order extends Model
             }
 
             if ($order->status === 'pending' && empty($order->expired_at)) {
-                $order->expired_at = now()->addHour();
+                $order->expired_at = now()->addHours(1);
             }
         });
     }
 
     // ========== RELATIONSHIPS ==========
     
-    // Relation: order belongs to ticket
-    public function ticket()
-    {
-        return $this->belongsTo(Ticket::class);
-    }
-
     public function event()
     {
         return $this->belongsTo(Event::class);
@@ -73,12 +60,23 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    // Helper methods
+    public function getTicketAttribute()
+    {
+        return $this->orderItems->first()->ticket ?? null;
+    }
+
+    public function getQuantityAttribute()
+    {
+        return $this->orderItems->first()->quantity ?? 0;
     }
 
     // ========== SCOPES ==========

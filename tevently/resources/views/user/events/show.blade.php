@@ -114,36 +114,29 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h2 class="text-xl font-bold text-gray-900 mb-4">Available Tickets</h2>
                         <div class="space-y-4">
-                            @foreach($event->tickets as $ticket)
-                                <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1">
-                                            <h3 class="font-semibold text-gray-900 text-lg">{{ $ticket->name }}</h3>
-                                            @if($ticket->description)
-                                                <p class="text-gray-600 text-sm mt-1">{{ $ticket->description }}</p>
-                                            @endif
-                                            <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                                                <span>Available: {{ $ticket->quantity_available - $ticket->quantity_sold }}</span>
-                                                <span>•</span>
-                                                <span>Max {{ $ticket->max_per_order }} per order</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-right ml-4">
-                                            <p class="text-2xl font-bold text-indigo-800">
-                                                @if($ticket->price > 0)
-                                                    Rp {{ number_format($ticket->price, 0, ',', '.') }}
-                                                @else
-                                                    FREE
-                                                @endif
-                                            </p>
-                                            <a href="{{ route('bookings.create', $event, 'ticket', $ticket) }}" 
-                                               class="inline-block mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                                                Select
-                                            </a>
-                                        </div>
-                                    </div>
+                        {{-- Di bagian tickets loop, pastikan seperti ini: --}}
+                        @foreach($event->tickets as $ticket)
+                            <div class="border rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-lg">{{ $ticket->name }}</h4>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                                        Rp {{ number_format($ticket->price) }}
+                                    </span>
                                 </div>
-                            @endforeach
+                                
+                                {{-- Tombol Book Now yang BENAR --}}
+                                @if($ticket->quantity_available - $ticket->quantity_sold > 0)
+                                    <a href="{{ route('bookings.create', ['event' => $event->id, 'ticket' => $ticket->id]) }}" 
+                                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                                        Book Now
+                                    </a>
+                                @else
+                                    <span class="bg-red-100 text-red-800 px-3 py-2 rounded text-sm">
+                                        Sold Out
+                                    </span>
+                                @endif
+                            </div>
+                        @endforeach
                         </div>
                     </div>
                 @endif
@@ -197,8 +190,8 @@
                     <div class="bg-white rounded-lg shadow-md p-6 mt-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-4">Similar Events</h3>
                         <div class="space-y-4">
-                            @foreach($similarEvents as $similar)
-                                <a href="{{ route('user.events.show', $similar->slug) }}" class="block hover:bg-gray-50 p-3 rounded-lg transition">
+                            @foreach($relatedEvents as $relatedEvent)
+                                <a href="{{ route('user.events.show', $relatedEvent)}}"> {{ $relatedEvent->title }}" class="block hover:bg-gray-50 p-3 rounded-lg transition">
                                     <h4 class="font-semibold text-gray-900 mb-1">{{ $similar->title }}</h4>
                                     <p class="text-sm text-gray-600">{{ $similar->event_date->format('M d, Y') }}</p>
                                     <p class="text-sm text-gray-600">{{ $similar->location }}</p>

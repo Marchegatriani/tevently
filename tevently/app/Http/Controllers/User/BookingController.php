@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Ticket;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +17,11 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = collect();
-        if (class_exists(\App\Models\Order::class)) {
-            $bookings = \App\Models\Order::where('user_id', Auth::id())->latest()->paginate(10);
+        if (class_exists(Order::class)) {
+            $bookings = Order::with(['event', 'orderItems.ticket'])
+                ->where('user_id', Auth::id())
+                ->latest()
+                ->paginate(10);
         }
 
         return view('user.bookings.index', compact('bookings'));
@@ -54,7 +59,7 @@ class BookingController extends Controller
         ]);
 
         try {
-            DB::transaction(function () use ($ticket, $validated, &$order) {
+            DB::transaction(function () use ($ticket, $validated, $event, &$order) {
                 // refresh & re-check
                 $ticket->refresh();
                 $available = max(0, $ticket->quantity_available - $ticket->quantity_sold);
@@ -66,22 +71,24 @@ class BookingController extends Controller
                 $ticket->quantity_sold += $validated['quantity'];
                 $ticket->save();
 
-                // create Order if model exists
-                if (class_exists(\App\Models\Order::class)) {
-                    $order = \App\Models\Order::create([
-                        'user_id'      => Auth::id(),
-                        'event_id'     => $ticket->event_id,
-                        'ticket_id'    => $ticket->id,
-                        // keep quantity for backward compatibility, and set total_tickets for DB schema expecting this column
-                        'quantity'     => $validated['quantity'],
-                        'total_tickets'=> $validated['quantity'],
-                        // DB expects `total_amount`
-                        'total_amount' => $ticket->price * $validated['quantity'],
-                        'status'       => 'pending',
-                    ]);
-                } else {
-                    $order = null;
-                }
+                // PERBAIKAN: Hanya buat Order dengan field yang benar
+                $order = Order::create([
+                    'user_id'      => Auth::id(),
+                    'event_id'     => $event->id,
+                    'total_amount' => $ticket->price * $validated['quantity'],
+                    'status'       => 'pending',
+                    // HAPUS: ticket_id, quantity, total_tickets
+                    // order_number dan order_date akan otomatis di-generate
+                ]);
+
+                // PERBAIKAN: Buat Order Item untuk detail tiket
+                OrderItem::create([
+                    'order_id'   => $order->id,
+                    'ticket_id'  => $ticket->id,
+                    'quantity'   => $validated['quantity'],
+                    'unit_price' => $ticket->price,
+                    // subtotal akan otomatis dihitung
+                ]);
             });
         } catch (\Throwable $e) {
             return back()->withInput()->with('error', $e->getMessage());
@@ -97,11 +104,13 @@ class BookingController extends Controller
     // show single booking/order if model exists
     public function show($id)
     {
-        if (! class_exists(\App\Models\Order::class)) {
+        if (! class_exists(Order::class)) {
             abort(404);
         }
 
-        $order = \App\Models\Order::with(['ticket','event'])->where('user_id', Auth::id())->findOrFail($id);
+        $order = Order::with(['event', 'orderItems.ticket', 'user'])
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
 
         return view('user.bookings.show', compact('order'));
     }

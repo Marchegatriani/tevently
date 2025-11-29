@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order_number')->unique();
             $table->decimal('total_amount', 12, 2);
-            $table->integer('total_tickets');
+            $table->integer('total_tickets')->default(1);
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'expired'])->default('pending');
             $table->dateTime('order_date');
             $table->dateTime('expired_at'); // untuk expired order pending

@@ -27,7 +27,7 @@
 
             <div class="flex gap-3 items-center">
                 <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Pay / Book</button>
-                <a href="{{ route('events.show', $event) }}" class="text-sm text-gray-600 hover:underline">Back to event</a>
+                <a href="{{ route('user.events.show', $event) }}" class="text-sm text-gray-600 hover:underline">Back to event</a>
             </div>
         </form>
     </div>

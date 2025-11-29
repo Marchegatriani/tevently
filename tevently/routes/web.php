@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\OrganizerRequestController;
+use App\Http\Controllers\Organizer\OrganizerRequestController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\EventController as GuestEventController;
 use App\Http\Controllers\User\EventController as UserEventController;
@@ -34,31 +34,19 @@ require __DIR__.'/auth.php';
 
 // ========================================
 // ORGANIZER STATUS ROUTES (Pending/Rejected)
-// Harus di atas authenticated routes agar tidak tertimpa middleware
 // ========================================
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/organizer/pending', function () {
-        $user = auth()->user();
-        if ($user->status !== 'pending') {
-            return redirect()->route('dashboard');
-        }
-        return view('organizer.pending');
-    })->name('organizer.pending');
+    Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])
+        ->name('organizer.pending'); // PERBAIKAN: nama route konsisten
     
-    Route::get('/organizer/rejected', function () {
-        $user = auth()->user();
-        if ($user->status !== 'rejected') {
-            return redirect()->route('dashboard');
-        }
-        return view('organizer.rejected');
-    })->name('organizer.rejected');
+    Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])
+        ->name('organizer.rejected');
     
-    // Cancel organizer request
-    Route::post('/organizer/cancel-request', [OrganizerRequestController::class, 'cancel'])
-        ->name('organizer.cancel');
-    
-    // Organizer Request (untuk apply jadi organizer)
+    Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])
+        ->name('organizer.delete-account');
+        
+    // PERBAIKAN: Tambahkan route untuk request organizer
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
         ->name('organizer.request');
 });
@@ -66,9 +54,10 @@ Route::middleware(['auth'])->group(function () {
 // ========================================
 // AUTHENTICATED USER ROUTES
 // ========================================
+
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // Dashboard redirect
+    // Dashboard redirect - PERBAIKAN: urutan pengecekan
     Route::get('/dashboard', function () {
         $user = auth()->user();
         
@@ -123,11 +112,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics');
     });
 
-    // Bookings
-    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-    Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('bookings.create');
-    Route::post('/events/{event}/tickets/{ticket}/book', [BookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings/{order}', [BookingController::class, 'show'])->name('bookings.show');
+    // PERBAIKAN: Pindahkan Bookings ke dalam user group atau biarkan di luar
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::get('/', [BookingController::class, 'index'])->name('index');
+        Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('create');
+        Route::post('/events/{event}/tickets/{ticket}/book', [BookingController::class, 'store'])->name('store');
+        Route::get('/{order}', [BookingController::class, 'show'])->name('show');
+    });
 });
 
 // ========================================

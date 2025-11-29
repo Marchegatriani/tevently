@@ -31,19 +31,28 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:user,organizer'], // Validasi role
         ]);
+
+        // Tentukan status berdasarkan role
+        $status = $request->role === 'organizer' ? 'pending' : 'active';
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Semua user awalnya role = 'user'
-            'status' => null,
+            'role' => $request->role,
+            'status' => $status,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        // Redirect berdasarkan role dan status
+        if ($user->role === 'organizer' && $user->status === 'pending') {
+            return redirect()->route('organizer.pending');
+        }
 
         return redirect()->route('dashboard');
     }

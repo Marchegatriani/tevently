@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer Application Rejected - Tevently</title>
+    <title>Permohonan Organizer Ditolak - Tevently</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
@@ -21,39 +21,39 @@
             
             <!-- Message -->
             <p class="text-gray-600 mb-6">
-                Maaf, permohonan Anda untuk menjadi Organizer tidak disetujui. 
-                Anda dapat terus menggunakan platform sebagai pengguna biasa.
+                Maaf, permohonan Anda untuk menjadi Event Organizer tidak disetujui oleh admin. 
+                Silakan hapus akun ini dan daftar kembali dengan informasi yang benar.
             </p>
 
             <!-- Status Badge -->
             <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
                 <div class="flex items-center justify-center space-x-2 text-red-700">
-                    <span class="font-medium">Status: Permohonan Ditolak</span>
+                    <span class="font-medium">Status: Ditolak</span>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="space-y-3">
-                <a href="{{ route('home') }}" 
-                   class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition block text-center">
-                    Lanjut sebagai Pengguna
-                </a>
-                
                 <form action="{{ route('organizer.delete-account') }}" method="POST" class="w-full">
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
-                            onclick="return confirm('Apakah Anda yakin ingin menghapus akun? Tindakan ini tidak dapat dibatalkan.')"
-                            class="w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition">
-                        Hapus Akun Saya
+                            onclick="return confirm('Yakin ingin menghapus akun? Tindakan ini tidak dapat dibatalkan.')"
+                            class="w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-medium">
+                        Hapus Akun & Keluar
                     </button>
                 </form>
             </div>
 
-            <!-- Info -->
-            <p class="text-sm text-gray-500 mt-6">
-                Jika Anda merasa ini adalah kesalahan, silakan hubungi tim support kami.
-            </p>
+            <!-- Contact Support -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">
+                    Merasa ini kesalahan? 
+                    <a href="mailto:support@tevently.com" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                        Hubungi Support
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 </body>

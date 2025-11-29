@@ -48,56 +48,40 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($orders as $order)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{ $order->order_number }}</div>
-                                        <div class="text-sm text-gray-500">{{ $order->order_date->format('M d, Y H:i') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $order->event->title }}</div>
-                                        <div class="text-sm text-gray-500">{{ $order->event->location }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $order->event->event_date->format('M d, Y') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $order->total_tickets }} tickets
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        Rp {{ number_format($order->total_amount, 0, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                            {{ $order->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                            {{ $order->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
-                                            {{ $order->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}
-                                            {{ $order->status === 'expired' ? 'bg-gray-100 text-gray-800' : '' }}">
-                                            {{ ucfirst($order->status) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <a href="{{ route('user.orders.show', $order) }}" 
-                                               class="text-blue-600 hover:text-blue-900">View</a>
-                                            
-                                            @if($order->status === 'pending')
-                                            <form action="{{ route('user.orders.cancel', $order) }}" method="POST" class="inline">
-                                                @csrf
-                                                <button type="submit" 
-                                                        onclick="return confirm('Cancel this order?')"
-                                                        class="text-red-600 hover:text-red-900">Cancel</button>
-                                            </form>
-                                            @endif
-
-                                            @if($order->status === 'confirmed')
-                                            <a href="{{ route('user.orders.download-ticket', $order) }}" 
-                                               class="text-green-600 hover:text-green-900">Download Ticket</a>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                {{-- Di bagian loop orders, ganti $order->ticket dengan $order->orderItems --}}
+@foreach($orders as $order)
+    <tr>
+        <td>{{ $order->order_number }}</td>
+        <td>{{ $order->event->title }}</td>
+        <td>
+            {{-- PERBAIKAN: Akses melalui orderItems --}}
+            @foreach($order->orderItems as $item)
+                <div>{{ $item->ticket->name }} ({{ $item->quantity }}x) - Rp {{ number_format($item->ticket->price) }}</div>
+            @endforeach
+        </td>
+        <td>Rp {{ number_format($order->total_amount) }}</td>
+        <td>
+            <span class="badge badge-{{ $order->status === 'pending' ? 'warning' : ($order->status === 'confirmed' ? 'success' : 'danger') }}">
+                {{ ucfirst($order->status) }}
+            </span>
+        </td>
+        <td>{{ $order->created_at->format('d M Y H:i') }}</td>
+        <td>
+            {{-- Tombol actions --}}
+            @if($order->status === 'pending')
+                <form action="{{ route('organizer.orders.approve', $order) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <form action="{{ route('organizer.orders.cancel', $order) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                </form>
+            @endif
+            <a href="{{ route('organizer.orders.show', $order) }}" class="btn btn-info btn-sm">View</a>
+        </td>
+    </tr>
+@endforeach
                             </tbody>
                         </table>
                     </div>
