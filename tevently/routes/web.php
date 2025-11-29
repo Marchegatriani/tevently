@@ -86,17 +86,18 @@ Route::middleware(['auth', 'organizer'])->prefix('organizer')->name('organizer.'
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Events Management
-    Route::resource('events', OrgEventController::class);
-
-    // Ticket Management
-    Route::prefix('events/{event}/tickets')->name('events.tickets.')->group(function () {
-        Route::get('/', [TicketController::class, 'index'])->name('index');
-        Route::get('/create', [TicketController::class, 'create'])->name('create');
-        Route::post('/', [TicketController::class, 'store'])->name('store');
-        Route::get('/{ticket}/edit', [TicketController::class, 'edit'])->name('edit');
-        Route::put('/{ticket}', [TicketController::class, 'update'])->name('update');
-        Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
-    });
+    Route::get('/events', [OrgEventController::class, 'index'])->name('events');
+    Route::get('/events/create', [OrgEventController::class, 'create'])->name('events.create');
+    Route::post('/events', [OrgEventController::class, 'store'])->name('events.store');
+    Route::get('/events/{event}', [OrgEventController::class, 'show'])->name('events.show');
+    Route::get('/events/{event}/edit', [OrgEventController::class, 'edit'])->name('events.edit');
+    Route::put('/events/{event}', [OrgEventController::class, 'update'])->name('events.update');
+    Route::delete('/events/{event}', [OrgEventController::class, 'destroy'])->name('events.destroy');
+    
+    // Ticket routes
+    Route::get('/events/{event}/tickets', [TicketController::class, 'index'])->name('events.tickets.index');
+    Route::get('/events/{event}/tickets/create', [TicketController::class, 'create'])->name('events.tickets.create');
+    Route::post('/events/{event}/tickets', [TicketController::class, 'store'])->name('events.tickets.store');
 
     // Orders Management
     Route::prefix('orders')->name('orders.')->group(function () {

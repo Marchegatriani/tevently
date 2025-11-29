@@ -22,7 +22,7 @@ class EventController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.events.create', compact('categories'));
+        return view('events.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -73,13 +73,13 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $event->load(['organizer', 'category', 'tickets']);
-        return view('admin.events.show', compact('event'));
+        return view('events.show', compact('event'));
     }
 
     public function edit(Event $event)
     {
         $categories = Category::all();
-        return view('admin.events.edit', compact('event', 'categories'));
+        return view('events.edit', compact('event', 'categories'));
     }
 
     public function update(Request $request, Event $event)

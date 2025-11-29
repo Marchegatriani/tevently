@@ -39,7 +39,8 @@ class OrgEventController extends Controller
             'cancelled' => Event::where('organizer_id', $organizer->id)->where('status', 'cancelled')->count(),
         ];
 
-        return view('organizer.events.index', compact('events', 'stats'));
+        // PERBAIKAN: Langsung ke organizer/events.blade.php
+        return view('organizer.events', compact('events', 'stats'));
     }
 
     /**
@@ -48,7 +49,8 @@ class OrgEventController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('organizer.events.create', compact('categories'));
+        // PERBAIKAN: Langsung ke organizer/events-create.blade.php atau events/create.blade.php
+        return view('events.create', compact('categories'));
     }
 
     /**
@@ -79,7 +81,8 @@ class OrgEventController extends Controller
         $startDateTime = $validated['event_date'] . ' ' . $validated['start_time'];
         $endDateTime = $validated['event_date'] . ' ' . $validated['end_time'];
 
-        Event::create([
+        // Create event
+        $event = Event::create([
             'organizer_id' => $request->user()->id,
             'category_id' => $validated['category_id'],
             'title' => $validated['title'],
@@ -93,6 +96,23 @@ class OrgEventController extends Controller
             'status' => $validated['status'],
         ]);
 
+        // Create tickets jika ada
+        if ($request->has('tickets')) {
+            foreach ($request->tickets as $ticketData) {
+                $event->tickets()->create([
+                    'name' => $ticketData['name'],
+                    'description' => $ticketData['description'] ?? null,
+                    'price' => $ticketData['price'],
+                    'quantity_available' => $ticketData['quantity_available'],
+                    'max_per_order' => $ticketData['max_per_order'] ?? 5,
+                    'is_active' => true,
+                    'sales_start' => now(),
+                    'sales_end' => now()->addMonths(1),
+                ]);
+            }
+        }
+
+        // PERBAIKAN: Redirect ke route yang benar
         return redirect()->route('organizer.events.index')
             ->with('success', 'Event created successfully!');
     }
@@ -109,7 +129,8 @@ class OrgEventController extends Controller
 
         $event->load(['category', 'tickets']);
 
-        return view('organizer.events.show', compact('event'));
+        // PERBAIKAN: Langsung ke organizer/events-show.blade.php atau events/show.blade.php
+        return view('events.show', compact('event'));
     }
 
     /**
@@ -123,7 +144,8 @@ class OrgEventController extends Controller
         }
 
         $categories = Category::all();
-        return view('organizer.events.edit', compact('event', 'categories'));
+        // PERBAIKAN: Langsung ke organizer/events-edit.blade.php atau events/edit.blade.php
+        return view('events.edit', compact('event', 'categories'));
     }
 
     /**
@@ -175,6 +197,7 @@ class OrgEventController extends Controller
             'status' => $validated['status'],
         ]);
 
+        // PERBAIKAN: Redirect ke route yang benar
         return redirect()->route('organizer.events.index')
             ->with('success', 'Event updated successfully!');
     }
@@ -196,6 +219,7 @@ class OrgEventController extends Controller
 
         $event->delete();
 
+        // PERBAIKAN: Redirect ke route yang benar
         return redirect()->route('organizer.events.index')
             ->with('success', 'Event deleted successfully!');
     }
