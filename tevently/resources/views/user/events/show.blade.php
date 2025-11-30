@@ -3,19 +3,6 @@
 @section('title', 'Event Detail')
 
 @section('content')
-    <!-- Breadcrumb -->
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center gap-2 text-sm text-gray-600">
-                <a href="{{ route('user.home') }}" class="hover:text-indigo-600">Home</a>
-                <span>/</span>
-                <a href="{{ route('user.events.index') }}" class="hover:text-indigo-600">Events</a>
-                <span>/</span>
-                <span class="text-gray-900">{{ $event->title }}</span>
-            </div>
-        </div>
-    </div>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
@@ -167,22 +154,6 @@
                     </form>
 
                     <hr class="my-6">
-
-                    <!-- Share Event -->
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-3">Share This Event</h4>
-                        <div class="flex gap-2">
-                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
-                                Facebook
-                            </button>
-                            <button class="flex-1 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm">
-                                Twitter
-                            </button>
-                            <button class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-                                WhatsApp
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Similar Events -->

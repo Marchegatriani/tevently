@@ -73,27 +73,32 @@ class EventController extends Controller
     /**
      * Display event detail untuk user registered
      */
-    public function show(Event $event)
+        public function show(Event $event)
     {
         // Load relationships
-        $event->load(['category', 'organizer', 'tickets']);
+        $event->load(['category', 'organizer', 'tickets' => function($query) {
+            $query->where('is_active', true)
+                ->where('sales_start', '<=', now())
+                ->where('sales_end', '>=', now());
+        }]);
 
-        // Check if event is published
-        if ($event->status !== 'published') {
-            abort(404, 'Event not found');
-        }
+        // Check if user has favorited this event
+        // $isFavorited = false;
+        // if (auth()->check()) {
+        //     $isFavorited = auth()->user()->favorites()->where('event_id', $event->id)->exists();
+        // }
 
-        // Get similar events (dari kategori yang sama)
-        $similarEvents = Event::with(['category', 'organizer'])
-            ->where('status', 'published')
+        // Get related events (same category, upcoming, published, exclude current event)
+        $relatedEvents = Event::where('status', 'published')
             ->where('category_id', $event->category_id)
             ->where('id', '!=', $event->id)
-            ->where('event_date', '>=', now()->toDateString())
+            ->where('event_date', '>=', now())
+            ->with(['category', 'organizer'])
             ->latest()
             ->take(4)
             ->get();
 
-        return view('user.events.show', compact('event', 'similarEvents'));
+        return view('user.events.show', compact('event', 'relatedEvents'));
     }
 
     /**
