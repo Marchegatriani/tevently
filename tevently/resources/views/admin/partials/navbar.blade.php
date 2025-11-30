@@ -4,23 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') - Tevently</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #F8F3F7; /* Latar belakang lembut */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .text-custom-dark { color: #250e2c; } 
+        .bg-main-purple { background-color: #837ab6; }
+        .bg-pink-accent { background-color: #cc8db3; }
+        .bg-soft-pink-light { background-color: #f7c2ca; }
+
+        /* Style untuk pagination link agar terlihat bagus dengan theme */
+        .pagination { display: flex; list-style: none; }
+        .pagination svg { height: 1.25rem; }
+        .pagination a, .pagination span { 
+            padding: 0.5rem 0.75rem; 
+            border: 1px solid #E5E7EB;
+            margin-right: -1px;
+            color: #837ab6;
+            transition: all 0.2s;
+        }
+        .pagination .active span {
+            background-color: #837ab6;
+            border-color: #837ab6;
+            color: white;
+            font-weight: 600;
+        }
+        .pagination a:hover {
+            background-color: #f7c2ca;
+            color: #250e2c;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body>
     <!-- Header -->
-    <header class="bg-white shadow-sm">
+    <header class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4 flex-nowrap">
-                    <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold text-indigo-600 flex items-center h-10">Tevently</a>
+                    <!-- Logo -->
+                    <a href="{{ route('admin.dashboard') }}" class="text-2xl font-extrabold text-custom-dark flex items-center h-10 hover:text-main-purple transition">Tevently</a>
 
                     {{-- desktop nav: inline, no-wrap --}}
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
-                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 font-medium' : '' }}">Dashboard</a>
-                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('admin.users.*') ? 'bg-gray-100 font-medium' : '' }}">Users</a>
-                        <a href="{{ route('admin.events.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('admin.events.*') ? 'bg-gray-100 font-medium' : '' }}">Events</a>
-                        <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('admin.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Ticket Orders</a>
-                        <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center h-8 px-3 rounded-md hover:bg-gray-100 {{ request()->routeIs('admin.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Reports</a>
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.dashboard') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Dashboard</a>
+                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.users.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pengguna</a>
+                        <a href="{{ route('admin.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.events.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Event</a>
+                        <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.orders.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pesanan Tiket</a>
+                        <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.reports.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Laporan</a>
                     </nav>
 
                     {{-- mobile toggle --}}
@@ -35,35 +72,38 @@
 
                 {{-- user info / logout (desktop) --}}
                 <div class="hidden md:flex items-center gap-3">
-                    <span class="text-sm text-gray-600">Hi, {{ auth()->user()->name ?? 'Admin' }}</span>
+                    <span class="text-sm text-gray-700">Hi, {{ auth()->user()->name ?? 'Admin' }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-sm text-red-600 hover:underline ml-2">Logout</button>
+                        <button type="submit" class="text-sm bg-pink-accent text-white px-4 py-2 rounded-xl font-semibold hover:bg-[#f6a5c0] transition shadow-sm">
+                            Logout
+                        </button>
                     </form>
                 </div>
-             </div>
-         </div>
+            </div>
+        </div>
 
         {{-- mobile panel --}}
         <div id="admin-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
             <div class="max-w-7xl mx-auto px-4 py-2">
-                <nav class="flex flex-col gap-1 text-sm text-gray-700">
-                    <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 font-medium' : '' }}">Dashboard</a>
-                    <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.users.*') ? 'bg-gray-100 font-medium' : '' }}">Users</a>
-                    <a href="{{ route('admin.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.events.*') ? 'bg-gray-100 font-medium' : '' }}">Events</a>
-                    <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.orders.*') ? 'bg-gray-100 font-medium' : '' }}">Ticket Orders</a>
-                    <a href="{{ route('admin.reports.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.reports.*') ? 'bg-gray-100 font-medium' : '' }}">Reports</a>
+                <nav class="flex flex-col gap-1 text-sm text-custom-dark">
+                    <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.dashboard') ? 'bg-soft-pink-light font-bold' : '' }}">Dashboard</a>
+                    <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.users.*') ? 'bg-soft-pink-light font-bold' : '' }}">Pengguna</a>
+                    <a href="{{ route('admin.events.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.events.*') ? 'bg-soft-pink-light font-bold' : '' }}">Event</a>
+                    <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.orders.*') ? 'bg-soft-pink-light font-bold' : '' }}">Pesanan Tiket</a>
+                    <a href="{{ route('admin.reports.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.reports.*') ? 'bg-soft-pink-light font-bold' : '' }}">Laporan</a>
 
                     {{-- mobile logout --}}
-                    <form method="POST" action="{{ route('logout') }}" class="mt-2 px-3">
+                    <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-t border-gray-100">
                         @csrf
                         <button type="submit" class="w-full text-left text-sm text-red-600 hover:underline py-2">Logout</button>
                     </form>
-                 </nav>
-             </div>
-         </div>
+                </nav>
+            </div>
+        </div>
 
         <script>
+            // Mobile toggle script
             (() => {
                 const btn = document.getElementById('admin-nav-toggle');
                 const panel = document.getElementById('admin-mobile-nav');
@@ -78,21 +118,26 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
-        <div class="bg-white rounded-lg shadow-sm p-6">
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1">
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <!-- Breadcrumb / Heading -->
-            <div class="mb-6">
-                <h1 class="text-2xl font-bold">@yield('heading', 'Overview')</h1>
-                <p class="text-gray-500">@yield('subheading', 'Ringkasan dan kontrol administrasi')</p>
+            <div class="mb-6 pb-4 border-b border-gray-100 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-custom-dark">@yield('heading', 'Overview')</h1>
+                    <p class="text-gray-500 mt-1">@yield('subheading', 'Ringkasan dan kontrol administrasi')</p>
+                </div>
+                
+                {{-- Dynamic actions area --}}
+                @yield('header-actions')
             </div>
             
-            <!-- Content Area (Kosong untuk diisi oleh child template) -->
+            <!-- Content Area -->
             @yield('content')
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="mt-auto py-4 text-center text-gray-500 text-sm">
+    <footer class="mt-auto py-6 bg-white/50 text-center text-gray-600 text-sm border-t border-gray-200">
         &copy; {{ date('Y') }} Tevently — Admin Panel
     </footer>
 </body>

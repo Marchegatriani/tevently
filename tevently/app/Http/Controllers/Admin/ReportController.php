@@ -14,14 +14,14 @@ class ReportController extends Controller
     public function index()
     {
         // Total statistics
-        $totalRevenue = Order::where('status', 'approved')->sum('total_amount');
+        $totalRevenue = Order::where('status', 'confirmed')->sum('total_amount');
         $totalOrders = Order::count();
         $totalEvents = Event::count();
         $totalUsers = User::count();
 
         // Recent orders
         $recentOrders = Order::with(['user', 'event'])
-            ->where('status', 'approved')
+            ->where('status', 'confirmed')
             ->latest()
             ->take(5)
             ->get();
@@ -29,7 +29,7 @@ class ReportController extends Controller
         // Top events by revenue
         $topEvents = Event::withCount(['orders as total_orders'])
             ->withSum(['orders as total_revenue' => function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', 'confirmed');
             }], 'total_amount')
             ->having('total_orders', '>', 0)
             ->orderBy('total_revenue', 'desc')
@@ -49,8 +49,8 @@ class ReportController extends Controller
     public function sales()
     {
         // Sales report with filters
-        $query = Order::with(['user', 'event', 'ticket'])
-            ->where('status', 'approved');
+        $query = Order::with(['user', 'event', 'orderItems.ticket'])
+            ->where('status', 'confirmed');
 
         // Date filters
         if (request('start_date')) {
@@ -74,7 +74,7 @@ class ReportController extends Controller
     {
         $events = Event::withCount(['orders as total_orders'])
             ->withSum(['orders as total_revenue' => function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', 'confirmed');
             }], 'total_amount')
             ->with('organizer')
             ->orderBy('total_revenue', 'desc')
@@ -87,7 +87,7 @@ class ReportController extends Controller
     {
         $users = User::withCount(['orders as total_orders'])
             ->withSum(['orders as total_spent' => function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', 'confirmed');
             }], 'total_amount')
             ->having('total_orders', '>', 0)
             ->orderBy('total_spent', 'desc')

@@ -1,172 +1,221 @@
 @extends('organizer.partials.navbar')
 
-@section('title', 'Create Event')
+@section('title', 'Buat Event')
+@section('heading', 'Buat Event Baru')
+@section('subheading', 'Formulir detail acara Anda')
+
+@section('header-actions')
+    <a href="{{ route('organizer.events.index') }}" 
+       class="inline-flex items-center px-4 py-2 bg-gray-500 text-white rounded-xl text-sm font-semibold hover:bg-gray-600 transition shadow-md">
+        ← Kembali ke Daftar Acara
+    </a>
+@endsection
 
 @section('content')
-<main class="flex-1 p-0 px-2">
-  <div class="bg-white shadow-md rounded-lg p-8">
-    <h2 class="text-3xl font-bold mb-8 text-[#1B1464]">Create Event</h2>
-    <form action="{{ route('organizer.events.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      @csrf
-      
-      <!-- Image Upload (Left Section) -->
-      <div class="flex flex-col items-center">
-        <label for="image" class="block text-gray-700 font-medium mb-4">Event Image</label>
-        <div class="relative">
-          <img id="image-preview" 
-            src="https://via.placeholder.com/300x200/1B1464/FFFFFF?text=Upload+Image" 
-            alt="Event Image" 
-            class="h-48 w-full rounded-lg border object-cover cursor-pointer shadow-lg mb-4" 
-            onclick="document.getElementById('image').click();">
-          <input type="file" id="image" name="image" class="hidden" onchange="previewEventImage(event);">
-        </div>
-        <p class="text-gray-500 text-sm text-center">Click the image to upload (Max 2MB)</p>
-        @error('image')
-          <span class="text-red-500 text-xs">{{ $message }}</span>
-        @enderror
-      </div>
-      
-      <!-- Form Fields (Right Section) -->
-      <div class="col-span-2 space-y-4">
-        <!-- Title Input -->
-        <div>
-          <label for="title" class="block text-gray-700 font-medium mb-2">Title <span class="text-red-500">*</span></label>
-          <input type="text" id="title" name="title" value="{{ old('title') }}"
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-            placeholder="Enter event title" required>
-          @error('title')
-            <span class="text-red-500 text-xs">{{ $message }}</span>
-          @enderror
-        </div>
+<style>
+    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
+    .text-custom-dark { color: #250e2c; }
+    .bg-main-purple { background-color: #837ab6; }
+</style>
+
+<div class="max-w-7xl mx-auto p-0 px-2">
+    <div class="bg-white shadow-2xl rounded-2xl p-8 border border-gray-100">
         
-        <!-- Description Input -->
-        <div>
-          <label for="description" class="block text-gray-700 font-medium mb-2">Description <span class="text-red-500">*</span></label>
-          <textarea id="description" name="description" 
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-            rows="3" placeholder="Describe your event" required>{{ old('description') }}</textarea>
-          @error('description')
-            <span class="text-red-500 text-xs">{{ $message }}</span>
-          @enderror
-        </div>
-
-        <!-- Category Selection -->
-        <div>
-          <label for="category_id" class="block text-gray-700 font-medium mb-2">Category <span class="text-red-500">*</span></label>
-          <select id="category_id" name="category_id" 
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-            required>
-            <option value="" disabled selected>Select a category</option>
-            @foreach ($categories as $category)
-              <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                {{ $category->name }}
-              </option>
-            @endforeach
-          </select>
-          @error('category_id')
-            <span class="text-red-500 text-xs">{{ $message }}</span>
-          @enderror
-        </div>
-
-        <!-- Date & Time Inputs -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="event_date" class="block text-gray-700 font-medium mb-2">Event Date <span class="text-red-500">*</span></label>
-            <input type="date" id="event_date" name="event_date" value="{{ old('event_date') }}"
-              min="{{ date('Y-m-d') }}"
-              class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-              required>
-            @error('event_date')
-              <span class="text-red-500 text-xs">{{ $message }}</span>
-            @enderror
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label for="start_time" class="block text-gray-700 font-medium mb-2">Start Time <span class="text-red-500">*</span></label>
-              <input type="time" id="start_time" name="start_time" value="{{ old('start_time', '19:00') }}"
-                class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-                required>
+        <form action="{{ route('organizer.events.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            @csrf
+            
+            <!-- Image Upload (Left Section) -->
+            <div class="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 h-fit lg:sticky lg:top-4 lg:self-start">
+                <label for="image" class="block text-custom-dark font-bold mb-4 text-center">Gambar Acara <span class="text-red-500">*</span></label>
+                
+                <!-- Image Preview Area -->
+                <div class="relative w-full max-w-xs">
+                    <img id="image-preview" 
+                        src="https://placehold.co/400x300/837ab6/f7c2ca?text=Unggah+Gambar+(Min+3:2)" 
+                        alt="Event Image" 
+                        class="w-full h-48 rounded-2xl border-4 border-gray-200 object-cover cursor-pointer shadow-lg transition hover:border-[#cc8db3]" 
+                        onclick="document.getElementById('image').click();">
+                    
+                    <!-- Hidden File Input -->
+                    <input type="file" id="image" name="image" class="hidden" onchange="previewEventImage(event);">
+                </div>
+                
+                <p class="text-gray-500 text-xs mt-3 text-center">Klik gambar untuk mengunggah (Maks 2MB)</p>
+                @error('image')
+                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
-            <div>
-              <label for="end_time" class="block text-gray-700 font-medium mb-2">End Time <span class="text-red-500">*</span></label>
-              <input type="time" id="end_time" name="end_time" value="{{ old('end_time', '22:00') }}"
-                class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-                required>
+            
+            <!-- Form Fields (Right Section) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 border border-red-300 px-4 py-3 rounded-xl">
+                        <strong class="font-bold">Terjadi beberapa kesalahan:</strong>
+                        <ul class="mt-2 text-sm list-disc ml-4">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                
+                <!-- Title Input -->
+                <div>
+                    <label for="title" class="block text-custom-dark font-semibold mb-2">Judul Acara <span class="text-red-500">*</span></label>
+                    <input type="text" id="title" name="title" value="{{ old('title') }}"
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                        placeholder="Masukkan judul acara" required>
+                    @error('title')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+                
+                <!-- Description Input -->
+                <div>
+                    <label for="description" class="block text-custom-dark font-semibold mb-2">Deskripsi <span class="text-red-500">*</span></label>
+                    <textarea id="description" name="description" 
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                        rows="4" placeholder="Jelaskan acara Anda secara rinci" required>{{ old('description') }}</textarea>
+                    @error('description')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Category Selection -->
+                <div>
+                    <label for="category_id" class="block text-custom-dark font-semibold mb-2">Kategori <span class="text-red-500">*</span></label>
+                    <select id="category_id" name="category_id" 
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                        required>
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Date & Time Inputs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Date -->
+                    <div>
+                        <label for="event_date" class="block text-custom-dark font-semibold mb-2">Tanggal Acara <span class="text-red-500">*</span></label>
+                        <input type="date" id="event_date" name="event_date" value="{{ old('event_date') }}"
+                          min="{{ date('Y-m-d') }}"
+                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                          required>
+                        @error('event_date')
+                          <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <!-- Time -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                          <label for="start_time" class="block text-custom-dark font-semibold mb-2">Waktu Mulai <span class="text-red-500">*</span></label>
+                          <input type="time" id="start_time" name="start_time" value="{{ old('start_time', '19:00') }}"
+                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                            required>
+                        </div>
+                        <div>
+                          <label for="end_time" class="block text-custom-dark font-semibold mb-2">Waktu Selesai <span class="text-red-500">*</span></label>
+                          <input type="time" id="end_time" name="end_time" value="{{ old('end_time', '22:00') }}"
+                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                            required>
+                        </div>
+                        @error('start_time')
+                          <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                        @error('end_time')
+                          <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Location Input -->
+                <div>
+                    <label for="location" class="block text-custom-dark font-semibold mb-2">Lokasi <span class="text-red-500">*</span></label>
+                    <input type="text" id="location" name="location" value="{{ old('location') }}"
+                        placeholder="Contoh: Grand Ballroom, Hotel XYZ, Jakarta"
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                        required>
+                    @error('location')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Max Attendees Input -->
+                <div>
+                    <label for="max_attendees" class="block text-custom-dark font-semibold mb-2">Kapasitas Maksimum <span class="text-red-500">*</span></label>
+                    <input type="number" id="max_attendees" name="max_attendees" value="{{ old('max_attendees', 50) }}"
+                        min="1"
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition"
+                        required>
+                    @error('max_attendees')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Status Selection -->
+                <div>
+                    <label for="status" class="block text-custom-dark font-semibold mb-2">Status</label>
+                    <select id="status" name="status" 
+                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition">
+                        <option value="draft" {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Publish Sekarang</option>
+                    </select>
+                    <p class="text-gray-500 text-sm mt-1">
+                        <strong>Catatan:</strong> Setelah membuat acara, Anda akan diarahkan untuk menambahkan tiket.
+                    </p>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="flex justify-start space-x-4 pt-4">
+                    <button type="submit" 
+                        class="bg-main-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-[#9d85b6] transition duration-300 shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">
+                        Buat Acara & Tambah Tiket
+                    </button>
+                    <a href="{{ route('organizer.events.index') }}" 
+                        class="text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-400 transition duration-300 transform hover:-translate-y-0.5">
+                        Batal
+                    </a>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Location Input -->
-        <div>
-          <label for="location" class="block text-gray-700 font-medium mb-2">Location <span class="text-red-500">*</span></label>
-          <input type="text" id="location" name="location" value="{{ old('location') }}"
-            placeholder="e.g. Grand Ballroom, Hotel XYZ, Jakarta"
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-            required>
-          @error('location')
-            <span class="text-red-500 text-xs">{{ $message }}</span>
-          @enderror
-        </div>
-
-        <!-- Max Attendees Input -->
-        <div>
-          <label for="max_attendees" class="block text-gray-700 font-medium mb-2">Max Attendees <span class="text-red-500">*</span></label>
-          <input type="number" id="max_attendees" name="max_attendees" value="{{ old('max_attendees', 50) }}"
-            min="1"
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]"
-            required>
-          @error('max_attendees')
-            <span class="text-red-500 text-xs">{{ $message }}</span>
-          @enderror
-        </div>
-
-        <!-- Status Selection -->
-        <div>
-          <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
-          <select id="status" name="status" 
-            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#640D5F]">
-            <option value="draft" {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}>Draft</option>
-            <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Publish Now</option>
-          </select>
-          <p class="text-gray-500 text-sm mt-1">
-            <strong>Note:</strong> After creating the event, you'll be redirected to add tickets.
-          </p>
-        </div>
-        
-        <!-- Submit Buttons -->
-        <div class="flex justify-between space-x-4 pt-4">
-          <button type="submit" 
-            class="flex-1 bg-[#640D5F] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#4a0a47] transition duration-300">
-            Create Event & Add Tickets
-          </button>
-          <a href="{{ route('organizer.events.index') }}" 
-            class="flex-1 text-center bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-400 transition duration-300">
-            Cancel
-          </a>
-        </div>
-      </div>
-    </form>
-  </div>
+        </form>
+    </div>
+</div>
 </main>
 
 <script>
-  function previewEventImage(event) {
-    const preview = document.getElementById('image-preview');
-    const file = event.target.files[0];
-    if (file) {
-      preview.src = URL.createObjectURL(file);
+    function previewEventImage(event) {
+        const preview = document.getElementById('image-preview');
+        const file = event.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
     }
-  }
 
-  // Set minimum time for end_time based on start_time
-  document.getElementById('start_time').addEventListener('change', function() {
-    const endTime = document.getElementById('end_time');
-    endTime.min = this.value;
-    
-    // If end_time is before start_time, reset it
-    if (endTime.value && endTime.value < this.value) {
-      endTime.value = '';
-    }
-  });
+    // Set minimum time for end_time based on start_time
+    document.addEventListener('DOMContentLoaded', () => {
+        const startTimeInput = document.getElementById('start_time');
+        const endTimeInput = document.getElementById('end_time');
+
+        if (startTimeInput && endTimeInput) {
+            startTimeInput.addEventListener('change', function() {
+                endTimeInput.min = this.value;
+                
+                // Jika waktu selesai kurang dari waktu mulai, reset waktu selesai
+                if (endTimeInput.value && endTimeInput.value < this.value) {
+                    endTimeInput.value = '';
+                }
+            });
+            // Jalankan sekali saat dimuat untuk mengatur minimum jika ada nilai default
+            endTimeInput.min = startTimeInput.value;
+        }
+    });
 </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
@@ -84,8 +85,8 @@ class EventController extends Controller
 
         // Check if user has favorited this event
         $isFavorited = false;
-        if (auth()->check()) {
-            $isFavorited = auth()->user()->favoriteEvents()->where('event_id', $event->id)->exists();
+        if (Auth::check()) {
+            $isFavorited = Auth::user()->favoriteEvents()->where('event_id', $event->id)->exists();
         }
 
         // Get related events (same category, upcoming, published, exclude current event)

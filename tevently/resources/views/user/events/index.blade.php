@@ -1,38 +1,48 @@
 @extends('user.partials.navbar')
 
-@section('title', 'Event Catalog')
+@section('title', 'Katalog Event')
 
 @section('content')
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 class="text-3xl font-bold text-gray-900">Browse Events</h1>
-            <p class="text-gray-600 mt-2">Discover amazing events happening near you</p>
+<style>
+    /* Latar belakang Utama dari layout adalah #F8F3F7 */
+    .bg-custom-light { background-color: #F8F3F7; }
+    .text-custom-dark { color: #250e2c; } 
+</style>
+
+<div class="font-sans bg-custom-light min-h-screen">
+    
+    <!-- Header Katalog -->
+    <div class="bg-[#f7c2ca] border-b border-[#cc8db3]/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h1 class="text-4xl font-extrabold text-custom-dark">Jelajahi Semua Event</h1>
+            <p class="text-[#837ab6] mt-2 text-lg">Temukan acara menarik yang sedang berlangsung di dekat Anda</p>
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Sidebar Filters -->
-            <div class="lg:w-64 flex-shrink-0">
-                <div class="bg-white rounded-lg shadow p-6 sticky top-4">
-                    <h2 class="font-bold text-lg mb-4">Filters</h2>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row gap-10">
+            <!-- Filter Sidebar -->
+            <div class="lg:w-72 flex-shrink-0">
+                <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-6 border border-gray-100">
+                    <h2 class="font-bold text-2xl mb-6 text-custom-dark">Filter Acara</h2>
                     
-                    <form method="GET" action="{{ route('guest.events.index') }}">
-                        <!-- Search -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                    <form method="GET" action="{{ route('user.events.index') }}">
+                        
+                        <!-- Pencarian -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-medium text-custom-dark mb-2">Cari</label>
                             <input type="text" 
                                    name="search" 
                                    value="{{ request('search') }}"
-                                   placeholder="Event or location..." 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                   placeholder="Nama event atau lokasi..." 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
                         </div>
 
-                        <!-- Category -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="">All Categories</option>
+                        <!-- Kategori -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-medium text-custom-dark mb-2">Kategori</label>
+                            <select name="category" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
+                                <option value="">Semua Kategori</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
@@ -41,40 +51,40 @@
                             </select>
                         </div>
 
-                        <!-- Date Range -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Date From</label>
+                        <!-- Rentang Tanggal -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-medium text-custom-dark mb-2">Dari Tanggal</label>
                             <input type="date" 
                                    name="date_from" 
                                    value="{{ request('date_from') }}"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Date To</label>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-custom-dark mb-2">Sampai Tanggal</label>
                             <input type="date" 
                                    name="date_to" 
                                    value="{{ request('date_to') }}"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
                         </div>
 
-                        <!-- Sort -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
-                            <select name="sort" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
-                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
-                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name (A-Z)</option>
-                                <option value="date" {{ request('sort') == 'date' ? 'selected' : '' }}>Event Date</option>
+                        <!-- Urutkan -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-custom-dark mb-2">Urutkan Berdasarkan</label>
+                            <select name="sort" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
+                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
+                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nama (A-Z)</option>
+                                <option value="date" {{ request('sort') == 'date' ? 'selected' : '' }}>Tanggal Event</option>
                             </select>
                         </div>
 
-                        <div class="flex flex-col gap-2">
-                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-semibold">
-                                Apply Filters
+                        <div class="flex flex-col gap-3">
+                            <button type="submit" class="w-full bg-[#837ab6] hover:bg-[#9d85b6] text-white px-4 py-3 rounded-xl font-bold transition shadow-md transform hover:-translate-y-0.5">
+                                Terapkan Filter
                             </button>
-                            <a href="{{ route('guest.events.index') }}" class="w-full text-center bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md font-semibold">
-                                Clear All
+                            <a href="{{ route('user.events.index') }}" class="w-full text-center bg-gray-200 hover:bg-gray-300 text-custom-dark px-4 py-3 rounded-xl font-semibold transition transform hover:-translate-y-0.5">
+                                Hapus Semua
                             </a>
                         </div>
                     </form>
@@ -83,48 +93,70 @@
 
             <!-- Events Grid -->
             <div class="flex-1">
-                <div class="mb-4 flex justify-between items-center">
-                    <p class="text-gray-600">
-                        Showing {{ $events->firstItem() ?? 0 }} - {{ $events->lastItem() ?? 0 }} of {{ $events->total() }} events
+                <div class="mb-6 border-b border-gray-200 pb-4">
+                    <p class="text-[#837ab6] font-medium">
+                        Menampilkan {{ $events->firstItem() ?? 0 }} - {{ $events->lastItem() ?? 0 }} dari total {{ $events->total() }} event
                     </p>
                 </div>
 
                 @if($events->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @foreach($events as $event)
-                            <a href="{{ route('guest.events.show', $event) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                                <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                            <a href="{{ route('user.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-1 transition-all duration-300 border border-gray-100 block h-full flex flex-col">
+                                <!-- Image/Placeholder -->
+                                <div class="h-48 overflow-hidden relative">
                                     @if($event->image)
-                                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     @else
-                                        <span class="text-white text-4xl font-bold">{{ substr($event->name, 0, 2) }}</span>
+                                        <div class="w-full h-full bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">
+                                            <span class="text-white text-4xl font-bold opacity-80">{{ substr($event->name, 0, 2) }}</span>
+                                        </div>
                                     @endif
-                                </div>
-                                <div class="p-6">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">
+                                    <div class="absolute top-4 right-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-custom-dark text-xs font-bold px-3 py-1 rounded-full shadow-sm uppercase tracking-wider border border-gray-100">
                                             {{ $event->category->name }}
                                         </span>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{{ $event->name }}</h3>
-                                    <div class="text-gray-600 text-sm space-y-1 mb-4">
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span>{{ \Carbon\Carbon::parse($event->date)->format('M d, Y') }}</span>
+                                </div>
+                                
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <!-- Title -->
+                                    <h3 class="text-xl font-bold text-custom-dark mb-3 line-clamp-2 group-hover:text-[#837ab6] transition-colors">{{ $event->name }}</h3>
+                                    
+                                    <div class="text-gray-600 text-sm space-y-3 mb-6 flex-grow">
+                                        <!-- Date -->
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-[#f6a5c0]/20 flex items-center justify-center flex-shrink-0 text-[#cc8db3]">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <span class="font-medium">{{ \Carbon\Carbon::parse($event->date)->format('d F Y') }}</span>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            <span class="line-clamp-1">{{ $event->location }}</span>
+                                        <!-- Location -->
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-[#f6a5c0]/20 flex items-center justify-center flex-shrink-0 text-[#cc8db3]">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                            </div>
+                                            <span class="line-clamp-1 font-medium">{{ $event->location }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-gray-500">By {{ $event->organizer->name }}</span>
-                                        <span class="text-indigo-600 font-semibold">Details →</span>
+                                    
+                                    <!-- Organizer & Details -->
+                                    <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
+                                                {{ substr($event->organizer->name, 0, 1) }}
+                                            </div>
+                                            <span class="text-xs text-gray-500 font-medium truncate max-w-[100px]">{{ $event->organizer->name }}</span>
+                                        </div>
+                                        <span class="text-[#837ab6] font-bold text-sm flex items-center group-hover:text-custom-dark transition">
+                                            Lihat Detail 
+                                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                        </span>
                                     </div>
                                 </div>
                             </a>
@@ -132,19 +164,22 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="mt-8">
+                    <div class="mt-12 flex justify-center">
                         {{ $events->appends(request()->query())->links() }}
                     </div>
                 @else
-                    <div class="bg-white rounded-lg shadow p-12 text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <h3 class="mt-2 text-lg font-medium text-gray-900">No events found</h3>
-                        <p class="mt-1 text-gray-500">Try adjusting your filters or search terms</p>
-                        <div class="mt-6">
-                            <a href="{{ route('guest.events.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                                Clear Filters
+                    <!-- No Events Found Message -->
+                    <div class="bg-white rounded-3xl shadow-lg p-12 text-center border border-gray-100">
+                        <div class="w-20 h-20 bg-[#f6a5c0]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="h-10 w-10 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="mt-2 text-xl font-bold text-custom-dark">Tidak ada event ditemukan</h3>
+                        <p class="mt-2 text-gray-500">Coba sesuaikan filter atau kata kunci pencarian Anda untuk hasil yang lebih baik.</p>
+                        <div class="mt-8">
+                            <a href="{{ route('user.events.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent shadow-md text-sm font-bold rounded-xl text-white bg-[#837ab6] hover:bg-[#9d85b6] transition transform hover:-translate-y-0.5">
+                                Hapus Filter
                             </a>
                         </div>
                     </div>
@@ -152,4 +187,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection

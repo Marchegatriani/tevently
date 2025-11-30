@@ -74,7 +74,7 @@ class EventController extends Controller
                 break;
         }
 
-        $events = $query->paginate(9)->withQueryString();
+        $events = $query->paginate(8)->withQueryString();
 
         // Get all categories for filter
         $categories = Category::all();

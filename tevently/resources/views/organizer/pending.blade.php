@@ -3,40 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer Approval Pending - Tevently</title>
+    <title>Menunggu Persetujuan Organizer - Tevently</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #F8F3F7; /* Latar belakang lembut */
+        }
+        .text-custom-dark { color: #250e2c; } 
+        .bg-main-purple { background-color: #837ab6; }
+        .bg-pink-accent { background-color: #cc8db3; }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full mx-4">
-        <div class="bg-white rounded-lg shadow-sm border border-yellow-200 p-8 text-center">
+<body class="bg-custom-light min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-lg w-full mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl border border-[#f7c2ca] p-10 text-center">
+            
+            <!-- Logo -->
+            <a href="/" class="inline-block mb-6">
+                <h1 class="text-3xl font-extrabold text-[#837ab6]">Tevently</h1>
+            </a>
+            
             <!-- Icon -->
-            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
             
             <!-- Title -->
-            <h1 class="text-2xl font-bold text-gray-900 mb-3">Menunggu Persetujuan</h1>
+            <h1 class="text-3xl font-bold text-custom-dark mb-4">Menunggu Persetujuan</h1>
             
             <!-- Message -->
-            <p class="text-gray-600 mb-6">
-                Permohonan Anda untuk menjadi Organizer sedang dalam proses peninjauan oleh Admin. 
-                Biasanya membutuhkan waktu 1-2 hari kerja.
+            <p class="text-gray-600 mb-8 max-w-sm mx-auto leading-relaxed">
+                Permohonan Anda untuk menjadi **Organizer** sedang dalam proses peninjauan oleh Administrator. 
+                Kami akan memberitahu Anda setelah status akun diperbarui.
             </p>
 
             <!-- User Info -->
-            <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                <h3 class="font-semibold text-gray-900 mb-2 text-sm">👤 Informasi Pemohon</h3>
-                <p class="text-sm text-gray-700">Nama: {{ auth()->user()->name }}</p>
-                <p class="text-sm text-gray-700">Email: {{ auth()->user()->email }}</p>
+            <div class="bg-gray-50 rounded-xl p-5 mb-8 text-left border border-gray-100">
+                <h3 class="font-bold text-custom-dark mb-3 text-lg border-b pb-2">Informasi Pemohon</h3>
+                <dl class="text-sm grid grid-cols-1 md:grid-cols-2 gap-y-2">
+                    <dt class="text-gray-500">Nama:</dt>
+                    <dd class="font-medium text-custom-dark">{{ auth()->user()->name }}</dd>
+                    <dt class="text-gray-500">Email:</dt>
+                    <dd class="font-medium text-custom-dark">{{ auth()->user()->email }}</dd>
+                </dl>
             </div>
 
             <!-- Status Badge -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-3 mb-6">
-                <div class="flex items-center justify-center space-x-2 text-yellow-700">
-                    <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                    <span class="font-medium">Status: Menunggu Persetujuan</span>
+            <div class="bg-[#f7c2ca] border border-[#cc8db3] rounded-xl px-4 py-3 mb-8 shadow-inner">
+                <div class="flex items-center justify-center space-x-2 text-custom-dark">
+                    <div class="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+                    <span class="font-bold">Status: Menunggu Persetujuan</span>
                 </div>
             </div>
 
@@ -45,16 +65,16 @@
                 {{-- Logout --}}
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition">
-                        Logout
+                    <button type="submit" class="w-full bg-main-purple hover:bg-[#9d85b6] text-white px-5 py-3 rounded-xl font-bold transition shadow-lg transform hover:-translate-y-0.5">
+                        Keluar (Logout)
                     </button>
                 </form>
             </div>
 
             <!-- Contact Support -->
-            <div class="mt-6 pt-6 border-t border-gray-200">
-                <p class="text-xs text-gray-500">
-                    Butuh bantuan? Hubungi: <a href="mailto:admin@tevently.com" class="text-indigo-600 hover:underline">admin@tevently.com</a>
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">
+                    Butuh bantuan? Hubungi: <a href="mailto:admin@tevently.com" class="text-main-purple hover:text-custom-dark font-medium">admin@tevently.com</a>
                 </p>
             </div>
         </div>

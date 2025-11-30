@@ -98,7 +98,7 @@ public function store(Request $request)
         'start_time' => $startDateTime,
         'end_time' => $endDateTime,
         'max_attendees' => $validated['max_attendees'],
-        'image_url' => $imagePath,
+        'image' => $imagePath,
         'status' => $validated['status'],
     ]);
 
@@ -167,10 +167,10 @@ public function store(Request $request)
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($event->image_url) {
-                Storage::disk('public')->delete($event->image_url);
+            if ($event->image) {
+                Storage::disk('public')->delete($event->image);
             }
-            $validated['image_url'] = $request->file('image')->store('events', 'public');
+            $validated['image'] = $request->file('image')->store('events', 'public');
         }
 
         // Combine date and time
@@ -186,7 +186,7 @@ public function store(Request $request)
             'start_time' => $startDateTime,
             'end_time' => $endDateTime,
             'max_attendees' => $validated['max_attendees'],
-            'image_url' => $validated['image_url'] ?? $event->image_url,
+            'image' => $validated['image'] ?? $event->image,
             'status' => $validated['status'],
         ]);
 
@@ -206,8 +206,8 @@ public function store(Request $request)
         }
 
         // Delete image if exists
-        if ($event->image_url) {
-            Storage::disk('public')->delete($event->image_url);
+        if ($event->image) {
+            Storage::disk('public')->delete($event->image);
         }
 
         $event->delete();

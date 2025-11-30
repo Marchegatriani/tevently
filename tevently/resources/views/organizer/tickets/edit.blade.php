@@ -1,12 +1,12 @@
 @extends('organizer.partials.navbar')
 
-@section('title', 'Buat Tiket Baru')
-@section('heading', 'Buat Tiket Baru')
-@section('subheading', 'Tambahkan jenis tiket untuk event {{ $event->title }}')
+@section('title', 'Edit Tiket')
+@section('heading', 'Edit Tiket')
+@section('subheading', 'Perbarui detail tiket untuk event {{ $event->title }}')
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
+    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -21,24 +21,25 @@
         </div>
     @endif
 
-    <!-- Breadcrumb (Disusun ulang agar sesuai dengan layout navbar) -->
+    <!-- Breadcrumb -->
     <div class="mb-6">
         <nav class="text-sm text-gray-600">
             <a href="{{ route('organizer.events.index') }}" class="hover:text-main-purple">Daftar Acara</a>
             <span class="mx-2">/</span>
             <a href="{{ route('organizer.events.show', $event) }}" class="hover:text-main-purple">{{ Str::limit($event->title, 30) }}</a>
             <span class="mx-2">/</span>
-            <span class="font-bold text-custom-dark">Buat Tiket</span>
+            <span class="font-bold text-custom-dark">Edit Tiket</span>
         </nav>
     </div>
 
     <!-- Form -->
     <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-        <h1 class="text-2xl font-bold text-custom-dark mb-1">Buat Jenis Tiket Baru</h1>
+        <h1 class="text-2xl font-bold text-custom-dark mb-1">Edit Jenis Tiket: {{ $ticket->name }}</h1>
         <p class="text-gray-600 mt-1 mb-6">Untuk acara: <strong>{{ $event->title }}</strong></p>
         
-        <form action="{{ route('organizer.tickets.store', $event) }}" method="POST">
+        <form action="{{ route('organizer.tickets.update', [$event, $ticket]) }}" method="POST">
             @csrf
+            @method('PUT')
 
             <!-- Ticket Name -->
             <div class="mb-5">
@@ -48,7 +49,7 @@
                 <input type="text" 
                        id="name" 
                        name="name" 
-                       value="{{ old('name') }}"
+                       value="{{ old('name', $ticket->name) }}"
                        placeholder="Contoh: VIP, Reguler, Early Bird"
                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('name') border-red-500 @enderror" 
                        required>
@@ -66,7 +67,7 @@
                           name="description" 
                           rows="3"
                           placeholder="Jelaskan jenis tiket ini (opsional)"
-                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description', $ticket->description) }}</textarea>
                 @error('description')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -82,7 +83,7 @@
                     <input type="number" 
                            id="price" 
                            name="price" 
-                           value="{{ old('price') }}"
+                           value="{{ old('price', $ticket->price) }}"
                            min="0"
                            step="100"
                            placeholder="50000"
@@ -101,11 +102,12 @@
                     <input type="number" 
                            id="quantity_available" 
                            name="quantity_available" 
-                           value="{{ old('quantity_available') }}"
-                           min="1"
+                           value="{{ old('quantity_available', $ticket->quantity_available) }}"
+                           min="{{ $ticket->quantity_sold }}"
                            placeholder="100"
                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('quantity_available') border-red-500 @enderror" 
                            required>
+                    <p class="text-xs text-red-500 mt-1">Minimal {{ $ticket->quantity_sold }} (sudah terjual).</p>
                     @error('quantity_available')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -119,7 +121,7 @@
                     <input type="number" 
                            id="max_per_order" 
                            name="max_per_order" 
-                           value="{{ old('max_per_order', 5) }}"
+                           value="{{ old('max_per_order', $ticket->max_per_order) }}"
                            min="1"
                            placeholder="5"
                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_per_order') border-red-500 @enderror" 
@@ -141,7 +143,7 @@
                     <input type="datetime-local" 
                            id="sales_start" 
                            name="sales_start" 
-                           value="{{ old('sales_start') }}"
+                           value="{{ old('sales_start', \Carbon\Carbon::parse($ticket->sales_start)->format('Y-m-d\TH:i')) }}"
                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_start') border-red-500 @enderror"
                            required>
                     @error('sales_start')
@@ -157,7 +159,7 @@
                     <input type="datetime-local" 
                            id="sales_end" 
                            name="sales_end" 
-                           value="{{ old('sales_end') }}"
+                           value="{{ old('sales_end', \Carbon\Carbon::parse($ticket->sales_end)->format('Y-m-d\TH:i')) }}"
                            class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_end') border-red-500 @enderror"
                            required>
                     @error('sales_end')
@@ -170,11 +172,11 @@
             <div class="flex gap-4 pt-4 border-t border-gray-100">
                 <button type="submit" 
                         class="flex-1 bg-main-purple hover:bg-[#9d85b6] text-white font-bold py-3 px-6 rounded-xl transition shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">
-                    Buat Tiket
+                    Perbarui Tiket
                 </button>
                 <a href="{{ route('organizer.events.show', $event) }}" 
                    class="flex-1 bg-gray-300 hover:bg-gray-400 text-custom-dark font-bold py-3 px-6 rounded-xl text-center transition transform hover:-translate-y-0.5">
-                    Batal
+                    Kembali ke Detail Event
                 </a>
             </div>
         </form>

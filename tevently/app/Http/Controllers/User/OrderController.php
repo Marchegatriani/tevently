@@ -65,8 +65,8 @@ class OrderController extends Controller
         // Kembalikan kuota ticket
         foreach ($order->orderItems as $item) {
             $ticket = $item->ticket;
-            $ticket->increment('quantity_available', $item->quantity);
-            $ticket->decrement('quantity_sold', $item->quantity);
+            $ticket->quantity_sold = max(0, $ticket->quantity_sold - $item->quantity);
+            $ticket->save();
         }
 
         return back()->with('success', 'Order cancelled successfully.');

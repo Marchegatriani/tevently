@@ -16,7 +16,7 @@ class Event extends Model
         'event_date',
         'start_time',
         'end_time',
-        'image_url',
+        'image',
         'max_attendees',
         'organizer_id',
         'category_id',

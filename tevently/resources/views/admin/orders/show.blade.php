@@ -1,81 +1,121 @@
 @extends('admin.partials.navbar')
 
-@section('title', 'Order Details')
+@section('title', 'Detail Pesanan')
+@section('heading', 'Detail Pesanan #{{ $order->id }}')
+@section('subheading', 'Informasi dan aksi terkait pesanan')
 
 @section('content')
-<div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Order Details #{{ $order->id }}</h1>
-        <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Back</a>
+<style>
+    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
+    .text-custom-dark { color: #250e2c; }
+    .bg-main-purple { background-color: #837ab6; }
+    .bg-pink-accent { background-color: #cc8db3; }
+    .bg-soft-light { background-color: #F8F3F7; }
+</style>
+
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+    
+    <!-- Header dan Tombol Kembali -->
+    <div class="flex justify-end mb-6">
+        <a href="{{ route('admin.orders.index') }}" class="bg-gray-300 text-custom-dark px-5 py-2 rounded-xl font-semibold hover:bg-gray-400 transition shadow-md">
+            ← Kembali ke Daftar Pesanan
+        </a>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Order Information</h5>
-                    <table class="table">
-                        <tr>
-                            <th>Order ID</th>
-                            <td>#{{ $order->id }}</td>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Kolom Kiri (Informasi Pesanan) -->
+        <div class="lg:col-span-2">
+            <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+                <h5 class="text-2xl font-bold text-custom-dark mb-6 border-b pb-3">Informasi Pesanan</h5>
+                
+                <table class="w-full text-sm text-gray-700">
+                    <tbody>
+                        <!-- Order ID -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold w-1/4">ID Pesanan</th>
+                            <td class="py-3 font-medium text-custom-dark">#{{ $order->id }}</td>
                         </tr>
-                        <tr>
-                            <th>Customer</th>
-                            <td>{{ $order->user->name }} ({{ $order->user->email }})</td>
+                        <!-- Customer -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold">Pelanggan</th>
+                            <td class="py-3 font-medium text-custom-dark">{{ $order->user->name }} ({{ $order->user->email }})</td>
                         </tr>
-                        <tr>
-                            <th>Event</th>
-                            <td>{{ $order->event->title }}</td>
+                        <!-- Event -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold">Event</th>
+                            <td class="py-3 font-medium text-custom-dark">{{ $order->event->title }}</td>
                         </tr>
-                        <tr>
-                            <th>Ticket</th>
-                            <td>{{ $order->ticket->name }} - Rp {{ number_format($order->ticket->price, 0, ',', '.') }}</td>
+                        <!-- Ticket -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold">Jenis Tiket</th>
+                            <td class="py-3 font-medium text-custom-dark">{{ $order->ticket->name }} (Rp {{ number_format($order->ticket->price, 0, ',', '.') }})</td>
                         </tr>
-                        <tr>
-                            <th>Quantity</th>
-                            <td>{{ $order->quantity }} tickets</td>
+                        <!-- Quantity -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold">Kuantitas</th>
+                            <td class="py-3 font-medium text-custom-dark">{{ $order->quantity }} tiket</td>
                         </tr>
-                        <tr>
-                            <th>Total Price</th>
-                            <td class="fw-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                        <!-- Total Price -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold text-lg">Total Pembayaran</th>
+                            <td class="py-3 font-extrabold text-main-purple text-lg">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                         </tr>
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                <span class="badge bg-{{ $order->status == 'approved' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}">
+                        <!-- Status -->
+                        <tr class="border-b border-gray-100">
+                            <th class="py-3 text-left font-semibold">Status</th>
+                            <td class="py-3">
+                                @php
+                                    $statusClasses = [
+                                        'approved' => 'bg-green-100 text-green-800',
+                                        'pending' => 'bg-yellow-100 text-yellow-800',
+                                        'cancelled' => 'bg-red-100 text-red-800',
+                                        'completed' => 'bg-blue-100 text-blue-800',
+                                    ];
+                                    $currentStatusClass = $statusClasses[$order->status] ?? 'bg-gray-100 text-gray-700';
+                                @endphp
+                                <span class="px-3 py-1 text-sm font-semibold rounded-full {{ $currentStatusClass }}">
                                     {{ ucfirst($order->status) }}
                                 </span>
                             </td>
                         </tr>
+                        <!-- Order Date -->
                         <tr>
-                            <th>Order Date</th>
-                            <td>{{ $order->created_at->format('M d, Y H:i') }}</td>
+                            <th class="py-3 text-left font-semibold">Tanggal Pesanan</th>
+                            <td class="py-3 font-medium text-custom-dark">{{ $order->created_at->format('d M Y H:i') }}</td>
                         </tr>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
         
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Actions</h5>
-                    @if($order->status == 'pending')
-                    <div class="d-grid gap-2">
+        <!-- Kolom Kanan (Aksi) -->
+        <div class="lg:col-span-1">
+            <div class="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 sticky top-4">
+                <h5 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Aksi</h5>
+                
+                @if($order->status == 'pending')
+                    <div class="flex flex-col gap-3">
+                        <!-- Approve Order -->
                         <form action="{{ route('admin.orders.approve', $order) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-success w-100 mb-2">Approve Order</button>
+                            <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-xl hover:bg-green-700 transition shadow-md">
+                                Setujui Pesanan
+                            </button>
                         </form>
+                        
+                        <!-- Cancel Order -->
                         <form action="{{ route('admin.orders.cancel', $order) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-danger w-100" 
-                                    onclick="return confirm('Cancel this order?')">Cancel Order</button>
+                            <button type="submit" class="w-full bg-red-600 text-white font-semibold py-3 rounded-xl hover:bg-red-700 transition shadow-md" 
+                                    onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                                Batalkan Pesanan
+                            </button>
                         </form>
                     </div>
-                    @else
-                    <p class="text-muted">No actions available for {{ $order->status }} orders.</p>
-                    @endif
-                </div>
+                @else
+                    <p class="text-gray-600 text-sm">Tidak ada aksi yang tersedia untuk pesanan berstatus **{{ ucfirst($order->status) }}**.</p>
+                @endif
             </div>
         </div>
     </div>
