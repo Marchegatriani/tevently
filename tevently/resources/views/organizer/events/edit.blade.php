@@ -1,4 +1,4 @@
-@extends('layouts.organizer')
+@extends('lorganizer.partials.sidebar')
 
 @section('title', 'Edit Event - Organizer')
 

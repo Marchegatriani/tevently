@@ -1,4 +1,4 @@
-@extends('layouts.organizer')
+@extends('organizer.partials.sidebar')
 
 @section('title','Orders')
 @section('heading','Orders')

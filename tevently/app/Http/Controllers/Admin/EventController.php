@@ -66,8 +66,8 @@ class EventController extends Controller
         }
     }
 
-    return redirect()->route('admin.events.index')
-        ->with('success', 'Event created successfully!');
+    return redirect()->route('admin.tickets.create', $event)
+        ->with('success', 'Event created successfully! Now, add tickets for your event.');
 }
 
     public function show(Event $event)

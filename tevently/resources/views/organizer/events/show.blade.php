@@ -1,4 +1,4 @@
-@extends('layouts.organizer')
+@extends('organizer.partials.sidebar')
 
 @section('title', $event->title)
 
@@ -68,6 +68,7 @@
                                         </span>
                                     </div>
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                                         <div class="text-center">
                                             <span class="text-gray-500 block">Available</span>
                                             <span class="font-semibold text-green-600">{{ $ticket->quantity_available - $ticket->quantity_sold }}</span>
