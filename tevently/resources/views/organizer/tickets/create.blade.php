@@ -1,4 +1,4 @@
-@extends(Auth::user()->role === 'admin' ? 'admin.partials.sidebar' : 'organizer.partials.sidebar')
+@extends('organizer.partials.sidebar')
 
 @section('title', 'Create Ticket')
 
@@ -14,11 +14,7 @@
     <!-- Breadcrumb -->
     <div class="mb-6">
         <nav class="text-sm text-gray-600">
-            @if(Auth::user()->role === 'admin')
-                <a href="{{ route('admin.events.index') }}" class="hover:text-blue-600">Events</a>
-            @else
-                <a href="{{ route('organizer.events.index') }}" class="hover:text-blue-600">My Events</a>
-            @endif
+            <a href="{{ route('organizer.events.index') }}" class="hover:text-blue-600">My Events</a>
             <span class="mx-2">/</span>
             <span class="font-medium text-gray-800">{{ $event->title }}</span>
             <span class="mx-2">/</span>
@@ -34,11 +30,8 @@
 
     <!-- Form -->
     <div class="bg-white rounded-lg shadow-md p-6">
-        <form action="{{ route('tickets.store') }}" method="POST">
+        <form action="{{ route('organizer.tickets.store', $event) }}" method="POST">
             @csrf
-            
-            <!-- Hidden Event ID -->
-            <input type="hidden" name="event_id" value="{{ $event->id }}">
 
             <!-- Ticket Name -->
             <div class="mb-6">
@@ -172,17 +165,10 @@
                         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition">
                     Create Ticket
                 </button>
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.events.show', $event) }}" 
-                       class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg text-center transition">
-                        Back to Event
-                    </a>
-                @else
-                    <a href="{{ route('organizer.events.show', $event) }}" 
-                       class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg text-center transition">
-                        Back to Event
-                    </a>
-                @endif
+                <a href="{{ route('organizer.events.show', $event) }}" 
+                   class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg text-center transition">
+                    Back to Event
+                </a>
             </div>
         </form>
     </div>

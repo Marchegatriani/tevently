@@ -8,9 +8,10 @@ use App\Http\Controllers\User\EventController as UserEventController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Organizer\OrgEventController;
 use App\Http\Controllers\Organizer\DashboardController;
-use App\Http\Controllers\TicketController;
+use App\Http\Controllers\Organizer\TicketController as OrganizerTicketController;
 use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\FavoriteController;
@@ -38,7 +39,7 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])
-        ->name('organizer.pending'); // PERBAIKAN: nama route konsisten
+        ->name('organizer.pending');
     
     Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])
         ->name('organizer.rejected');
@@ -46,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])
         ->name('organizer.delete-account');
         
-    // PERBAIKAN: Tambahkan route untuk request organizer
     Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
         ->name('organizer.request');
 });
@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // Dashboard redirect - PERBAIKAN: urutan pengecekan
+    // Dashboard redirect
     Route::get('/dashboard', function () {
         $user = auth()->user();
         
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics');
     });
 
-    // PERBAIKAN: Pindahkan Bookings ke dalam user group atau biarkan di luar
+    // Bookings
     Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('index');
         Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('create');
@@ -137,11 +137,17 @@ Route::middleware(['auth', 'verified', 'organizer'])->prefix('organizer')->name(
     Route::get('/events/{event}/edit', [OrgEventController::class, 'edit'])->name('events.edit');
     Route::put('/events/{event}', [OrgEventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [OrgEventController::class, 'destroy'])->name('events.destroy');
-    
-    // Ticket routes
-    Route::get('/events/{event}/tickets', [TicketController::class, 'index'])->name('events.tickets.index');
-    Route::get('/events/{event}/tickets/create', [TicketController::class, 'create'])->name('events.tickets.create');
-    Route::post('/events/{event}/tickets', [TicketController::class, 'store'])->name('events.tickets.store');
+
+    // Tickets Management untuk ORGANIZER
+    Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
+        Route::get('/', [OrganizerTicketController::class, 'index'])->name('index');
+        Route::get('/create', [OrganizerTicketController::class, 'create'])->name('create');
+        Route::post('/', [OrganizerTicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}/edit', [OrganizerTicketController::class, 'edit'])->name('edit');
+        Route::put('/{ticket}', [OrganizerTicketController::class, 'update'])->name('update');
+        Route::delete('/{ticket}', [OrganizerTicketController::class, 'destroy'])->name('destroy');
+        Route::post('/{ticket}/toggle', [OrganizerTicketController::class, 'toggleActive'])->name('toggle');
+    });
 
     // Orders Management
     Route::prefix('orders')->name('orders.')->group(function () {
@@ -169,6 +175,17 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
 
     // Events Management
     Route::resource('events', AdminEventController::class);
+
+    // Tickets Management untuk ADMIN
+    Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
+        Route::get('/', [AdminTicketController::class, 'index'])->name('index');
+        Route::get('/create', [AdminTicketController::class, 'create'])->name('create');
+        Route::post('/', [AdminTicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}/edit', [AdminTicketController::class, 'edit'])->name('edit');
+        Route::put('/{ticket}', [AdminTicketController::class, 'update'])->name('update');
+        Route::delete('/{ticket}', [AdminTicketController::class, 'destroy'])->name('destroy');
+        Route::post('/{ticket}/toggle', [AdminTicketController::class, 'toggleActive'])->name('toggle');
+    });
 
     // Orders Management
     Route::prefix('orders')->name('orders.')->group(function () {

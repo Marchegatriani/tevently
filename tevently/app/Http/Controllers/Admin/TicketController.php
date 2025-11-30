@@ -1,32 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
+    /**
+     * Display a listing of tickets for an event
+     */
     public function index(Event $event)
     {
-        $this->authorizeEvent($event);
         $tickets = $event->tickets()->latest()->get();
         
-        return view('tickets.index', compact('event', 'tickets'));
+        return view('admin.tickets.index', compact('event', 'tickets'));
     }
 
+    /**
+     * Show the form for creating a new ticket
+     */
     public function create(Event $event)
     {
-        $this->authorizeEvent($event);
-        return view('tickets.create', compact('event'));
+        return view('admin.tickets.create', compact('event'));
     }
 
+    /**
+     * Store a newly created ticket
+     */
     public function store(Request $request, Event $event)
     {
-        $this->authorizeEvent($event);
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -35,24 +40,37 @@ class TicketController extends Controller
             'max_per_order' => 'required|integer|min:1',
             'sales_start' => 'required|date',
             'sales_end' => 'required|date|after_or_equal:sales_start',
-            'is_active' => 'boolean',
         ]);
 
         $event->tickets()->create($validated);
 
-        return $this->redirectToIndex($event)
+        return redirect()
+            ->route('admin.events.show', $event)
             ->with('success', 'Ticket created successfully!');
     }
 
+    /**
+     * Show the form for editing a ticket
+     */
     public function edit(Event $event, Ticket $ticket)
     {
-        $this->authorizeEventAndTicket($event, $ticket);
-        return view('tickets.edit', compact('event', 'ticket'));
+        // Verify ticket belongs to event
+        if ($ticket->event_id !== $event->id) {
+            abort(404);
+        }
+
+        return view('admin.tickets.edit', compact('event', 'ticket'));
     }
 
+    /**
+     * Update the specified ticket
+     */
     public function update(Request $request, Event $event, Ticket $ticket)
     {
-        $this->authorizeEventAndTicket($event, $ticket);
+        // Verify ticket belongs to event
+        if ($ticket->event_id !== $event->id) {
+            abort(404);
+        }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -66,18 +84,27 @@ class TicketController extends Controller
         ]);
 
         if ($validated['quantity_available'] < $ticket->quantity_sold) {
-            return back()->withInput()->with('error', 'Quantity available cannot be less than sold tickets.');
+            return back()
+                ->withInput()
+                ->with('error', 'Quantity available cannot be less than sold tickets.');
         }
 
         $ticket->update($validated);
 
-        return $this->redirectToIndex($event)
+        return redirect()
+            ->route('admin.events.show', $event)
             ->with('success', 'Ticket updated successfully!');
     }
 
+    /**
+     * Remove the specified ticket
+     */
     public function destroy(Event $event, Ticket $ticket)
     {
-        $this->authorizeEventAndTicket($event, $ticket);
+        // Verify ticket belongs to event
+        if ($ticket->event_id !== $event->id) {
+            abort(404);
+        }
 
         if ($ticket->orders()->exists()) {
             return back()->with('error', 'Cannot delete ticket with existing orders!');
@@ -85,41 +112,24 @@ class TicketController extends Controller
 
         $ticket->delete();
 
-        return $this->redirectToIndex($event)
+        return redirect()
+            ->route('admin.events.show', $event)
             ->with('success', 'Ticket deleted successfully!');
     }
 
+    /**
+     * Toggle ticket active status
+     */
     public function toggleActive(Event $event, Ticket $ticket)
     {
-        $this->authorizeEventAndTicket($event, $ticket);
+        // Verify ticket belongs to event
+        if ($ticket->event_id !== $event->id) {
+            abort(404);
+        }
+
         $ticket->update(['is_active' => !$ticket->is_active]);
 
-        return back()->with('success', "Ticket " . ($ticket->is_active ? 'activated' : 'deactivated') . "!");
-    }
-
-    /**
-     * Authorization methods
-     */
-    private function authorizeEvent(Event $event)
-    {
-        $user = Auth::user();
-        
-        if ($user->role === 'admin') return true;
-        if ($user->role === 'organizer' && $event->organizer_id === $user->id) return true;
-        
-        abort(403, 'Unauthorized action.');
-    }
-
-    private function authorizeEventAndTicket(Event $event, Ticket $ticket)
-    {
-        $this->authorizeEvent($event);
-        if ($ticket->event_id !== $event->id) abort(404);
-    }
-
-    private function redirectToIndex(Event $event)
-    {
-        $user = Auth::user();
-        $route = $user->role === 'admin' ? 'admin.events.tickets.index' : 'organizer.events.tickets.index';
-        return redirect()->route($route, $event);
+        $status = $ticket->is_active ? 'activated' : 'deactivated';
+        return back()->with('success', "Ticket {$status} successfully!");
     }
 }

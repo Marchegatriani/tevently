@@ -56,66 +56,57 @@ class OrgEventController extends Controller
     /**
      * Store a newly created event
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string',
-            'event_date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'category_id' => 'required|exists:categories,id',
-            'max_attendees' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-            'status' => 'required|in:draft,published',
-        ]);
+    /**
+ * Store a newly created event
+ */
+    /**
+ * Store a newly created event
+ */
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string',
+        'event_date' => 'required|date|after_or_equal:today',
+        'start_time' => 'required|date_format:H:i',
+        'end_time' => 'required|date_format:H:i|after:start_time',
+        'category_id' => 'required|exists:categories,id',
+        'max_attendees' => 'required|integer|min:1',
+        'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        'status' => 'required|in:draft,published',
+    ]);
 
-        // Handle image upload
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('events', 'public');
-        }
-
-        // Combine date and time
-        $startDateTime = $validated['event_date'] . ' ' . $validated['start_time'];
-        $endDateTime = $validated['event_date'] . ' ' . $validated['end_time'];
-
-        // Create event
-        $event = Event::create([
-            'organizer_id' => $request->user()->id,
-            'category_id' => $validated['category_id'],
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'location' => $validated['location'],
-            'event_date' => $validated['event_date'],
-            'start_time' => $startDateTime,
-            'end_time' => $endDateTime,
-            'max_attendees' => $validated['max_attendees'],
-            'image_url' => $imagePath,
-            'status' => $validated['status'],
-        ]);
-
-        // Create tickets jika ada
-        if ($request->has('tickets')) {
-            foreach ($request->tickets as $ticketData) {
-                $event->tickets()->create([
-                    'name' => $ticketData['name'],
-                    'description' => $ticketData['description'] ?? null,
-                    'price' => $ticketData['price'],
-                    'quantity_available' => $ticketData['quantity_available'],
-                    'max_per_order' => $ticketData['max_per_order'] ?? 5,
-                    'is_active' => true,
-                    'sales_start' => now(),
-                    'sales_end' => now()->addMonths(1),
-                ]);
-            }
-        }
-
-        // PERBAIKAN: Redirect ke route yang benar
-        return redirect()->route('organizer.events.index')
-            ->with('success', 'Event created successfully!');
+    // Handle image upload
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('events', 'public');
     }
+
+    // Combine date and time
+    $startDateTime = $validated['event_date'] . ' ' . $validated['start_time'];
+    $endDateTime = $validated['event_date'] . ' ' . $validated['end_time'];
+
+    // Create event
+    $event = Event::create([
+        'organizer_id' => $request->user()->id,
+        'category_id' => $validated['category_id'],
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'location' => $validated['location'],
+        'event_date' => $validated['event_date'],
+        'start_time' => $startDateTime,
+        'end_time' => $endDateTime,
+        'max_attendees' => $validated['max_attendees'],
+        'image_url' => $imagePath,
+        'status' => $validated['status'],
+    ]);
+
+    // PERBAIKAN: Redirect ke create ticket dengan query parameter
+    return redirect()
+        ->route('organizer.tickets.create', $event)
+        ->with('success', 'Event created successfully! Now add your tickets.');
+}
 
     /**
      * Display the specified event
@@ -137,16 +128,18 @@ class OrgEventController extends Controller
      * Show the form for editing the specified event
      */
     public function edit(Request $request, Event $event)
-    {
-        // Authorization: only owner can edit
-        if ($event->organizer_id !== $request->user()->id) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        $categories = Category::all();
-        // PERBAIKAN: Langsung ke organizer/events-edit.blade.php atau events/edit.blade.php
-        return view('organizer.events.edit', compact('event', 'categories'));
+{
+    // Authorization: only owner can edit
+    if ($event->organizer_id !== $request->user()->id) {
+        abort(403, 'Unauthorized access.');
     }
+
+    $categories = Category::all();
+    
+    $event->load('tickets');
+    
+    return view('organizer.events.edit', compact('event', 'categories'));
+}
 
     /**
      * Update the specified event
