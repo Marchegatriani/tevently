@@ -1,4 +1,4 @@
-@extends('organizer.partials.navbar')
+@extends('user.partials.navbar')
 
 @section('title', 'Kelola Pemesanan')
 @section('heading', 'Kelola Pemesanan')
@@ -73,7 +73,7 @@
                             </td>
                             
                             <td class="p-4 text-right">
-                                <a href="{{ route('organizer.orders.show', $o->id) }}" class="text-main-purple hover:text-custom-dark font-semibold text-sm transition">
+                                <a href="{{ route('user.orders.show', $o->id) }}" class="text-main-purple hover:text-custom-dark font-semibold text-sm transition">
                                     Lihat Detail
                                 </a>
                             </td>

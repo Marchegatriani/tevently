@@ -44,6 +44,22 @@ class OrderController extends Controller
     }
 
     /**
+     * Show the form for cancelling an order.
+     */
+    public function showCancelForm(Order $order)
+    {
+        // Authorization - user hanya bisa lihat order sendiri
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        if ($order->status !== 'pending') {
+            return redirect()->route('user.orders.show', $order)->with('error', 'Only pending orders can be cancelled.');
+        }
+
+        return view('user.orders.cancel', compact('order'));
+    }
+    /**
      * Cancel an order
      */
     public function cancel(Order $order)
@@ -69,7 +85,7 @@ class OrderController extends Controller
             $ticket->save();
         }
 
-        return back()->with('success', 'Order cancelled successfully.');
+        return redirect()->route('user.orders.show', $order)->with('success', 'Order cancelled successfully.');
     }
 
     /**

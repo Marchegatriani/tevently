@@ -74,7 +74,7 @@
                             <select name="sort" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark">
                                 <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
                                 <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
-                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nama (A-Z)</option>
+                                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Nama (A-Z)</option>
                                 <option value="date" {{ request('sort') == 'date' ? 'selected' : '' }}>Tanggal Event</option>
                             </select>
                         </div>
@@ -106,10 +106,10 @@
                                 <!-- Image/Placeholder -->
                                 <div class="h-40 overflow-hidden">
                                     @if($event->image)
-                                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     @else
                                         <div class="w-full h-40 bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">
-                                            <span class="text-white text-3xl font-bold opacity-80">{{ substr($event->name, 0, 2) }}</span>
+                                            <span class="text-white text-3xl font-bold opacity-80">{{ substr($event->title, 0, 2) }}</span>
                                         </div>
                                     @endif
                                 </div>
@@ -123,7 +123,7 @@
                                     </div>
                                     
                                     <!-- Title -->
-                                    <h3 class="text-lg font-bold text-custom-dark mb-3 line-clamp-2 group-hover:text-[#837ab6] transition-colors">{{ $event->name }}</h3>
+                                    <h3 class="text-lg font-bold text-custom-dark mb-3 line-clamp-2 group-hover:text-[#837ab6] transition-colors">{{ $event->title }}</h3>
                                     
                                     <div class="text-gray-600 text-sm space-y-2 mb-4">
                                         <!-- Date -->
@@ -131,7 +131,7 @@
                                             <svg class="w-4 h-4 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            <span>{{ \Carbon\Carbon::parse($event->date)->format('d F Y') }}</span>
+                                            <span>{{ $event->event_date->format('d F Y') }}</span>
                                         </div>
                                         <!-- Location -->
                                         <div class="flex items-center gap-2">

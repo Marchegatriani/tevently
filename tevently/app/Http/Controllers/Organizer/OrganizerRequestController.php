@@ -17,7 +17,7 @@ class OrganizerRequestController extends Controller
         $user = Auth::user();
         
         // Pastikan user adalah organizer dengan status pending
-        if (!$user || $user->role !== 'organizer' || $user->status !== 'pending') {
+        if (!$user || $user->status !== 'pending') {
             return redirect()->route('dashboard');
         }
         
@@ -32,7 +32,7 @@ class OrganizerRequestController extends Controller
         $user = Auth::user();
         
         // Pastikan user adalah organizer dengan status rejected
-        if (!$user || $user->role !== 'organizer' || $user->status !== 'rejected') {
+        if (!$user || $user->status !== 'rejected') {
             return redirect()->route('dashboard');
         }
         
@@ -47,7 +47,7 @@ class OrganizerRequestController extends Controller
         $user = Auth::user();
         
         // Validasi: hanya organizer yang rejected yang bisa hapus
-        if (!$user || $user->role !== 'organizer' || $user->status !== 'rejected') {
+        if (!$user || $user->status !== 'rejected') {
             return redirect()->back()->with('error', 'Tidak dapat menghapus akun.');
         }
         
@@ -65,5 +65,22 @@ class OrganizerRequestController extends Controller
         User::destroy($userId);
         
         return redirect()->route('login')->with('message', 'Akun telah dihapus. Anda dapat mendaftar kembali.');
+    }
+
+    /**
+     * Store a new organizer request.
+     */
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+
+        // Hanya user biasa yang bisa request
+        if ($user->role === 'user' && $user->status === 'approved') {
+            $user->status = 'pending';
+            $user->save();
+            return redirect()->route('organizer.pending')->with('success', 'Permohonan menjadi organizer telah dikirim.');
+        }
+
+        return redirect()->route('dashboard')->with('error', 'Anda tidak dapat mengirim permohonan saat ini.');
     }
 }

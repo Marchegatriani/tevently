@@ -39,7 +39,7 @@ class TicketController extends Controller
             'quantity_available' => 'required|integer|min:1',
             'max_per_order' => 'required|integer|min:1',
             'sales_start' => 'required|date',
-            'sales_end' => 'required|date|after_or_equal:sales_start',
+            'sales_end' => 'required|date|after_or_equal:sales_start|before_or_equal:'.$event->event_date->format('Y-m-d'),
         ]);
 
         $event->tickets()->create($validated);
@@ -79,7 +79,7 @@ class TicketController extends Controller
             'quantity_available' => 'required|integer|min:1',
             'max_per_order' => 'required|integer|min:1',
             'sales_start' => 'required|date',
-            'sales_end' => 'required|date|after_or_equal:sales_start',
+            'sales_end' => 'required|date|after_or_equal:sales_start|before_or_equal:'.$event->event_date->format('Y-m-d'),
             'is_active' => 'boolean',
         ]);
 

@@ -29,7 +29,7 @@
                     <li>
                         <span class="text-gray-400">/</span>
                     </li>
-                    <li class="text-custom-dark font-medium">{{ Str::limit($event->name, 30) }}</li>
+                    <li class="text-custom-dark font-medium">{{ Str::limit($event->title, 30) }}</li>
                 </ol>
             </nav>
         </div>
@@ -40,10 +40,10 @@
                 <!-- Event Image -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8 border border-gray-100">
                     @if($event->image)
-                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-96 object-cover">
+                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="w-full h-96 object-cover">
                     @else
                         <div class="w-full h-96 bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">
-                            <span class="text-white text-6xl font-bold">{{ substr($event->name, 0, 2) }}</span>
+                            <span class="text-white text-6xl font-bold">{{ substr($event->title, 0, 2) }}</span>
                         </div>
                     @endif
                 </div>
@@ -55,7 +55,7 @@
                         <span class="px-3 py-1 bg-[#f6a5c0]/50 text-custom-dark text-sm font-bold rounded-full uppercase">
                             {{ $event->category->name }}
                         </span>
-                        @if(\Carbon\Carbon::parse($event->date)->isFuture())
+                        @if($event->event_date->isFuture())
                             <span class="px-3 py-1 bg-[#837ab6]/20 text-[#837ab6] text-sm font-semibold rounded-full">
                                 Mendatang
                             </span>
@@ -66,7 +66,7 @@
                         @endif
                     </div>
 
-                    <h1 class="text-4xl font-extrabold text-custom-dark mb-6">{{ $event->name }}</h1>
+                    <h1 class="text-4xl font-extrabold text-custom-dark mb-6">{{ $event->title }}</h1>
 
                     <div class="space-y-4 mb-8">
                         
@@ -74,14 +74,14 @@
                             <svg class="w-6 h-6 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <span class="font-semibold">{{ \Carbon\Carbon::parse($event->date)->format('l, d F Y') }}</span>
+                            <span class="font-semibold">{{ $event->event_date->format('l, d F Y') }}</span>
                         </div>
 
                         <div class="flex items-center gap-3 text-gray-700">
                             <svg class="w-6 h-6 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="font-semibold">{{ \Carbon\Carbon::parse($event->date)->format('H:i') }} WIB</span>
+                            <span class="font-semibold">{{ $event->start_time->format('H:i') }} WIB</span>
                         </div>
 
                         <div class="flex items-center gap-3 text-gray-700">
@@ -118,25 +118,24 @@
                             @foreach($event->tickets as $ticket)
                                 <div class="border border-gray-200 rounded-xl p-5 hover:border-[#837ab6] transition">
                                     <div class="flex justify-between items-start mb-2">
-                                        <div>
-                                            <h3 class="font-semibold text-custom-dark text-lg">{{ $ticket->type }}</h3>
-                                            <p class="text-sm text-gray-600">{{ $ticket->description }}</p>
-                                        </div>
+                                        <h3 class="font-semibold text-custom-dark text-lg">{{ $ticket->name }}</h3>
                                     </div>
+                                    <p class="text-sm text-gray-600">{{ $ticket->description }}</p>
                                     
                                     <div class="flex justify-between items-center mt-4">
                                         <div>
                                             <p class="text-3xl font-extrabold text-[#837ab6]">
                                                 Rp {{ number_format($ticket->price, 0, ',', '.') }}
                                             </p>
+                                            @php $remaining = $ticket->quantity_available - $ticket->quantity_sold; @endphp
                                             <p class="text-xs text-gray-500">
-                                                {{ $ticket->available_quantity }} / {{ $ticket->quantity }} tersisa
+                                                {{ $remaining }} / {{ $ticket->quantity_available }} tersisa
                                             </p>
                                         </div>
                                         
                                         @auth
-                                            @if($ticket->available_quantity > 0 && \Carbon\Carbon::parse($event->date)->isFuture())
-                                                <a href="{{ route('tickets.order', $ticket) }}" class="bg-[#cc8db3] hover:bg-[#f6a5c0] text-custom-dark px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md">
+                                            @if($remaining > 0 && $event->event_date->isFuture())
+                                                <a href="{{ route('bookings.create', ['event' => $event->id, 'ticket' => $ticket->id]) }}" class="bg-[#cc8db3] hover:bg-[#f6a5c0] text-custom-dark px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md">
                                                     Beli Sekarang
                                                 </a>
                                             @else
@@ -151,9 +150,9 @@
                                         @endauth
                                     </div>
 
-                                    @if($ticket->available_quantity > 0 && $ticket->available_quantity <= 10)
+                                    @if($remaining > 0 && $remaining <= 10)
                                         <div class="mt-3 text-xs text-[#cc8db3] font-bold">
-                                            ⚠️ Hanya tersisa {{ $ticket->available_quantity }} tiket!
+                                            ⚠️ Hanya tersisa {{ $remaining }} tiket!
                                         </div>
                                     @endif
                                 </div>

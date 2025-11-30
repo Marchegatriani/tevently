@@ -105,9 +105,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('favorites.clear');
         
         // Orders
-        Route::get('/orders', [UserOrderController::class, 'index'])->name('orders');
+        Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
-        Route::post('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel');
+        Route::get('/orders/{order}/cancel', [UserOrderController::class, 'showCancelForm'])->name('orders.cancel.confirm'); // Rute untuk menampilkan form
+        Route::delete('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel'); // Rute untuk memproses pembatalan
         Route::get('/orders/{order}/download-ticket', [UserOrderController::class, 'downloadTicket'])->name('orders.download-ticket');
         Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics');
     });

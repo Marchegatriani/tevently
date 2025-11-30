@@ -43,7 +43,7 @@
                         <a href="{{ route('user.home') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.home') ? 'active' : '' }}">Beranda</a>
                         <a href="{{ route('user.events.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.events.*') ? 'active' : '' }}">Daftar Acara</a>
                         <a href="{{ route('user.favorites') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.favorites') ? 'active' : '' }}">Favorit Saya</a>
-                        <a href="{{ route('user.orders.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.orders') ? 'active' : '' }}">Riwayat Pesanan</a>
+                        <a href="{{ route('user.orders.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.orders.*') ? 'active' : '' }}">Riwayat Pesanan</a>
                     </nav>
 
                     {{-- mobile toggle --}}
@@ -94,7 +94,7 @@
                     <a href="{{ route('user.home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('home') ? 'bg-soft-pink-light font-medium' : '' }}">Beranda</a>
                     <a href="{{ route('user.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('events.*') ? 'bg-soft-pink-light font-medium' : '' }}">Daftar Acara</a>
                     <a href="{{ route('user.favorites') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.favorites') ? 'bg-soft-pink-light font-medium' : '' }}">Favorit Saya</a>
-                    <a href="{{ route('user.orders') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders') ? 'bg-soft-pink-light font-medium' : '' }}">Riwayat Pesanan</a>
+                    <a href="{{ route('user.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders.*') ? 'bg-soft-pink-light font-medium' : '' }}">Riwayat Pesanan</a>
                     <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('profile.edit') ? 'bg-soft-pink-light font-medium' : '' }}">Profil Saya</a>
 
                     {{-- mobile logout --}}
