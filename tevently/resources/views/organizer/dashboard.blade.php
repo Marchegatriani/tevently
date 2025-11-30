@@ -1,4 +1,4 @@
-@extends('organizer.partials.sidebar')
+@extends('organizer.partials.navbar')
 
 @section('title', 'Dashboard Organizer')
 @section('content')

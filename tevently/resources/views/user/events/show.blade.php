@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('user.partials.navbar')
 
 @section('title', 'Event Detail')
 
@@ -148,8 +148,15 @@
                     <!-- Favorite Button -->
                     <form action="{{ route('user.favorites.toggle', $event) }}" method="POST">
                         @csrf
-                        <button type="submit" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 text-center px-6 py-3 rounded-lg font-semibold">
-                            ❤️ Add to Favorites
+                        <button type="submit" class="flex items-center justify-center w-full text-center px-6 py-3 rounded-lg font-semibold transition-colors duration-300
+                            @if($isFavorited)
+                                bg-pink-100 text-pink-600 hover:bg-pink-200
+                            @else
+                                bg-gray-200 text-gray-700 hover:bg-gray-300
+                            @endif
+                        ">
+                            <svg class="w-6 h-6 mr-2" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
+                            <span>{{ $isFavorited ? 'Remove from Favorites' : 'Add to Favorites' }}</span>
                         </button>
                     </form>
 

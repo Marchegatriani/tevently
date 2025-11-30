@@ -1,4 +1,4 @@
-@extends('admin.partials.sidebar')
+@extends('admin.partials.navbar')
 
 @section('title', 'Users Report')
 @section('heading', 'Users Report')

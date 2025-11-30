@@ -1,4 +1,4 @@
-@extends('admin.partials.sidebar')
+@extends('admin.partials.navbar')
 
 @section('title', 'Dashboard')
 @section('heading', 'Dashboard')

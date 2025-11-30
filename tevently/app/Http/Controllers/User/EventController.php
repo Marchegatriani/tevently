@@ -83,10 +83,10 @@ class EventController extends Controller
         }]);
 
         // Check if user has favorited this event
-        // $isFavorited = false;
-        // if (auth()->check()) {
-        //     $isFavorited = auth()->user()->favorites()->where('event_id', $event->id)->exists();
-        // }
+        $isFavorited = false;
+        if (auth()->check()) {
+            $isFavorited = auth()->user()->favoriteEvents()->where('event_id', $event->id)->exists();
+        }
 
         // Get related events (same category, upcoming, published, exclude current event)
         $relatedEvents = Event::where('status', 'published')
@@ -98,7 +98,7 @@ class EventController extends Controller
             ->take(4)
             ->get();
 
-        return view('user.events.show', compact('event', 'relatedEvents'));
+        return view('user.events.show', compact('event', 'relatedEvents', 'isFavorited'));
     }
 
     /**
