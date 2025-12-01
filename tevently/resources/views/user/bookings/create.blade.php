@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -21,24 +20,16 @@
         @if(session('error'))
             <div class="bg-red-100 border border-red-400 text-red-800 p-4 rounded-xl mb-6 font-medium shadow-sm">{{ session('error') }}</div>
         @endif
-
         <form method="POST" action="{{ route('bookings.store', [$event, $ticket]) }}">
             @csrf
-            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
-                <!-- Kolom Kiri: Input dan Quantity -->
                 <div class="space-y-6">
                     <h3 class="text-xl font-semibold text-custom-dark border-b pb-2">Detail Pembelian</h3>
-
-                    <!-- Price -->
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Harga Satuan</label>
                         <div class="text-2xl font-extrabold text-pink-accent">Rp {{ number_format($ticket->price, 0, ',', '.') }}</div>
                         <p class="text-xs text-gray-500 mt-1">Jenis Tiket: {{ $ticket->name }}</p>
                     </div>
-
-                    <!-- Quantity Input -->
                     <div class="mb-4">
                         <label for="quantity" class="block text-sm font-semibold text-custom-dark mb-2">
                             Kuantitas
@@ -58,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: Ringkasan Harga -->
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-fit sticky top-4">
                     <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Ringkasan Pesanan</h3>
                     
@@ -73,7 +63,6 @@
                         </div>
                         <div class="flex justify-between text-lg pt-3 border-t border-gray-200">
                             <span class="font-bold text-custom-dark">Total Perkiraan:</span>
-                            {{-- Placeholder untuk total yang dihitung di client side --}}
                             <span id="total-display" class="font-extrabold text-main-purple">Rp {{ number_format($ticket->price, 0, ',', '.') }}</span>
                         </div>
                     </div>
@@ -82,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="flex gap-4 items-center pt-8 border-t border-gray-100 mt-8">
                 <button type="submit" 
                         class="bg-main-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-[#9d85b6] transition shadow-lg transform hover:-translate-y-0.5">
@@ -106,17 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantity = parseInt(quantityInput.value) || 0;
         const totalAmount = quantity * ticketPrice;
         
-        // Format angka ke format Rupiah
         totalDisplay.textContent = 'Rp ' + totalAmount.toLocaleString('id-ID', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
     }
-
-    // Update saat input berubah
     quantityInput.addEventListener('input', updateTotal);
-    
-    // Inisialisasi total saat halaman dimuat
     updateTotal(); 
 });
 </script>

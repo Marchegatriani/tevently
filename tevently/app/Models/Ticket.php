@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
-
-    // Add fillable/casts/relationships/helpers to match migration and controllers
     protected $fillable = [
         'name',
         'description',
@@ -32,25 +30,21 @@ class Ticket extends Model
         'sales_end' => 'datetime',
     ];
 
-    // Ticket belongs to an Event
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
 
-    // Ticket has many Orders (used by controllers/views)
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
-    // Remaining tickets accessor
     public function getRemainingAttribute()
     {
         return max(0, ($this->quantity_available ?? 0) - ($this->quantity_sold ?? 0));
     }
 
-    // Friendly availability status used in views
     public function getAvailabilityStatus()
     {
         if (! $this->is_active) {
@@ -62,27 +56,11 @@ class Ticket extends Model
         }
 
         $remaining = $this->remaining;
-        // low stock when remaining <= 10% or <= 5 items (adjust as needed)
         $threshold = max(5, (int) ceil(($this->quantity_available ?? 0) * 0.10));
         if ($remaining <= $threshold) {
             return 'Low stock';
         }
 
         return 'Available';
-    }
-
-    // ========== SCOPES ==========
-    
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
-    public function scopeAvailable($query)
-    {
-        return $query->where('is_active', true)
-                    ->whereRaw('quantity_sold < quantity_available')
-                    ->where('sales_start', '<=', now())
-                    ->where('sales_end', '>=', now());
     }
 }

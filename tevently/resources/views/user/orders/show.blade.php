@@ -4,15 +4,12 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-soft-pink-light { background-color: #f7c2ca; }
 </style>
 
 <div class="space-y-8">
-
-    {{-- Header with Back Button and Actions --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-extrabold text-custom-dark">Detail Pesanan #{{ $order->id }}</h1>
@@ -24,7 +21,6 @@
         </a>
     </div>
 
-    {{-- Session Messages --}}
     @if(session('success')) 
         <div class="bg-green-100 p-4 rounded-xl border border-green-400 text-green-800 font-medium shadow-sm">{{ session('success') }}</div> 
     @endif
@@ -34,7 +30,6 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {{-- Main Order Details --}}
         <div class="lg:col-span-2 space-y-6">
             {{-- Order Summary --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
@@ -77,7 +72,6 @@
                 </ul>
             </div>
 
-            {{-- Action Buttons --}}
             <div class="flex items-center gap-4 pt-4 border-t">
                 @if($order->status === 'confirmed')
                     <a href="{{ route('user.orders.download-ticket', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition shadow-md">
@@ -93,7 +87,6 @@
             </div>
         </div>
 
-        {{-- Sidebar with Event and Buyer Info --}}
         <div class="lg:col-span-1 space-y-6">
             {{-- Event Info --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">

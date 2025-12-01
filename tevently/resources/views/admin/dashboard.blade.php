@@ -5,7 +5,6 @@
 
 @section('content')
 <style>
-    /* Menggunakan warna aksen dari palet Soft Light Velvet */
     .bg-soft-pink { background-color: #f7c2ca; }
     .text-deep-purple { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
@@ -13,7 +12,6 @@
     .bg-pink-accent { background-color: #cc8db3; }
 </style>
 <div class = 'px-2'>
-    <!-- Welcome -->
     <div class="mb-8">
         <div class="bg-soft-pink border border-[#f6a5c0]/50 rounded-xl p-6 shadow-md">
             <h3 class="text-xl font-bold text-deep-purple">Selamat Datang, {{ auth()->user()->name }} 👋</h3>
@@ -21,14 +19,12 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         
         <!-- Total Users -->
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-main-purple">
             <div class="flex items-center gap-4">
                 <div class="bg-main-purple text-white rounded-xl p-3 shadow-md shadow-[#837ab6]/40">
-                    <!-- icon: Total Users -->
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1z" /></svg>
                 </div>
                 <div>
@@ -42,12 +38,10 @@
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-medium-purple">
             <div class="flex items-center gap-4">
                 <div class="bg-medium-purple text-white rounded-xl p-3 shadow-md shadow-[#9d85b6]/40">
-                    <!-- icon: Pending Organizers -->
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 font-semibold uppercase">Pending Organizer</p>
-                    {{-- Note: Logika di sini mungkin perlu disesuaikan di controller, tapi saya pertahankan logika Blade yang ada --}}
                     <p class="text-3xl font-extrabold text-deep-purple mt-1">{{ \App\Models\User::where('role', 'organizer')->where('status', 'pending')->count() }}</p>
                 </div>
             </div>
@@ -57,7 +51,6 @@
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-pink-accent">
             <div class="flex items-center gap-4">
                 <div class="bg-pink-accent text-white rounded-xl p-3 shadow-md shadow-[#cc8db3]/40">
-                    <!-- icon: Total Events -->
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
                 <div>

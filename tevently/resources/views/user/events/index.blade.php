@@ -4,14 +4,11 @@
 
 @section('content')
 <style>
-    /* Latar belakang Utama dari layout adalah #F8F3F7 */
     .bg-custom-light { background-color: #F8F3F7; }
     .text-custom-dark { color: #250e2c; } 
 </style>
 
 <div class="font-sans bg-custom-light min-h-screen">
-    
-    <!-- Header Katalog -->
     <div class="bg-[#f7c2ca] border-b border-[#cc8db3]/50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <h1 class="text-4xl font-extrabold text-custom-dark">Jelajahi Semua Event</h1>
@@ -103,7 +100,6 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @foreach($events as $event)
                             <a href="{{ route('user.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-1 transition-all duration-300 border border-gray-100 block h-full flex flex-col">
-                                <!-- Image/Placeholder -->
                                 <div class="h-48 overflow-hidden relative">
                                     @if($event->image)
                                         <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -120,11 +116,9 @@
                                 </div>
                                 
                                 <div class="p-6 flex flex-col flex-grow">
-                                    <!-- Title -->
                                     <h3 class="text-xl font-bold text-custom-dark mb-3 line-clamp-2 group-hover:text-[#837ab6] transition-colors">{{ $event->name }}</h3>
                                     
                                     <div class="text-gray-600 text-sm space-y-3 mb-6 flex-grow">
-                                        <!-- Date -->
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-lg bg-[#f6a5c0]/20 flex items-center justify-center flex-shrink-0 text-[#cc8db3]">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +127,6 @@
                                             </div>
                                             <span class="font-medium">{{ \Carbon\Carbon::parse($event->date)->format('d F Y') }}</span>
                                         </div>
-                                        <!-- Location -->
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-lg bg-[#f6a5c0]/20 flex items-center justify-center flex-shrink-0 text-[#cc8db3]">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +161,6 @@
                         {{ $events->appends(request()->query())->links() }}
                     </div>
                 @else
-                    <!-- No Events Found Message -->
                     <div class="bg-white rounded-3xl shadow-lg p-12 text-center border border-gray-100">
                         <div class="w-20 h-20 bg-[#f6a5c0]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg class="h-10 w-10 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

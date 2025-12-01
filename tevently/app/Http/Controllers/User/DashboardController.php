@@ -13,7 +13,6 @@ class DashboardController extends Controller
     {
         $user = $request->user();
         
-        // Otomatis redirect berdasarkan status
         if ($user->status === 'pending') {
             return redirect()->route('organizer.pending');
         }
@@ -22,8 +21,6 @@ class DashboardController extends Controller
             return redirect()->route('organizer.rejected');
         }
     
-        // Lanjut dashboard normal
-        // gunakan view dashboard utama (resources/views/dashboard.blade.php)
         return view('user.home', [
             'user' => $user
         ]);

@@ -10,14 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $organizerId = Auth::id();
 
-        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
         $orders = Order::with(['event', 'orderItems.ticket', 'user'])
             ->whereHas('event', function ($q) use ($organizerId) {
                 $q->where('organizer_id', $organizerId);
@@ -49,7 +46,6 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
         $order = Order::with(['event', 'orderItems.ticket', 'user'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
@@ -86,7 +82,6 @@ class OrderController extends Controller
     // Approve / confirm order
     public function approve($id)
     {
-        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
         $order = Order::with(['event', 'orderItems.ticket'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
@@ -103,10 +98,8 @@ class OrderController extends Controller
         return back()->with('success', 'Order berhasil dikonfirmasi.');
     }
 
-    // Cancel order and release tickets (decrement quantity_sold)
     public function cancel($id)
     {
-        // PERBAIKAN: Ganti 'ticket' dengan 'orderItems.ticket'
         $order = Order::with(['event', 'orderItems.ticket'])->findOrFail($id);
 
         if ($order->event->organizer_id !== Auth::id()) {
@@ -118,7 +111,6 @@ class OrderController extends Controller
         }
 
         DB::transaction(function () use ($order) {
-            // PERBAIKAN: Loop melalui orderItems untuk mengembalikan tiket
             foreach ($order->orderItems as $item) {
                 if ($item->ticket) {
                     $item->ticket->quantity_sold = max(0, $item->ticket->quantity_sold - $item->quantity);

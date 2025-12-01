@@ -1,16 +1,14 @@
-@extends('layouts.guest')
+@extends('guest.partials.navbar')
 
 @section('title', 'Jelajahi Event')
 
 @section('content')
 <style>
-    /* Latar belakang Utama dari layout adalah #F8F3F7 */
     .bg-custom-light { background-color: #F8F3F7; }
     .text-custom-dark { color: #250e2c; } 
 </style>
 
 <div class="font-sans bg-custom-light min-h-screen">
-    
     <!-- Header Katalog (Menggunakan Gradien seperti Hero Section) -->
     <div class="bg-gradient-to-br from-[#f7c2ca] to-[#cc8db3] border-b border-[#cc8db3]/50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

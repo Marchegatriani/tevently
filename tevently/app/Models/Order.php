@@ -10,7 +10,6 @@ class Order extends Model
 {
     use HasFactory;
 
-    // HANYA field yang ada di table orders
     protected $fillable = [
         'user_id',
         'event_id',
@@ -32,6 +31,21 @@ class Order extends Model
         ];
     }
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -49,50 +63,5 @@ class Order extends Model
                 $order->expired_at = now()->addHours(1);
             }
         });
-    }
-
-    // ========== RELATIONSHIPS ==========
-    
-    public function event()
-    {
-        return $this->belongsTo(Event::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-
-    // Helper methods
-    public function getTicketAttribute()
-    {
-        return $this->orderItems->first()->ticket ?? null;
-    }
-
-    public function getQuantityAttribute()
-    {
-        return $this->orderItems->first()->quantity ?? 0;
-    }
-
-    // ========== SCOPES ==========
-    
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
-    }
-
-    public function scopeConfirmed($query)
-    {
-        return $query->where('status', 'confirmed');
-    }
-
-    public function scopeCancelled($query)
-    {
-        return $query->where('status', 'cancelled');
     }
 }

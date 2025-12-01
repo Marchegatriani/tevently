@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
-    // list bookings (uses Order model if available)
     public function index()
     {
         $bookings = collect();
@@ -27,7 +26,6 @@ class BookingController extends Controller
         return view('user.bookings.index', compact('bookings'));
     }
 
-    // show checkout form for specific event & ticket
     public function create(Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {
@@ -44,7 +42,6 @@ class BookingController extends Controller
         return view('user.bookings.create', compact('event', 'ticket', 'remaining', 'max_per_order'));
     }
 
-    // store booking (safe with DB transaction)
     public function store(Request $request, Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {
@@ -60,34 +57,27 @@ class BookingController extends Controller
 
         try {
             DB::transaction(function () use ($ticket, $validated, $event, &$order) {
-                // refresh & re-check
                 $ticket->refresh();
                 $available = max(0, $ticket->quantity_available - $ticket->quantity_sold);
                 if ($validated['quantity'] > $available) {
                     throw new \Exception('Not enough tickets available.');
                 }
 
-                // update sold count
                 $ticket->quantity_sold += $validated['quantity'];
                 $ticket->save();
 
-                // PERBAIKAN: Hanya buat Order dengan field yang benar
                 $order = Order::create([
                     'user_id'      => Auth::id(),
                     'event_id'     => $event->id,
                     'total_amount' => $ticket->price * $validated['quantity'],
                     'status'       => 'pending',
-                    // HAPUS: ticket_id, quantity, total_tickets
-                    // order_number dan order_date akan otomatis di-generate
                 ]);
 
-                // PERBAIKAN: Buat Order Item untuk detail tiket
                 OrderItem::create([
                     'order_id'   => $order->id,
                     'ticket_id'  => $ticket->id,
                     'quantity'   => $validated['quantity'],
                     'unit_price' => $ticket->price,
-                    // subtotal akan otomatis dihitung
                 ]);
             });
         } catch (\Throwable $e) {
@@ -101,7 +91,6 @@ class BookingController extends Controller
         return redirect()->route('bookings.index')->with('success', 'Booking created successfully.');
     }
 
-    // show single booking/order if model exists
     public function show($id)
     {
         if (! class_exists(Order::class)) {

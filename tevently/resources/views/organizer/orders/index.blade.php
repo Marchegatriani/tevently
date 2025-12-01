@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-soft-pink-light { background-color: #f7c2ca; }

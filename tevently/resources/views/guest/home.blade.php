@@ -1,17 +1,14 @@
-@extends('layouts.guest')
+@extends('guest.partials.navbar')
 
 @section('title', 'Beranda')
 
 @section('content')
 <style>
-    /* Latar belakang Utama dari layout adalah #F8F3F7 */
     .bg-custom-light { background-color: #F8F3F7; }
     .text-custom-dark { color: #250e2c; } 
 </style>
 
 <div class="font-sans">
-
-    <!-- Bagian Hero -->
     <div class="bg-gradient-to-br from-[#f7c2ca] to-[#cc8db3] text-custom-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
             <div class="text-center">
@@ -22,7 +19,6 @@
                     Cari dan pesan tiket untuk acara terbaik di sekitar Anda
                 </p>
                 
-                <!-- Search Bar -->
                 <form action="{{ route('guest.events.index') }}" method="GET" class="max-w-3xl mx-auto">
                     <div class="relative">
                         <input type="text" 
@@ -38,8 +34,7 @@
         </div>
     </div>
 
-    <!-- Bagian Acara Unggulan -->
-    <div class="bg-custom-light"> <!-- Latar belakang Body Utama #F8F3F7 (Soft Light) -->
+    <div class="bg-custom-light">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="flex justify-between items-center mb-10">
                 <h2 class="text-4xl font-extrabold text-custom-dark">Acara Unggulan</h2>
@@ -57,7 +52,6 @@
                     <a href="{{ route('guest.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-2 transition-all duration-500 border border-gray-100"> 
                         <div class="h-56 overflow-hidden">
                             @if($event->image_url)
-                                <!-- Pastikan path 'storage/' benar di lingkungan Anda -->
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">

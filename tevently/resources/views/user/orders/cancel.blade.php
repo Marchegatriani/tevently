@@ -4,7 +4,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-soft-pink-light { background-color: #f7c2ca; }
@@ -38,18 +37,14 @@
         </div>
     </div>
 
-    {{-- Action Buttons --}}
     <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-        {{-- Form untuk membatalkan --}}
         <form action="{{ route('user.orders.cancel', $order) }}" method="POST" class="w-full sm:w-auto">
             @csrf
-            @method('DELETE') {{-- Menggunakan metode DELETE untuk konsistensi RESTful --}}
+            @method('DELETE')
             <button type="submit" class="w-full text-center px-8 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition shadow-md transform hover:-translate-y-0.5">
                 Ya, Batalkan Pesanan
             </button>
         </form>
-
-        {{-- Tombol untuk kembali --}}
         <a href="{{ route('user.orders.show', $order) }}" class="w-full sm:w-auto text-center px-8 py-3 bg-gray-200 text-custom-dark rounded-xl font-semibold hover:bg-gray-300 transition transform hover:-translate-y-0.5">
             Tidak, Kembali
         </a>

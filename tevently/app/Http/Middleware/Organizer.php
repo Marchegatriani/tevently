@@ -11,13 +11,21 @@ class Organizer
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-
-        // Not logged in -> redirect to login
         if (!$user) {
             return redirect()->route('login');
         }
 
-        // Check organizer status
+        $allowedRoutes = [
+            'organizer.pending',
+            'organizer.rejected',
+            'organizer.cancel',
+            'logout'
+        ];
+
+        if ($request->routeIs($allowedRoutes)) {
+            return $next($request);
+        }
+
         if ($user->status === 'pending') {
             return redirect()->route('organizer.pending');
         }
@@ -26,9 +34,8 @@ class Organizer
             return redirect()->route('organizer.rejected');
         }
 
-        // Check if user is organizer
-        if ($user->role !== 'organizer') {
-            abort(403, 'Unauthorized access. Organizer only.');
+        if ($user->role !== 'organizer' || $user->status !== 'approved') {
+            abort(403, 'Unauthorized access. Approved organizer only.');
         }
 
         return $next($request);

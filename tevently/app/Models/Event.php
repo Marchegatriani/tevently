@@ -16,7 +16,7 @@ class Event extends Model
         'event_date',
         'start_time',
         'end_time',
-        'image',
+        'image_url',
         'max_attendees',
         'organizer_id',
         'category_id',
@@ -33,8 +33,6 @@ class Event extends Model
         ];
     }
 
-    // ========== RELATIONSHIPS ==========
-    
     public function organizer()
     {
         return $this->belongsTo(User::class, 'organizer_id');
@@ -59,18 +57,5 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class, 'favorites')
                     ->withTimestamps();
-    }
-
-    // ========== SCOPES (masih OK di model) ==========
-    
-    public function scopePublished($query)
-    {
-        return $query->where('status', 'published');
-    }
-
-    public function scopeUpcoming($query)
-    {
-        return $query->where('event_date', '>=', now()->toDateString())
-                    ->where('status', 'published');
     }
 }

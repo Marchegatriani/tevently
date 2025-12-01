@@ -6,20 +6,16 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
 </style>
 
 <div class="container mx-auto px-4 py-8 max-w-3xl">
-    
-    <!-- Breadcrumb -->
     <div class="mb-6">
         <nav class="text-sm text-gray-600">
             <a href="{{ route('admin.events.index') }}" class="hover:text-main-purple">Daftar Event</a>
             <span class="mx-2">/</span>
-            {{-- If event exists, link to it. Otherwise, it's a new event. --}}
             @if($event->exists)
             <a href="{{ route('admin.events.show', $event) }}" class="hover:text-main-purple">{{ Str::limit($event->title, 30) }}</a>
             @else
@@ -35,7 +31,6 @@
         <h1 class="text-2xl font-bold text-custom-dark mb-1">Buat Jenis Tiket Baru</h1>
         <p class="text-gray-600 mt-1 mb-6">Untuk acara: <strong>{{ $event->title }}</strong></p>
         
-        {{-- The form action depends on whether the event already exists in the database --}}
         @if ($event->exists)
             <form action="{{ route('admin.tickets.store', $event) }}" method="POST">
         @else
@@ -53,7 +48,7 @@
                        name="name" 
                        value="{{ old('name') }}"
                        placeholder="Contoh: VIP, Reguler, Early Bird"
-                       class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('name') border-red-500 @enderror" 
+                       class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('name') border-red-500 @enderror" 
                        required>
                 @error('name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -69,7 +64,7 @@
                           name="description" 
                           rows="3"
                           placeholder="Jelaskan jenis tiket ini (opsional)"
-                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
                 @error('description')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -77,7 +72,6 @@
 
             <!-- Price & Quota Row -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
-                <!-- Price -->
                 <div>
                     <label for="price" class="block text-sm font-semibold text-custom-dark mb-2">
                         Harga (Rp) <span class="text-red-500">*</span>
@@ -89,7 +83,7 @@
                            min="0"
                            step="100"
                            placeholder="50000"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('price') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('price') border-red-500 @enderror" 
                            required>
                     @error('price')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -107,7 +101,7 @@
                            value="{{ old('quantity_available') }}"
                            min="1"
                            placeholder="100"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('quantity_available') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('quantity_available') border-red-500 @enderror" 
                            required>
                     @error('quantity_available')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -125,7 +119,7 @@
                            value="{{ old('max_per_order', 5) }}"
                            min="1"
                            placeholder="5"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_per_order') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_per_order') border-red-500 @enderror" 
                            required>
                     <p class="text-xs text-gray-500 mt-1">Maks tiket yang dapat dibeli oleh 1 pembeli.</p>
                     @error('max_per_order')
@@ -134,7 +128,6 @@
                 </div>
             </div>
 
-            <!-- Sales Period -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <!-- Sales Start -->
                 <div>
@@ -145,7 +138,7 @@
                            id="sales_start" 
                            name="sales_start" 
                            value="{{ old('sales_start') }}"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_start') border-red-500 @enderror" style="line-height: 1.5rem;"
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_start') border-red-500 @enderror" style="line-height: 1.5rem;"
                            required>
                     @error('sales_start')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -161,7 +154,7 @@
                            id="sales_end" 
                            name="sales_end" 
                            value="{{ old('sales_end') }}"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_end') border-red-500 @enderror" style="line-height: 1.5rem;"
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_end') border-red-500 @enderror" style="line-height: 1.5rem;"
                            required>
                     @error('sales_end')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

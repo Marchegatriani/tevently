@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    /**
-     * Display homepage untuk user registered
-     */
+
     public function home()
     {
         $featuredEvents = Event::with(['category', 'organizer'])
@@ -26,12 +24,9 @@ class EventController extends Controller
         return view('user.home', compact('featuredEvents'));
     }
 
-    /**
-     * Display event catalog untuk user registered
-     */
+
     public function index(Request $request)
     {
-        // Base query dengan eager loading
         $events = Event::with(['category', 'organizer'])
             ->where('status', 'published')
             ->where('event_date', '>=', now()->toDateString())
@@ -65,31 +60,24 @@ class EventController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        // Get all categories
         $categories = Category::all();
 
         return view('user.events.index', compact('events', 'categories'));
     }
 
-    /**
-     * Display event detail untuk user registered
-     */
-        public function show(Event $event)
-    {
-        // Load relationships
+
+    public function show(Event $event) {
         $event->load(['category', 'organizer', 'tickets' => function($query) {
             $query->where('is_active', true)
                 ->where('sales_start', '<=', now())
                 ->where('sales_end', '>=', now());
         }]);
 
-        // Check if user has favorited this event
         $isFavorited = false;
         if (Auth::check()) {
             $isFavorited = Auth::user()->favoriteEvents()->where('event_id', $event->id)->exists();
         }
 
-        // Get related events (same category, upcoming, published, exclude current event)
         $relatedEvents = Event::where('status', 'published')
             ->where('category_id', $event->category_id)
             ->where('id', '!=', $event->id)

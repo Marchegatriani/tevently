@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    /**
-     * Display a listing of favorite events
-     */
     public function index()
     {
         $favorites = Favorite::where('user_id', Auth::id())
@@ -25,12 +22,8 @@ class FavoriteController extends Controller
         return view('user.favorites.index', compact('favorites'));
     }
 
-    /**
-     * Add event to favorites
-     */
     public function store(Request $request, Event $event)
     {
-        // Check if already favorited
         $existingFavorite = Favorite::where('user_id', Auth::id())
                                    ->where('event_id', $event->id)
                                    ->first();
@@ -39,7 +32,6 @@ class FavoriteController extends Controller
             return back()->with('error', 'Event already in favorites!');
         }
 
-        // Create new favorite
         Favorite::create([
             'user_id' => Auth::id(),
             'event_id' => $event->id,
@@ -48,9 +40,6 @@ class FavoriteController extends Controller
         return back()->with('success', 'Event added to favorites!');
     }
 
-    /**
-     * Remove event from favorites
-     */
     public function destroy(Event $event)
     {
         $favorite = Favorite::where('user_id', Auth::id())
@@ -66,9 +55,6 @@ class FavoriteController extends Controller
         return back()->with('success', 'Event removed from favorites!');
     }
 
-    /**
-     * Toggle favorite status
-     */
     public function toggle(Request $request, Event $event)
     {
         $favorite = Favorite::where('user_id', Auth::id())
@@ -100,9 +86,6 @@ class FavoriteController extends Controller
         return back()->with('success', $message);
     }
 
-    /**
-     * Get favorites count (for AJAX)
-     */
     public function count()
     {
         $count = Favorite::where('user_id', Auth::id())->count();
@@ -110,9 +93,6 @@ class FavoriteController extends Controller
         return response()->json(['count' => $count]);
     }
 
-    /**
-     * Clear all favorites
-     */
     public function clear()
     {
         Favorite::where('user_id', Auth::id())->delete();

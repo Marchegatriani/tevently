@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -14,7 +13,6 @@
 
 <div class="space-y-6">
     
-    <!-- Tombol Kembali -->
     <div class="flex justify-start">
         <a href="{{ route('organizer.orders.index') }}" class="bg-gray-300 text-custom-dark px-5 py-2 rounded-xl font-semibold hover:bg-gray-400 transition shadow-md">
             ← Kembali ke Daftar Pesanan
@@ -23,7 +21,6 @@
 
     <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
         
-        <!-- Header Informasi Pesanan -->
         <div class="flex flex-wrap items-start justify-between border-b border-gray-100 pb-4 mb-6">
             <div class="mb-4 md:mb-0">
                 <h3 class="text-2xl font-extrabold text-custom-dark mb-1">Pesanan #{{ $order->id }}</h3>
@@ -48,7 +45,6 @@
             </div>
         </div>
 
-        <!-- Detail Item -->
         <div class="mb-8">
             <h4 class="text-xl font-bold text-custom-dark mb-4 border-b pb-2">Detail Pembelian</h4>
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm">
@@ -77,14 +73,12 @@
             </dl>
         </div>
 
-        <!-- Aksi -->
         <div class="mt-6 pt-4 border-t border-gray-100">
             <h4 class="text-xl font-bold text-custom-dark mb-4">Aksi Cepat</h4>
             
             <div class="flex gap-4">
                 @if($order->status === 'pending')
                     
-                    <!-- Approve -->
                     <form method="POST" action="{{ route('organizer.orders.approve', $order->id) }}">
                         @csrf
                         <button class="px-5 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition shadow-md">
@@ -92,7 +86,6 @@
                         </button>
                     </form>
                     
-                    <!-- Cancel / Reject -->
                     <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
                         @csrf
                         <button class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md"
@@ -103,7 +96,6 @@
                     
                 @elseif($order->status === 'approved' || $order->status === 'confirmed')
                     
-                    <!-- Cancel / Reject (Post-approval) -->
                     <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
                         @csrf
                         <button class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md"

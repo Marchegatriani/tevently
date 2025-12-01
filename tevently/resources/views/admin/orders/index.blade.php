@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-soft-pink-light { background-color: #f7c2ca; }
@@ -31,7 +30,6 @@
                 <tbody class="divide-y divide-gray-100">
                     @foreach($orders as $index => $order)
                         <tr class="hover:bg-gray-50 transition">
-                            {{-- FIXED: Menghitung nomor urut dengan pagination --}}
                             <td class="p-4 font-semibold text-gray-700">{{ $orders->firstItem() + $index }}</td>
                             
                             <td class="p-4">
@@ -57,7 +55,6 @@
                                 </span>
                             </td>
                             
-                            {{-- FIXED: Menggunakan total_amount --}}
                             <td class="p-4 font-bold text-main-purple">
                                 Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
                             </td>

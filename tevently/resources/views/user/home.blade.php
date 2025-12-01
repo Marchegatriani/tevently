@@ -4,14 +4,12 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
 </style>
 
 <div class="font-sans">
 
-    <!-- Bagian Hero -->
     <div class="bg-gradient-to-br from-[#f7c2ca] to-[#cc8db3] text-custom-dark rounded-xl shadow-lg -mt-4 mb-10 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
             <div class="text-center">
@@ -22,7 +20,6 @@
                     Cari dan pesan tiket untuk acara terbaik yang terjadi di dekat Anda.
                 </p>
                 
-                <!-- Search Bar -->
                 <form action="{{ route('user.events.index') }}" method="GET" class="max-w-2xl mx-auto">
                     <div class="relative">
                         <input type="text" 
@@ -38,7 +35,6 @@
         </div>
     </div>
 
-    <!-- Featured Events -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex justify-between items-center mb-8 border-b pb-3">
             <h2 class="text-3xl font-bold text-custom-dark">Acara Unggulan</h2>
@@ -52,7 +48,6 @@
                 @foreach($featuredEvents as $event)
                     <a href="{{ route('user.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-2 transition-all duration-300 border border-gray-100">
                         
-                        <!-- Image/Placeholder -->
                         <div class="h-48 overflow-hidden relative">
                             @if($event->image_url)
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">

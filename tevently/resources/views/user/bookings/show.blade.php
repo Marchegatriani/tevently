@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -14,14 +13,11 @@
 
 <div class="max-w-3xl mx-auto px-4 py-8">
     <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-        
-        <!-- Header -->
+
         <h2 class="text-2xl font-bold text-custom-dark mb-1">Pemesanan #{{ $order->id }}</h2>
         <p class="text-gray-600 mb-6 border-b pb-4">Acara: <strong class="text-main-purple">{{ $order->event->title ?? '-' }}</strong></p>
 
-        <!-- Detail Pemesanan -->
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm">
-            
             <div class="md:col-span-2 border-b border-gray-100 pb-2">
                 <dt class="text-lg font-semibold text-custom-dark">Jenis Tiket</dt>
                 <dd class="text-2xl font-extrabold text-main-purple">{{ $order->ticket->name ?? '-' }}</dd>
@@ -61,7 +57,6 @@
 
         </dl>
 
-        <!-- Total -->
         <div class="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
             <span class="text-xl font-bold text-custom-dark">Total Pembayaran</span>
             <span class="text-3xl font-extrabold text-pink-accent">Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}</span>

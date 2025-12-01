@@ -7,7 +7,7 @@ use App\Models\Event;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB; // Diperlukan untuk storeWithPendingEvent
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -41,23 +41,18 @@ class EventController extends Controller
             'status' => 'required|in:draft,published',
         ]);
 
-        // assign current user as organizer (admin)
         $data['organizer_id'] = $request->user()?->id;
 
-        // Clear any previous event data from session
         $request->session()->forget('pending_event');
 
-        // handle image upload (Store temporary path if any)
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('events/pending', 'public');
             $data['image_url'] = $imagePath;
         }
 
-        // Store validated data in session instead of creating the event
         $request->session()->put('pending_event', $data);
 
-        // Redirect to the route for creating a ticket for a pending event
         return redirect()->route('admin.tickets.create_for_pending_event')
             ->with('success', 'Detail event disimpan sementara. Sekarang, tambahkan tiket pertama untuk menyelesaikan pembuatan event.');
     }
@@ -89,7 +84,6 @@ class EventController extends Controller
             'status' => 'required|in:draft,published,cancelled,completed',
         ]);
 
-        // prevent changing organizer accidentally
         unset($data['organizer_id']);
         $event->update($data);
 
@@ -99,12 +93,10 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        // delete stored image if present
         if ($event->image_url) {
             Storage::disk('public')->delete($event->image_url);
         }
 
-        // Delete tickets first (orders will cascade delete if foreign keys are set, otherwise handle orders explicitly)
         $event->tickets()->delete();
         $event->delete();
 

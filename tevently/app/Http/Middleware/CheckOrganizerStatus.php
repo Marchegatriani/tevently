@@ -12,12 +12,10 @@ class CheckOrganizerStatusOrganizer
     {
         $user = $request->user();
 
-        // Not logged in -> redirect to login
         if (!$user) {
             return redirect()->route('login');
         }
 
-        // Izinkan akses ke pending/rejected page dan logout/cancel
         $allowedRoutes = [
             'organizer.pending',
             'organizer.rejected',
@@ -29,17 +27,14 @@ class CheckOrganizerStatusOrganizer
             return $next($request);
         }
 
-        // Check organizer status - PENDING
         if ($user->status === 'pending') {
             return redirect()->route('organizer.pending');
         }
 
-        // Check organizer status - REJECTED
         if ($user->status === 'rejected') {
             return redirect()->route('organizer.rejected');
         }
 
-        // Check if user is organizer with approved status
         if ($user->role !== 'organizer' || $user->status !== 'approved') {
             abort(403, 'Unauthorized access. Approved organizer only.');
         }

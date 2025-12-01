@@ -4,13 +4,11 @@
 @section('heading', 'Kelola Pengguna')
 @section('subheading', 'Ringkasan dan kontrol pengguna sistem')
 
-{{-- Menghapus tombol + Tambah Pengguna Baru --}}
 @section('header-actions')
 @endsection
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -19,8 +17,6 @@
 
 <div class="py-2">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        
-        <!-- Alert Messages -->
         @if(session('success'))
             <div class="mb-4 bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded-xl relative font-medium">
                 {{ session('success') }}
@@ -161,7 +157,6 @@
                                     <!-- Actions -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         @if($user->status === 'pending')
-                                            <!-- Approve/Reject Actions for Pending Requests -->
                                             <div class="flex justify-end gap-3">
                                                 <!-- Approve Button -->
                                                 <form method="POST" action="{{ route('admin.users.approve', $user) }}">
@@ -183,7 +178,6 @@
                                                 </form>
                                             </div>
                                         @else
-                                            {{-- Aksi Dihapus Sesuai Permintaan (Hanya Tampilkan Tanda '-' jika tidak ada aksi) --}}
                                             <span class="text-gray-400">-</span>
                                         @endif
                                     </td>

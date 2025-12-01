@@ -9,35 +9,21 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of tickets for an event
-     */
     public function index(Event $event)
     {
-        // Authorization: only owner can view
         
         $tickets = $event->tickets()->latest()->get();
         
         return view('organizer.tickets.index', compact('event', 'tickets'));
     }
 
-    /**
-     * Show the form for creating a new ticket
-     */
     public function create(Event $event)
     {
-        // Authorization: only owner can create
-
         return view('organizer.tickets.create', compact('event'));
     }
 
-    /**
-     * Store a newly created ticket
-     */
     public function store(Request $request, Event $event)
     {
-        // Authorization: only owner can create
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -55,12 +41,8 @@ class TicketController extends Controller
             ->with('success', 'Ticket created successfully!');
     }
 
-    /**
-     * Show the form for editing a ticket
-     */
     public function edit(Event $event, Ticket $ticket)
     {
-        // Verify ticket belongs to event
         if ($ticket->event_id !== $event->id) {
             abort(404);
         }
@@ -68,13 +50,8 @@ class TicketController extends Controller
         return view('organizer.tickets.edit', compact('event', 'ticket'));
     }
 
-    /**
-     * Update the specified ticket
-     */
     public function update(Request $request, Event $event, Ticket $ticket)
     {
-        
-        // Verify ticket belongs to event
         if ($ticket->event_id !== $event->id) {
             abort(404);
         }
@@ -103,13 +80,9 @@ class TicketController extends Controller
             ->with('success', 'Ticket updated successfully!');
     }
 
-    /**
-     * Remove the specified ticket
-     */
     public function destroy(Event $event, Ticket $ticket)
     {
         
-        // Verify ticket belongs to event
         if ($ticket->event_id !== $event->id) {
             abort(404);
         }
@@ -125,13 +98,8 @@ class TicketController extends Controller
             ->with('success', 'Ticket deleted successfully!');
     }
 
-    /**
-     * Toggle ticket active status
-     */
     public function toggleActive(Event $event, Ticket $ticket)
     {
-        
-        // Verify ticket belongs to event
         if ($ticket->event_id !== $event->id) {
             abort(404);
         }

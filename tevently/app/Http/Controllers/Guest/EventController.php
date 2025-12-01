@@ -9,12 +9,8 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    /**
-     * Display homepage with featured events
-     */
     public function home()
     {
-        // Ambil 6 events terbaru yang published
         $featuredEvents = Event::with(['category', 'organizer'])
             ->where('status', 'published')
             ->where('event_date', '>=', now())
@@ -25,21 +21,16 @@ class EventController extends Controller
         return view('guest.home', compact('featuredEvents'));
     }
 
-    /**
-     * Display event catalog/list
-     */
     public function index(Request $request)
     {
         $query = Event::with(['category', 'organizer'])
             ->where('status', 'published')
             ->where('event_date', '>=', now());
 
-        // Filter by category
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 
-        // Search by title or location
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -48,7 +39,6 @@ class EventController extends Controller
             });
         }
 
-        // Filter by date range
         if ($request->filled('date_from')) {
             $query->whereDate('event_date', '>=', $request->date_from);
         }
@@ -57,7 +47,6 @@ class EventController extends Controller
             $query->whereDate('event_date', '<=', $request->date_to);
         }
 
-        // Sorting
         $sortBy = $request->get('sort', 'latest');
         switch ($sortBy) {
             case 'latest':
@@ -76,21 +65,15 @@ class EventController extends Controller
 
         $events = $query->paginate(8)->withQueryString();
 
-        // Get all categories for filter
         $categories = Category::all();
 
         return view('guest.events.index', compact('events', 'categories'));
     }
 
-    /**
-     * Display event detail
-     */
     public function show(Event $event)
     {
-        // Load relationships
         $event->load(['category', 'organizer', 'tickets']);
 
-        // Check if event is published
         if ($event->status !== 'published') {
             abort(404, 'Event not found');
         }

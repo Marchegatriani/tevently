@@ -26,18 +26,6 @@ class OrderItem extends Model
         ];
     }
 
-    // Auto calculate subtotal
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($item) {
-            $item->subtotal = $item->quantity * $item->unit_price;
-        });
-    }
-
-    // ========== RELATIONSHIPS ==========
-    
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -46,5 +34,14 @@ class OrderItem extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($item) {
+            $item->subtotal = $item->quantity * $item->unit_price;
+        });
     }
 }

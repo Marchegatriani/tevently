@@ -183,7 +183,7 @@
         <!-- Kolom Kanan: Visual & Animasi (Gambar Latar Belakang Penuh) --><div class="hidden lg:block lg:w-1/2 image-placeholder h-auto flex-shrink-0">
             <!-- Gambar yang mengisi penuh kolom -->
             <img 
-                src="{{ asset('storage/tampilan/848d3c9b8c998dd23bbcdaa5e633645b.jpg') }}" 
+                src="{{ asset('storage/tampilan/tevently.jpg') }}" 
                 alt="Visual Event E-Ticketing" 
                 onerror="this.onerror=null;this.style.display='none';" 
                 class="absolute inset-0 w-full h-full object-cover z-10"

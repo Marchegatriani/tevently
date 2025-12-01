@@ -19,14 +19,12 @@ class ReportController extends Controller
         $totalEvents = Event::count();
         $totalUsers = User::count();
 
-        // Recent orders
         $recentOrders = Order::with(['user', 'event'])
             ->where('status', 'confirmed')
             ->latest()
             ->take(5)
             ->get();
 
-        // Top events by revenue
         $topEvents = Event::withCount(['orders as total_orders'])
             ->withSum(['orders as total_revenue' => function ($query) {
                 $query->where('status', 'confirmed');

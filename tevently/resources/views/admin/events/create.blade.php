@@ -13,7 +13,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
 </style>
@@ -23,12 +22,9 @@
         
         <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             @csrf
-            
-            <!-- Image Upload (Left Section) -->
             <div class="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 h-fit lg:sticky lg:top-4 lg:self-start">
                 <label for="image" class="block text-custom-dark font-bold mb-4 text-center">Gambar Event <span class="text-red-500">*</span></label>
                 
-                <!-- Image Preview Area -->
                 <div class="relative w-full max-w-xs">
                     <img id="image-preview" 
                         src="https://placehold.co/400x300/837ab6/f7c2ca?text=Upload+Gambar+(Min+3:2)" 
@@ -36,7 +32,6 @@
                         class="w-full h-48 rounded-2xl border-4 border-gray-200 object-cover cursor-pointer shadow-lg transition hover:border-[#cc8db3]" 
                         onclick="document.getElementById('image').click();">
                     
-                    <!-- Hidden File Input -->
                     <input type="file" id="image" name="image" class="hidden" onchange="previewEventImage(event);">
                 </div>
                 
@@ -46,7 +41,6 @@
                 @enderror
             </div>
             
-            <!-- Form Fields (Right Section) -->
             <div class="lg:col-span-2 space-y-6">
                 
                 @if ($errors->any())
@@ -60,7 +54,6 @@
                     </div>
                 @endif
                 
-                <!-- Title Input -->
                 <div>
                     <label for="title" class="block text-custom-dark font-semibold mb-2">Judul Event <span class="text-red-500">*</span></label>
                     <input type="text" id="title" name="title" value="{{ old('title') }}"
@@ -100,7 +93,6 @@
                     @enderror
                 </div>
 
-                <!-- Date & Time Inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Date -->
                     <div>
@@ -198,8 +190,6 @@
             preview.src = URL.createObjectURL(file);
         }
     }
-
-    // Set minimum time for end_time based on start_time
     document.addEventListener('DOMContentLoaded', () => {
         const startTimeInput = document.getElementById('start_time');
         const endTimeInput = document.getElementById('end_time');
@@ -208,12 +198,10 @@
             startTimeInput.addEventListener('change', function() {
                 endTimeInput.min = this.value;
                 
-                // Jika waktu selesai kurang dari waktu mulai, reset waktu selesai
                 if (endTimeInput.value && endTimeInput.value < this.value) {
                     endTimeInput.value = '';
                 }
             });
-            // Jalankan sekali saat dimuat untuk mengatur minimum jika ada nilai default
             endTimeInput.min = startTimeInput.value;
         }
     });

@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -15,11 +14,7 @@
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Main Content (2/3) -->
         <div class="lg:col-span-2 space-y-8 order-2 lg:order-1">
-            
-            <!-- Event Image & Basic Info -->
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                 <div class="h-96 relative">
                     @if($event->image_url)
@@ -44,7 +39,6 @@
 
                     <h1 class="text-3xl font-bold text-custom-dark mb-6">{{ $event->title }}</h1>
                     
-                    <!-- Meta Details -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm">
                         
                         <div class="flex items-start gap-3">
@@ -54,7 +48,7 @@
                             <div>
                                 <p class="font-semibold text-custom-dark">Tanggal & Waktu</p>
                                 <p class="text-gray-600">{{ $event->event_date->format('l, d F Y') }}</p>
-                                <p class="text-gray-600">{{ $event->start_time->format('H:i') }} - {{ $event->end_time->format('H:i') }} WIB</p>
+                                <p class="text-gray-600">{{ $event->start_time->format('H:i') }} - {{ $event->end_time->format('H:i') }} WITA</p>
                             </div>
                         </div>
 
@@ -136,9 +130,7 @@
                 </div>
             </div>
 
-            <!-- Sidebar (1/3) -->
             <div class="lg:col-span-1 order-1 lg:order-2 space-y-8">
-                
                 <!-- Quick Actions / Status -->
                 <div class="bg-white rounded-3xl shadow-xl p-6 border border-gray-100 sticky top-4">
                     <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Pesan Tiket</h2>

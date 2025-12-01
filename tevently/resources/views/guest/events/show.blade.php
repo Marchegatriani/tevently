@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('guest.partials.navbar')
 
 @section('title', 'Detail Event')
 

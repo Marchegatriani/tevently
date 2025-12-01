@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -14,8 +13,6 @@
 </style>
 
 <div class="space-y-8">
-    
-    <!-- Header Welcome -->
     <div class="bg-soft-pink-light border border-[#f6a5c0]/50 rounded-xl p-6 shadow-md">
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div>
@@ -33,10 +30,8 @@
         </div>
     </div>
 
-    <!-- Statistics Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @php
-            // Mengambil data statistik dari model User events relationship
             $userEvents = auth()->user()->events();
             $totalEvents = $userEvents->count();
             $publishedEvents = $userEvents->where('status', 'published')->count();

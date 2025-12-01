@@ -4,43 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Tevently') - Platform Manajemen Event</title>
-    <!-- Tambahkan font Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Latar belakang utama yang sangat terang */
         .bg-custom-light { background-color: #f6a5c0; } 
-        /* Warna teks utama (ungu gelap) */
         .text-custom-dark { color: #250e2c; } 
         body {
             font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
-<body class="bg-custom-light"> <!-- Latar belakang Body Utama #F7F7F9 -->
-    
-    <!-- Header -->
+<body class="bg-custom-light">
     <header class="bg-white shadow-md"> 
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4 flex-nowrap">
-                    <!-- Logo/Nama Aplikasi -->
                     <a href="/" class="text-2xl font-extrabold text-[#250e2c] flex items-center h-10 hover:text-[#837ab6] transition">Tevently</a>
 
-                    {{-- desktop nav: inline, no-wrap --}}
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-custom-dark ml-3 whitespace-nowrap">
-                        <!-- Navigasi Beranda -->
                         <a href="/" class="inline-flex items-center h-9 px-3 rounded-xl transition
                             hover:bg-[#9d85b6] font-semibold
                             {{ request()->is('/') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Beranda</a>
                         
-                        <!-- Navigasi Jelajahi Event -->
                         <a href="{{ route('guest.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition
                             hover:bg-[#9d85b6] font-semibold
                             {{ request()->routeIs('guest.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
                     </nav>
 
-                    {{-- mobile toggle --}}
                     <div class="md:hidden">
                         <button id="guest-nav-toggle" type="button" class="inline-flex items-center justify-center p-2 rounded-lg text-[#250e2c] hover:bg-gray-100 focus:outline-none transition" aria-expanded="false" aria-controls="guest-mobile-nav">
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,7 +40,6 @@
                     </div>
                 </div>
 
-                {{-- auth buttons (desktop) --}}
                 <div class="hidden md:flex items-center gap-3">
                     <a href="{{ route('login') }}" class="text-sm text-custom-dark hover:text-[#837ab6] font-medium transition">
                         Login
@@ -62,14 +51,12 @@
             </div>
         </div>
 
-        {{-- mobile panel --}}
         <div id="guest-mobile-nav" class="md:hidden bg-white border-t border-gray-100 shadow-sm hidden">
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-custom-dark">
                     <a href="/" class="block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->is('/') ? 'bg-[#f6a5c0]/50 font-medium' : '' }}">Beranda</a>
                     <a href="{{ route('guest.events.index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->routeIs('guest.events.*') ? 'bg-[#f6a5c0]/50 font-medium' : '' }}">Jelajah Event</a>
 
-                    {{-- mobile auth buttons --}}
                     <div class="mt-2 pt-2 border-t">
                         <a href="{{ route('login') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 text-custom-dark font-medium">
                             Login
@@ -83,7 +70,6 @@
         </div>
 
         <script>
-            // Mobile navigation toggle script
             (() => {
                 const btn = document.getElementById('guest-nav-toggle');
                 const panel = document.getElementById('guest-mobile-nav');
@@ -97,12 +83,10 @@
         </script>
     </header>
 
-    <!-- Main Content -->
     <main>
         @yield('content')
     </main>
 
-    <!-- Footer -->
     <footer class="bg-white text-custom-dark py-12 mt-20 border-t border-[#f7c2ca]"> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">

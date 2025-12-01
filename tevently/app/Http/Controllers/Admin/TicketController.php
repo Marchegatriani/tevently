@@ -10,51 +10,35 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of tickets for an event (ADMIN)
-     */
     public function index(Event $event)
     {
         $tickets = $event->tickets()->latest()->get();
         return view('admin.tickets.index', compact('event', 'tickets'));
     }
 
-    /**
-     * Show the form for creating a new ticket for an EXISTING event (ADMIN)
-     */
     public function create(Event $event)
     {
         return view('admin.tickets.create', compact('event'));
     }
 
-    /**
-     * Show the form for creating the first ticket for a new, PENDING event.
-     */
     public function createForPendingEvent(Request $request)
     {
         if (!$request->session()->has('pending_event')) {
             return redirect()->route('admin.events.create')->with('error', 'Silakan isi detail event terlebih dahulu.');
         }
 
-        // Create a temporary Event object for the view, without saving it
         $eventData = $request->session()->get('pending_event');
         $event = new Event($eventData);
-        // We set exists to false so the form knows it's a new event
         $event->exists = false; 
 
         return view('admin.tickets.create', compact('event'));
     }
 
-    /**
-     * Store a newly created ticket to an EXISTING event (ADMIN)
-     */
     public function store(Request $request, Event $event)
     {
-        // 1. Ambil semua input dan bungkus dalam format array yang diharapkan
         $ticketData = $request->except('_token');
         $request->merge(['tickets' => [$ticketData]]);
 
-        // 2. Validasi data yang sudah di-merge
         $validatedData = $request->validate([
             'tickets' => 'required|array|min:1',
             'tickets.*.name' => 'required|string|max:255',
@@ -75,9 +59,6 @@ class TicketController extends Controller
             ->with('success', 'Tiket berhasil dibuat!');
     }
 
-    /**
-     * Store the first ticket and the pending event from session (ADMIN).
-     */
     public function storeWithPendingEvent(Request $request)
     {
         if (!$request->session()->has('pending_event')) {
@@ -87,11 +68,9 @@ class TicketController extends Controller
         $eventData = $request->session()->get('pending_event');
         $eventDate = $eventData['event_date'];
 
-        // 1. Ambil semua input dan bungkus dalam format array yang diharapkan
         $ticketData = $request->except('_token');
         $request->merge(['tickets' => [$ticketData]]);
 
-        // 2. Validasi data yang sudah di-merge
         $validatedData = $request->validate([
             'tickets' => 'required|array|min:1',
             'tickets.*.name' => 'required|string|max:255',
@@ -108,10 +87,8 @@ class TicketController extends Controller
         $tickets = $validatedData['tickets'];
 
         $event = DB::transaction(function () use ($eventData, $tickets) {
-            // 1. Create Event
             $event = Event::create($eventData);
             
-            // 2. Create Tickets
             $event->tickets()->createMany($tickets);
             return $event;
         });
@@ -121,9 +98,6 @@ class TicketController extends Controller
         return redirect()->route('admin.events.show', $event)->with('success', 'Event dan tiket berhasil dibuat!');
     }
 
-    /**
-     * Show the form for editing a ticket (ADMIN)
-     */
     public function edit(Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {
@@ -133,9 +107,6 @@ class TicketController extends Controller
         return view('admin.tickets.edit', compact('event', 'ticket'));
     }
 
-    /**
-     * Update the specified ticket (ADMIN)
-     */
     public function update(Request $request, Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {
@@ -168,9 +139,6 @@ class TicketController extends Controller
             ->with('success', 'Ticket updated successfully!');
     }
 
-    /**
-     * Remove the specified ticket (ADMIN)
-     */
     public function destroy(Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {
@@ -188,9 +156,6 @@ class TicketController extends Controller
             ->with('success', 'Ticket deleted successfully!');
     }
 
-    /**
-     * Toggle ticket active status (ADMIN)
-     */
     public function toggleActive(Event $event, Ticket $ticket)
     {
         if ($ticket->event_id !== $event->id) {

@@ -6,22 +6,18 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
 </style>
 
 <div class="container mx-auto px-4 py-8 max-w-3xl">
-    
-    <!-- Success Message -->
     @if(session('success'))
         <div class="mb-6 bg-green-100 p-4 rounded-xl border border-green-400 text-green-800 font-medium shadow-sm">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Breadcrumb -->
     <div class="mb-6">
         <nav class="text-sm text-gray-600">
             <a href="{{ route('organizer.events.index') }}" class="hover:text-main-purple">Daftar Acara</a>
@@ -32,7 +28,6 @@
         </nav>
     </div>
 
-    <!-- Form -->
     <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <h1 class="text-2xl font-bold text-custom-dark mb-1">Edit Jenis Tiket: {{ $ticket->name }}</h1>
         <p class="text-gray-600 mt-1 mb-6">Untuk acara: <strong>{{ $event->title }}</strong></p>
@@ -41,7 +36,6 @@
             @csrf
             @method('PUT')
 
-            <!-- Ticket Name -->
             <div class="mb-5">
                 <label for="name" class="block text-sm font-semibold text-custom-dark mb-2">
                     Nama Tiket <span class="text-red-500">*</span>
@@ -58,7 +52,6 @@
                 @enderror
             </div>
 
-            <!-- Description -->
             <div class="mb-5">
                 <label for="description" class="block text-sm font-semibold text-custom-dark mb-2">
                     Deskripsi
@@ -73,9 +66,7 @@
                 @enderror
             </div>
 
-            <!-- Price & Quota Row -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
-                <!-- Price -->
                 <div>
                     <label for="price" class="block text-sm font-semibold text-custom-dark mb-2">
                         Harga (Rp) <span class="text-red-500">*</span>
@@ -94,7 +85,6 @@
                     @enderror
                 </div>
 
-                <!-- Quantity Available (Quota) -->
                 <div>
                     <label for="quantity_available" class="block text-sm font-semibold text-custom-dark mb-2">
                         Kuantitas Tersedia <span class="text-red-500">*</span>
@@ -113,7 +103,6 @@
                     @enderror
                 </div>
 
-                <!-- Max Per Order -->
                 <div>
                     <label for="max_per_order" class="block text-sm font-semibold text-custom-dark mb-2">
                         Maksimal per Pesanan <span class="text-red-500">*</span>
@@ -133,9 +122,7 @@
                 </div>
             </div>
 
-            <!-- Sales Period -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- Sales Start -->
                 <div>
                     <label for="sales_start" class="block text-sm font-semibold text-custom-dark mb-2">
                         Penjualan Dimulai <span class="text-red-500">*</span>
@@ -151,7 +138,6 @@
                     @enderror
                 </div>
 
-                <!-- Sales End -->
                 <div>
                     <label for="sales_end" class="block text-sm font-semibold text-custom-dark mb-2">
                         Penjualan Berakhir <span class="text-red-500">*</span>
@@ -168,7 +154,6 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="flex gap-4 pt-4 border-t border-gray-100">
                 <button type="submit" 
                         class="flex-1 bg-main-purple hover:bg-[#9d85b6] text-white font-bold py-3 px-6 rounded-xl transition shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">

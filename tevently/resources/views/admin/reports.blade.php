@@ -6,17 +6,15 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
     .bg-soft-pink-light { background-color: #f7c2ca; }
 </style>
 
-<!-- Statistics Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-2">
     
-    <!-- Total Revenue -->
+    <!-- Total Pembelian -->
     <div class="bg-gradient-to-br from-[#837ab6] to-[#9d85b6] rounded-2xl p-6 text-white shadow-xl">
         <div class="flex items-center justify-between">
             <div>

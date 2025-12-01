@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of user orders
-     */
+
     public function index()
     {
         $orders = Order::where('user_id', Auth::id())
@@ -20,7 +18,6 @@ class OrderController extends Controller
                       ->latest()
                       ->paginate(10);
 
-        // Statistics
         $totalOrders = Order::where('user_id', Auth::id())->count();
         $pendingOrders = Order::where('user_id', Auth::id())->where('status', 'pending')->count();
         $confirmedOrders = Order::where('user_id', Auth::id())->where('status', 'confirmed')->count();
@@ -28,12 +25,8 @@ class OrderController extends Controller
         return view('user.orders.index', compact('orders', 'totalOrders', 'pendingOrders', 'confirmedOrders'));
     }
 
-    /**
-     * Display the specified order
-     */
     public function show(Order $order)
     {
-        // Authorization - user hanya bisa lihat order sendiri
         if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access.');
         }
@@ -43,12 +36,8 @@ class OrderController extends Controller
         return view('user.orders.show', compact('order'));
     }
 
-    /**
-     * Show the form for cancelling an order.
-     */
     public function showCancelForm(Order $order)
     {
-        // Authorization - user hanya bisa lihat order sendiri
         if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access.');
         }
@@ -59,17 +48,13 @@ class OrderController extends Controller
 
         return view('user.orders.cancel', compact('order'));
     }
-    /**
-     * Cancel an order
-     */
+
     public function cancel(Order $order)
     {
-        // Authorization
         if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access.');
         }
 
-        // Hanya order pending yang bisa dicancel
         if ($order->status !== 'pending') {
             return back()->with('error', 'Only pending orders can be cancelled.');
         }
@@ -78,7 +63,6 @@ class OrderController extends Controller
             'status' => 'cancelled'
         ]);
 
-        // Kembalikan kuota ticket
         foreach ($order->orderItems as $item) {
             $ticket = $item->ticket;
             $ticket->quantity_sold = max(0, $ticket->quantity_sold - $item->quantity);
@@ -88,30 +72,19 @@ class OrderController extends Controller
         return redirect()->route('user.orders.show', $order)->with('success', 'Order cancelled successfully.');
     }
 
-    /**
-     * Download e-ticket (jika order confirmed)
-     */
     public function downloadTicket(Order $order)
     {
-        // Authorization
         if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access.');
         }
 
-        // Hanya order confirmed yang bisa download ticket
         if ($order->status !== 'confirmed') {
             return back()->with('error', 'Only confirmed orders can download tickets.');
         }
 
-        // Logic untuk generate PDF e-ticket
-        // return $this->generateETicket($order);
-
         return back()->with('success', 'E-ticket download feature coming soon.');
     }
 
-    /**
-     * Get order statistics (for dashboard)
-     */
     public function statistics()
     {
         $stats = [

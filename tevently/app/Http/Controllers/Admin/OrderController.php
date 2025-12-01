@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Tampilkan list orders dengan pagination
     public function index(Request $request)
     {
         $query = Order::with(['event', 'user', 'orderItems.ticket'])->latest();
@@ -23,7 +22,6 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    // Tampilkan single order
     public function show($id)
     {
         $order = Order::with(['event', 'user', 'orderItems.ticket'])->findOrFail($id);
@@ -36,9 +34,7 @@ class OrderController extends Controller
         if ($order->status !== 'pending') {
             return back()->with('info', 'Order tidak dalam status pending.');
         }
-        
-        // **FIX KRUSIAL:** Menggunakan update(['status' => 'approved']) 
-        // Ini memaksa Eloquent untuk menghasilkan query SQL dengan kutipan string yang benar.
+
         $order->update(['status' => 'confirmed']);
 
         return back()->with('success', 'Order berhasil dikonfirmasi oleh admin.');
@@ -53,7 +49,6 @@ class OrderController extends Controller
         }
 
         DB::transaction(function () use ($order) {
-            // Kembalikan stok untuk setiap ticket dalam order
             foreach ($order->orderItems as $orderItem) {
                 if ($orderItem->ticket) {
                     $ticket = $orderItem->ticket;
@@ -62,7 +57,6 @@ class OrderController extends Controller
                 }
             }
             
-            // Menggunakan update(['status' => 'cancelled'])
             $order->update(['status' => 'cancelled']);
         });
 

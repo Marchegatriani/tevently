@@ -1,116 +1,82 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Organizer\OrganizerRequestController;
-use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Guest\EventController as GuestEventController;
+
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\EventController as UserEventController;
-use App\Http\Controllers\Admin\EventController as AdminEventController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\ReportController as AdminReportController;
-use App\Http\Controllers\Admin\TicketController as AdminTicketController;
-use App\Http\Controllers\Organizer\OrgEventController;
-use App\Http\Controllers\Organizer\DashboardController;
-use App\Http\Controllers\Organizer\TicketController as OrganizerTicketController;
-use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
-use Illuminate\Support\Facades\Route;
 
-// ========================================
-// GUEST ROUTES (Public - Tanpa Login)
-// ========================================
+use App\Http\Controllers\Organizer\DashboardController;
+use App\Http\Controllers\Organizer\OrganizerRequestController;
+use App\Http\Controllers\Organizer\OrgEventController;
+use App\Http\Controllers\Organizer\TicketController as OrganizerTicketController;
+use App\Http\Controllers\Organizer\OrderController as OrganizerOrderController;
 
-Route::name('guest.')->group(function () {
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\TicketController as AdminTicketController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+
     Route::get('/', [GuestEventController::class, 'home'])->name('home');
+    
+// Guest
+Route::prefix('guest')->name('guest.')->group(function () {
     Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
     Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
 });
 
-// ========================================
-// AUTH ROUTES (Login/Register - dari Breeze)
-// ========================================
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-// ========================================
-// ORGANIZER STATUS ROUTES (Pending/Rejected)
-// ========================================
-
+// Organizer
 Route::middleware(['auth'])->group(function () {
-    Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])
-        ->name('organizer.pending');
-    
-    Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])
-        ->name('organizer.rejected');
-    
-    Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])
-        ->name('organizer.delete-account');
-        
-    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])
-        ->name('organizer.request');
+    Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])->name('organizer.pending');
+    Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])->name('organizer.rejected');
+    Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])->name('organizer.delete-account');
+    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
 });
 
-// ========================================
-// AUTHENTICATED USER ROUTES
-// ========================================
 
+// USer
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // Dashboard redirect
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
-        
-        // Cek status pending/rejected PERTAMA
-        if ($user->status === 'pending') {
-            return redirect()->route('organizer.pending');
-        }
-        
-        if ($user->status === 'rejected') {
-            return redirect()->route('organizer.rejected');
-        }
-        
-        // Redirect berdasarkan role
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role === 'organizer') {
-            return redirect()->route('organizer.dashboard');
-        } else {
-            return redirect()->route('user.home');
-        }
-    })->name('dashboard');
-
-    // Profile Routes (dari Breeze)
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // USER ROUTES GROUP
+    // User home
     Route::prefix('user')->name('user.')->group(function () {
-        // HOME
         Route::get('/', [UserEventController::class, 'home'])->name('home');
-        
-        // Events
-        Route::get('/events', [UserEventController::class, 'index'])->name('events.index');
-        Route::get('/events/search', [UserEventController::class, 'search'])->name('events.search');
-        Route::get('/events/category/{category:slug}', [UserEventController::class, 'byCategory'])->name('events.category');
-        Route::get('/events/{event}', [UserEventController::class, 'show'])->name('events.show');
-        
-        // Favorites
-        Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
-        Route::post('/favorites/{event}', [FavoriteController::class, 'store'])->name('favorites.store');
-        Route::delete('/favorites/{event}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
-        Route::post('/favorites/{event}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
-        Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('favorites.count');
-        Route::delete('/favorites', [FavoriteController::class, 'clear'])->name('favorites.clear');
-        
-        // Orders
-        Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
-        Route::get('/orders/{order}/cancel', [UserOrderController::class, 'showCancelForm'])->name('orders.cancel.confirm'); // Rute untuk menampilkan form
-        Route::delete('/orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel'); // Rute untuk memproses pembatalan
-        Route::get('/orders/{order}/download-ticket', [UserOrderController::class, 'downloadTicket'])->name('orders.download-ticket');
-        Route::get('/orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics');
+    });
+
+    // Events
+    Route::prefix('events')->name('events.')->group(function () {
+        Route::get('/', [UserEventController::class, 'index'])->name('index');
+        Route::get('/search', [UserEventController::class, 'search'])->name('search');
+        Route::get('/category/{category:slug}', [UserEventController::class, 'byCategory'])->name('category');
+        Route::get('/{event}', [UserEventController::class, 'show'])->name('show');
+    });
+
+    // Favorites
+    Route::prefix('favorites')->name('favorites.')->group(function () {
+        Route::get('/', [FavoriteController::class, 'index'])->name('index');
+        Route::post('/{event}', [FavoriteController::class, 'store'])->name('store');
+        Route::delete('/{event}', [FavoriteController::class, 'destroy'])->name('destroy');
+        Route::post('/{event}/toggle', [FavoriteController::class, 'toggle'])->name('toggle');
+        Route::get('/count', [FavoriteController::class, 'count'])->name('count');
+        Route::delete('/', [FavoriteController::class, 'clear'])->name('clear');
+    });
+
+    // Orders
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', [UserOrderController::class, 'index'])->name('index');
+        Route::get('/{order}', [UserOrderController::class, 'show'])->name('show');
+        Route::get('/{order}/cancel', [UserOrderController::class, 'showCancelForm'])->name('cancel.confirm');
+        Route::delete('/{order}/cancel', [UserOrderController::class, 'cancel'])->name('cancel');
     });
 
     // Bookings
@@ -122,92 +88,86 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-// ========================================
-// ORGANIZER ROUTES
-// ========================================
 
-Route::middleware(['auth', 'verified', 'organizer'])->prefix('organizer')->name('organizer.')->group(function () {
-    
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Events Management
-    Route::get('/events', [OrgEventController::class, 'index'])->name('events.index');
-    Route::get('/events/create', [OrgEventController::class, 'create'])->name('events.create');
-    Route::post('/events', [OrgEventController::class, 'store'])->name('events.store');
-    Route::get('/events/{event}', [OrgEventController::class, 'show'])->name('events.show');
-    Route::get('/events/{event}/edit', [OrgEventController::class, 'edit'])->name('events.edit');
-    Route::put('/events/{event}', [OrgEventController::class, 'update'])->name('events.update');
-    Route::delete('/events/{event}', [OrgEventController::class, 'destroy'])->name('events.destroy');
+// Organizer
+Route::middleware(['auth', 'verified', 'organizer'])
+    ->prefix('organizer')
+    ->name('organizer.')
+    ->group(function () {
 
-    // Tickets Management untuk ORGANIZER
-    Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
-        Route::get('/', [OrganizerTicketController::class, 'index'])->name('index');
-        Route::get('/create', [OrganizerTicketController::class, 'create'])->name('create');
-        Route::post('/', [OrganizerTicketController::class, 'store'])->name('store');
-        Route::get('/{ticket}/edit', [OrganizerTicketController::class, 'edit'])->name('edit');
-        Route::put('/{ticket}', [OrganizerTicketController::class, 'update'])->name('update');
-        Route::delete('/{ticket}', [OrganizerTicketController::class, 'destroy'])->name('destroy');
-        Route::post('/{ticket}/toggle', [OrganizerTicketController::class, 'toggleActive'])->name('toggle');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Events
+        Route::resource('events', OrgEventController::class);
+
+        // Tickets
+        Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
+            Route::get('/', [OrganizerTicketController::class, 'index'])->name('index');
+            Route::get('/create', [OrganizerTicketController::class, 'create'])->name('create');
+            Route::post('/', [OrganizerTicketController::class, 'store'])->name('store');
+            Route::get('/{ticket}/edit', [OrganizerTicketController::class, 'edit'])->name('edit');
+            Route::put('/{ticket}', [OrganizerTicketController::class, 'update'])->name('update');
+            Route::delete('/{ticket}', [OrganizerTicketController::class, 'destroy'])->name('destroy');
+            Route::post('/{ticket}/toggle', [OrganizerTicketController::class, 'toggleActive'])->name('toggle');
+        });
+
+        // Orders
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/', [OrganizerOrderController::class, 'index'])->name('index');
+            Route::get('/{order}', [OrganizerOrderController::class, 'show'])->name('show');
+            Route::post('/{order}/approve', [OrganizerOrderController::class, 'approve'])->name('approve');
+            Route::post('/{order}/cancel', [OrganizerOrderController::class, 'cancel'])->name('cancel');
+        });
     });
 
-    // Orders Management
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
-        Route::post('/{order}/approve', [OrderController::class, 'approve'])->name('approve');
-        Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('cancel');
+
+// Admin
+Route::middleware(['auth', 'verified', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Users
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::patch('/{user}/approve', [UserController::class, 'approve'])->name('approve');
+            Route::patch('/{user}/reject', [UserController::class, 'reject'])->name('reject');
+        });
+
+        // Events
+        Route::resource('events', AdminEventController::class);
+        Route::get('events/create', [AdminEventController::class, 'create'])->name('events.create');
+
+        // Pending event first-ticket creation
+        Route::get('tickets/create-for-pending-event', [AdminTicketController::class, 'createForPendingEvent'])
+            ->name('tickets.create_for_pending_event');
+        Route::post('tickets/store-with-pending-event', [AdminTicketController::class, 'storeWithPendingEvent'])
+            ->name('tickets.store_with_pending_event');
+
+        // Tickets
+        Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
+            Route::get('/', [AdminTicketController::class, 'index'])->name('index');
+            Route::get('/create', [AdminTicketController::class, 'create'])->name('create');
+            Route::post('/', [AdminTicketController::class, 'store'])->name('store');
+            Route::get('/{ticket}/edit', [AdminTicketController::class, 'edit'])->name('edit');
+            Route::put('/{ticket}', [AdminTicketController::class, 'update'])->name('update');
+            Route::delete('/{ticket}', [AdminTicketController::class, 'destroy'])->name('destroy');
+            Route::post('/{ticket}/toggle', [AdminTicketController::class, 'toggleActive'])->name('toggle');
+        });
+
+        // Orders
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/', [AdminOrderController::class, 'index'])->name('index');
+            Route::get('/{order}', [AdminOrderController::class, 'show'])->name('show');
+            Route::post('/{order}/approve', [AdminOrderController::class, 'approve'])->name('approve');
+            Route::post('/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('cancel');
+        });
+
+        // Reports
+        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports');
     });
-});
-
-// ========================================
-// ADMIN ROUTES
-// ========================================
-
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    
-    Route::get('/dashboard', function () {
-        // Asumsi logic stats ada di controller
-        return view('admin.dashboard');
-    })->name('dashboard');
-
-    // Users Management
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create'); // Added missing create route
-    Route::post('/users', [UserController::class, 'store'])->name('users.store'); // Added missing store route
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Added missing edit route
-    Route::patch('/users/{user}/approve', [UserController::class, 'approve'])->name('users.approve');
-    Route::patch('/users/{user}/reject', [UserController::class, 'reject'])->name('users.reject');
-
-    // Events Management
-    Route::resource('events', AdminEventController::class)->except(['create']);
-    Route::get('/events/create', [AdminEventController::class, 'create'])->name('events.create'); // Re-register create to avoid resource controller complexity
-    
-    // Route for handling form submission from the first step of event creation
-    Route::post('events', [AdminEventController::class, 'store'])->name('events.store'); // Already exists, kept for clarity
-
-    // Route for creating the first ticket for a new (pending) event
-    Route::get('tickets/create-for-pending-event', [AdminTicketController::class, 'createForPendingEvent'])->name('tickets.create_for_pending_event');
-    Route::post('tickets/store-with-pending-event', [AdminTicketController::class, 'storeWithPendingEvent'])->name('tickets.store_with_pending_event');
-
-
-    // Tickets Management untuk ADMIN
-    Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
-        Route::get('/', [AdminTicketController::class, 'index'])->name('index');
-        Route::get('/create', [AdminTicketController::class, 'create'])->name('create');
-        Route::post('/', [AdminTicketController::class, 'store'])->name('store'); // Existing events
-        Route::get('/{ticket}/edit', [AdminTicketController::class, 'edit'])->name('edit');
-        Route::put('/{ticket}', [AdminTicketController::class, 'update'])->name('update');
-        Route::delete('/{ticket}', [AdminTicketController::class, 'destroy'])->name('destroy');
-        Route::post('/{ticket}/toggle', [AdminTicketController::class, 'toggleActive'])->name('toggle');
-    });
-
-    // Orders Management
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [AdminOrderController::class, 'index'])->name('index');
-        Route::get('/{order}', [AdminOrderController::class, 'show'])->name('show');
-        Route::post('/{order}/approve', [AdminOrderController::class, 'approve'])->name('approve');
-        Route::post('/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('cancel');
-    });
-
-    Route::get('reports', [AdminReportController::class, 'index'])->name('reports');
-});
