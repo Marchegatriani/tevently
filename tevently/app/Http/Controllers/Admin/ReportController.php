@@ -36,7 +36,7 @@ class ReportController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.reports.index', compact(
+        return view('admin.reports', compact(
             'totalRevenue',
             'totalOrders', 
             'totalEvents',
@@ -44,55 +44,5 @@ class ReportController extends Controller
             'recentOrders',
             'topEvents'
         ));
-    }
-
-    public function sales()
-    {
-        // Sales report with filters
-        $query = Order::with(['user', 'event', 'orderItems.ticket'])
-            ->where('status', 'confirmed');
-
-        // Date filters
-        if (request('start_date')) {
-            $query->whereDate('created_at', '>=', request('start_date'));
-        }
-        
-        if (request('end_date')) {
-            $query->whereDate('created_at', '<=', request('end_date'));
-        }
-
-        $sales = $query->latest()->paginate(20);
-
-        // Summary
-        $totalSales = $sales->total();
-        $totalRevenue = $sales->sum('total_amount');
-
-        return view('admin.reports.sales', compact('sales', 'totalSales', 'totalRevenue'));
-    }
-
-    public function events()
-    {
-        $events = Event::withCount(['orders as total_orders'])
-            ->withSum(['orders as total_revenue' => function ($query) {
-                $query->where('status', 'confirmed');
-            }], 'total_amount')
-            ->with('organizer')
-            ->orderBy('total_revenue', 'desc')
-            ->paginate(15);
-
-        return view('admin.reports.events', compact('events'));
-    }
-
-    public function users()
-    {
-        $users = User::withCount(['orders as total_orders'])
-            ->withSum(['orders as total_spent' => function ($query) {
-                $query->where('status', 'confirmed');
-            }], 'total_amount')
-            ->having('total_orders', '>', 0)
-            ->orderBy('total_spent', 'desc')
-            ->paginate(15);
-
-        return view('admin.reports.users', compact('users'));
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('event_date');
             $table->time('start_time');
             $table->text('end_time');
-            $table->string('image_url', 255)->nullable();
+            $table->string('image_url', 255);
             $table->integer('max_attendees');
             $table->foreignId('organizer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');

@@ -16,10 +16,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight text-custom-dark">
-                    Temukan Acara Luar Biasa
+                    Event Seru Dimulai di Tevently !
                 </h1>
                 <p class="text-lg md:text-xl mb-10 text-[#837ab6] max-w-3xl mx-auto">
-                    Cari dan pesan tiket untuk acara terbaik yang terjadi di dekat Anda
+                    Cari dan pesan tiket untuk acara terbaik di sekitar Anda
                 </p>
                 
                 <!-- Search Bar -->

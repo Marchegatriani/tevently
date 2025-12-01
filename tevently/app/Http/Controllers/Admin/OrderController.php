@@ -12,7 +12,6 @@ class OrderController extends Controller
     // Tampilkan list orders dengan pagination
     public function index(Request $request)
     {
-        // Ganti 'ticket' dengan 'orderItems.ticket'
         $query = Order::with(['event', 'user', 'orderItems.ticket'])->latest();
 
         if ($request->filled('status')) {
@@ -27,7 +26,6 @@ class OrderController extends Controller
     // Tampilkan single order
     public function show($id)
     {
-        // Ganti 'ticket' dengan 'orderItems.ticket'
         $order = Order::with(['event', 'user', 'orderItems.ticket'])->findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
@@ -38,15 +36,16 @@ class OrderController extends Controller
         if ($order->status !== 'pending') {
             return back()->with('info', 'Order tidak dalam status pending.');
         }
-        $order->status = 'confirmed';
-        $order->save();
+        
+        // **FIX KRUSIAL:** Menggunakan update(['status' => 'approved']) 
+        // Ini memaksa Eloquent untuk menghasilkan query SQL dengan kutipan string yang benar.
+        $order->update(['status' => 'confirmed']);
 
         return back()->with('success', 'Order berhasil dikonfirmasi oleh admin.');
     }
 
     public function cancel($id)
     {
-        // Ganti 'ticket' dengan 'orderItems.ticket'
         $order = Order::with('orderItems.ticket')->findOrFail($id);
         
         if ($order->status === 'cancelled') {
@@ -58,14 +57,13 @@ class OrderController extends Controller
             foreach ($order->orderItems as $orderItem) {
                 if ($orderItem->ticket) {
                     $ticket = $orderItem->ticket;
-                    // Kurangi quantity_sold sesuai quantity yang dipesan
                     $ticket->quantity_sold = max(0, $ticket->quantity_sold - $orderItem->quantity);
                     $ticket->save();
                 }
             }
             
-            $order->status = 'cancelled';
-            $order->save();
+            // Menggunakan update(['status' => 'cancelled'])
+            $order->update(['status' => 'cancelled']);
         });
 
         return back()->with('success', 'Order berhasil dibatalkan oleh admin.');

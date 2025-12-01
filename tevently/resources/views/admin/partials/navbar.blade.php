@@ -57,7 +57,7 @@
                         <a href="{{ route('admin.users.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.users.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pengguna</a>
                         <a href="{{ route('admin.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.events.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Event</a>
                         <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.orders.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pesanan Tiket</a>
-                        <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.reports.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Laporan</a>
+                        <a href="{{ route('admin.reports') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.reports') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Laporan</a>
                     </nav>
 
                     {{-- mobile toggle --}}
@@ -91,7 +91,7 @@
                     <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.users.*') ? 'bg-soft-pink-light font-bold' : '' }}">Pengguna</a>
                     <a href="{{ route('admin.events.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.events.*') ? 'bg-soft-pink-light font-bold' : '' }}">Event</a>
                     <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.orders.*') ? 'bg-soft-pink-light font-bold' : '' }}">Pesanan Tiket</a>
-                    <a href="{{ route('admin.reports.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.reports.*') ? 'bg-soft-pink-light font-bold' : '' }}">Laporan</a>
+                    <a href="{{ route('admin.reports') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('admin.reports') ? 'bg-soft-pink-light font-bold' : '' }}">Laporan</a>
 
                     {{-- mobile logout --}}
                     <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-t border-gray-100">
@@ -118,7 +118,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-1">
+    <main>
         <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <!-- Breadcrumb / Heading -->
             <div class="mb-6 pb-4 border-b border-gray-100 flex justify-between items-center">

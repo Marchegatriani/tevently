@@ -31,13 +31,13 @@
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-custom-dark ml-3 whitespace-nowrap">
                         <!-- Navigasi Beranda -->
                         <a href="/" class="inline-flex items-center h-9 px-3 rounded-xl transition
-                            hover:bg-[#f6a5c0]/50
-                            {{ request()->is('/') ? 'bg-[#f6a5c0] font-semibold text-[#250e2c]' : '' }}">Beranda</a>
+                            hover:bg-[#9d85b6] font-semibold
+                            {{ request()->is('/') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Beranda</a>
                         
                         <!-- Navigasi Jelajahi Event -->
                         <a href="{{ route('guest.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition
-                            hover:bg-[#f6a5c0]/50
-                            {{ request()->routeIs('guest.events.*') ? 'bg-[#f6a5c0] font-semibold text-[#250e2c]' : '' }}">Jelajahi Event</a>
+                            hover:bg-[#9d85b6] font-semibold
+                            {{ request()->routeIs('guest.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
                     </nav>
 
                     {{-- mobile toggle --}}

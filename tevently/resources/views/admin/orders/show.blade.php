@@ -32,10 +32,6 @@
                 <table class="w-full text-sm text-gray-700">
                     <tbody>
                         <!-- Order ID -->
-                        <tr class="border-b border-gray-100">
-                            <th class="py-3 text-left font-semibold w-1/4">ID Pesanan</th>
-                            <td class="py-3 font-medium text-custom-dark">#{{ $order->id }}</td>
-                        </tr>
                         <!-- Customer -->
                         <tr class="border-b border-gray-100">
                             <th class="py-3 text-left font-semibold">Pelanggan</th>
@@ -59,7 +55,7 @@
                         <!-- Total Price -->
                         <tr class="border-b border-gray-100">
                             <th class="py-3 text-left font-semibold text-lg">Total Pembayaran</th>
-                            <td class="py-3 font-extrabold text-main-purple text-lg">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                            <td class="py-3 font-extrabold text-main-purple text-lg">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                         </tr>
                         <!-- Status -->
                         <tr class="border-b border-gray-100">

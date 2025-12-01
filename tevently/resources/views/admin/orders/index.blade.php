@@ -20,7 +20,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-soft-pink-light">
                     <tr>
-                        <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">ID Pesanan</th>
+                        <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">No.</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Pembeli</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Event Terkait</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Status</th>
@@ -29,9 +29,10 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @foreach($orders as $order)
+                    @foreach($orders as $index => $order)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-semibold text-gray-700">{{ $order->id }}</td>
+                            {{-- FIXED: Menghitung nomor urut dengan pagination --}}
+                            <td class="p-4 font-semibold text-gray-700">{{ $orders->firstItem() + $index }}</td>
                             
                             <td class="p-4">
                                 <div class="font-medium text-custom-dark">{{ $order->buyer_name ?? ($order->user->name ?? '-') }}</div>
@@ -46,6 +47,7 @@
                                 @php
                                     $statusClass = [
                                         'completed' => 'bg-green-100 text-green-800',
+                                        'approved' => 'bg-green-100 text-green-800',
                                         'pending' => 'bg-yellow-100 text-yellow-800',
                                         'cancelled' => 'bg-red-100 text-red-800',
                                     ][$order->status ?? 'pending'] ?? 'bg-gray-100 text-gray-700';
@@ -55,8 +57,9 @@
                                 </span>
                             </td>
                             
+                            {{-- FIXED: Menggunakan total_amount --}}
                             <td class="p-4 font-bold text-main-purple">
-                                Rp {{ number_format($order->total ?? 0, 0, ',', '.') }}
+                                Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
                             </td>
                             
                             <td class="p-4 text-right">

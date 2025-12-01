@@ -166,22 +166,35 @@ Route::middleware(['auth', 'verified', 'organizer'])->prefix('organizer')->name(
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard', function () {
+        // Asumsi logic stats ada di controller
         return view('admin.dashboard');
     })->name('dashboard');
 
     // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create'); // Added missing create route
+    Route::post('/users', [UserController::class, 'store'])->name('users.store'); // Added missing store route
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Added missing edit route
     Route::patch('/users/{user}/approve', [UserController::class, 'approve'])->name('users.approve');
     Route::patch('/users/{user}/reject', [UserController::class, 'reject'])->name('users.reject');
 
     // Events Management
-    Route::resource('events', AdminEventController::class);
+    Route::resource('events', AdminEventController::class)->except(['create']);
+    Route::get('/events/create', [AdminEventController::class, 'create'])->name('events.create'); // Re-register create to avoid resource controller complexity
+    
+    // Route for handling form submission from the first step of event creation
+    Route::post('events', [AdminEventController::class, 'store'])->name('events.store'); // Already exists, kept for clarity
+
+    // Route for creating the first ticket for a new (pending) event
+    Route::get('tickets/create-for-pending-event', [AdminTicketController::class, 'createForPendingEvent'])->name('tickets.create_for_pending_event');
+    Route::post('tickets/store-with-pending-event', [AdminTicketController::class, 'storeWithPendingEvent'])->name('tickets.store_with_pending_event');
+
 
     // Tickets Management untuk ADMIN
     Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
         Route::get('/', [AdminTicketController::class, 'index'])->name('index');
         Route::get('/create', [AdminTicketController::class, 'create'])->name('create');
-        Route::post('/', [AdminTicketController::class, 'store'])->name('store');
+        Route::post('/', [AdminTicketController::class, 'store'])->name('store'); // Existing events
         Route::get('/{ticket}/edit', [AdminTicketController::class, 'edit'])->name('edit');
         Route::put('/{ticket}', [AdminTicketController::class, 'update'])->name('update');
         Route::delete('/{ticket}', [AdminTicketController::class, 'destroy'])->name('destroy');
@@ -192,13 +205,9 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('index');
         Route::get('/{order}', [AdminOrderController::class, 'show'])->name('show');
+        Route::post('/{order}/approve', [AdminOrderController::class, 'approve'])->name('approve');
+        Route::post('/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('cancel');
     });
 
-    // Reports
-    Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('/', [AdminReportController::class, 'index'])->name('index');
-        Route::get('/sales', [AdminReportController::class, 'sales'])->name('sales');
-        Route::get('/events', [AdminReportController::class, 'events'])->name('events');
-        Route::get('/users', [AdminReportController::class, 'users'])->name('users');
-    });
+    Route::get('reports', [AdminReportController::class, 'index'])->name('reports');
 });

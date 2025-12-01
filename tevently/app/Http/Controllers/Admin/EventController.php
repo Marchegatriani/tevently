@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB; // Diperlukan untuk storeWithPendingEvent
 
 class EventController extends Controller
 {
@@ -26,49 +27,40 @@ class EventController extends Controller
     }
 
     public function store(Request $request)
-{
-    $data = $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'category_id' => 'required|exists:categories,id',
-        'location' => 'required|string|max:255',
-        'event_date' => 'required|date',
-        'start_time' => 'required',
-        'end_time' => 'required',
-        'max_attendees' => 'required|integer|min:1',
-        'image' => 'nullable|image|max:2048',
-        'status' => 'required|in:draft,published',
-    ]);
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'location' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'max_attendees' => 'required|integer|min:1',
+            'image_url' => 'required|image|max:2048',
+            'status' => 'required|in:draft,published',
+        ]);
 
-    // assign current user as organizer (admin) if not provided
-    $data['organizer_id'] = $data['organizer_id'] ?? $request->user()?->id;
+        // assign current user as organizer (admin)
+        $data['organizer_id'] = $request->user()?->id;
 
-    // handle image upload
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('events', 'public');
-    }
+        // Clear any previous event data from session
+        $request->session()->forget('pending_event');
 
-    // Create event
-    $event = Event::create($data);
-
-    if ($request->has('tickets')) {
-        foreach ($request->tickets as $ticketData) {
-            $event->tickets()->create([
-                'name' => $ticketData['name'],
-                'description' => $ticketData['description'] ?? null,
-                'price' => $ticketData['price'],
-                'quantity_available' => $ticketData['quantity_available'],
-                'max_per_order' => $ticketData['max_per_order'] ?? 5,
-                'is_active' => true,
-                'sales_start' => now(),
-                'sales_end' => now()->addMonths(1), 
-            ]);
+        // handle image upload (Store temporary path if any)
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('events/pending', 'public');
+            $data['image_url'] = $imagePath;
         }
-    }
 
-    return redirect()->route('admin.tickets.create', $event)
-        ->with('success', 'Event created successfully! Now, add tickets for your event.');
-}
+        // Store validated data in session instead of creating the event
+        $request->session()->put('pending_event', $data);
+
+        // Redirect to the route for creating a ticket for a pending event
+        return redirect()->route('admin.tickets.create_for_pending_event')
+            ->with('success', 'Detail event disimpan sementara. Sekarang, tambahkan tiket pertama untuk menyelesaikan pembuatan event.');
+    }
 
     public function show(Event $event)
     {
@@ -83,57 +75,40 @@ class EventController extends Controller
     }
 
     public function update(Request $request, Event $event)
-{
-    $data = $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'category_id' => 'required|exists:categories,id',
-        'location' => 'required|string|max:255',
-        'event_date' => 'required|date',
-        'start_time' => 'required',
-        'end_time' => 'required',
-        'max_attendees' => 'required|integer|min:1',
-        'image' => 'nullable|image|max:2048',
-        'status' => 'required|in:draft,published,cancelled,completed',
-    ]);
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'location' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'max_attendees' => 'required|integer|min:1',
+            'image_url' => 'required|image|max:2048',
+            'status' => 'required|in:draft,published,cancelled,completed',
+        ]);
 
-    // prevent changing organizer accidentally
-    unset($data['organizer_id']);
+        // prevent changing organizer accidentally
+        unset($data['organizer_id']);
+        $event->update($data);
 
-    // Handle image replacement
-    if ($request->hasFile('image')) {
-        // delete old image if exists
-        if ($event->image) {
-            Storage::disk('public')->delete($event->image);
-        }
-        $data['image'] = $request->file('image')->store('events', 'public');
+        return redirect()->route('admin.events.index')
+             ->with('success', 'Event updated successfully!');
     }
-
-    $event->update($data);
-
-    // ✅ OPSIONAL: Tambahkan logic untuk update tickets jika diperlukan
-    // (Untuk sekarang fokus ke create dulu)
-
-    return redirect()->route('admin.events.index')
-         ->with('success', 'Event updated successfully!');
-}
 
     public function destroy(Event $event)
-{
-    // Check if event has tickets or orders
-    if ($event->tickets()->exists()) {
-        // ✅ Hapus semua tickets terlebih dahulu
+    {
+        // delete stored image if present
+        if ($event->image_url) {
+            Storage::disk('public')->delete($event->image_url);
+        }
+
+        // Delete tickets first (orders will cascade delete if foreign keys are set, otherwise handle orders explicitly)
         $event->tickets()->delete();
+        $event->delete();
+
+        return redirect()->route('admin.events.index')
+            ->with('success', 'Event deleted successfully!');
     }
-
-    // delete stored image if present
-    if ($event->image) {
-        Storage::disk('public')->delete($event->image);
-    }
-
-    $event->delete();
-
-    return redirect()->route('admin.events.index')
-        ->with('success', 'Event deleted successfully!');
-}
 }

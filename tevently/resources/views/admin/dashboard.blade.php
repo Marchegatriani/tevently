@@ -2,7 +2,6 @@
 
 @section('title', 'Dashboard')
 @section('heading', 'Dashboard')
-@section('subheading', 'Ringkasan dan kontrol administrasi')
 
 @section('content')
 <style>
@@ -13,7 +12,7 @@
     .bg-medium-purple { background-color: #9d85b6; }
     .bg-pink-accent { background-color: #cc8db3; }
 </style>
-
+<div class = 'px-2'>
     <!-- Welcome -->
     <div class="mb-8">
         <div class="bg-soft-pink border border-[#f6a5c0]/50 rounded-xl p-6 shadow-md">
@@ -47,9 +46,9 @@
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500 font-semibold uppercase">Penyelenggara Tertunda</p>
+                    <p class="text-xs text-gray-500 font-semibold uppercase">Pending Organizer</p>
                     {{-- Note: Logika di sini mungkin perlu disesuaikan di controller, tapi saya pertahankan logika Blade yang ada --}}
-                    <p class="text-3xl font-extrabold text-deep-purple mt-1">{{ \App\Models\User::where('role', 'user')->where('status', 'pending')->count() }}</p>
+                    <p class="text-3xl font-extrabold text-deep-purple mt-1">{{ \App\Models\User::where('role', 'organizer')->where('status', 'pending')->count() }}</p>
                 </div>
             </div>
         </div>
@@ -93,7 +92,7 @@
             </a>
 
             <!-- View Reports -->
-            <a href="{{ route('admin.reports.index') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
+            <a href="{{ route('admin.reports') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
                 <div class="bg-pink-accent text-white rounded-full p-3 shadow-lg shadow-[#cc8db3]/40">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zM9 0V9a2 2 0 01-2 2H5a2 2 0 01-2-2V0m4 6h2m-6 0h2m-2 6h2m-2 6h2m10-6h2m-2 6h2m-2-6V9a2 2 0 01-2-2H5a2 2 0 01-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"/>
@@ -115,4 +114,5 @@
             </a>
         </div>
     </div>
+</div>
 @endsection

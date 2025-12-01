@@ -73,7 +73,7 @@ public function store(Request $request)
         'end_time' => 'required|date_format:H:i|after:start_time',
         'category_id' => 'required|exists:categories,id',
         'max_attendees' => 'required|integer|min:1',
-        'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        'image_url' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         'status' => 'required|in:draft,published',
     ]);
 
@@ -98,7 +98,7 @@ public function store(Request $request)
         'start_time' => $startDateTime,
         'end_time' => $endDateTime,
         'max_attendees' => $validated['max_attendees'],
-        'image' => $imagePath,
+        'image_url' => $imagePath,
         'status' => $validated['status'],
     ]);
 

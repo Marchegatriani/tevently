@@ -53,7 +53,7 @@
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Judul Event</label>
                                 <input type="text" name="title" value="{{ old('title', $event->title) }}" 
-                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('title') border-red-500 @enderror" required>
+                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('title') border-red-500 @enderror" required>
                                 @error('title')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -62,7 +62,7 @@
                             <!-- Category -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Kategori</label>
-                                <select name="category_id" class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('category_id') border-red-500 @enderror" required>
+                                <select name="category_id" class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('category_id') border-red-500 @enderror" required>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ $event->category_id == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
@@ -78,7 +78,7 @@
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Lokasi</label>
                                 <input type="text" name="location" value="{{ old('location', $event->location) }}" 
-                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('location') border-red-500 @enderror" required>
+                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('location') border-red-500 @enderror" required>
                                 @error('location')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -88,7 +88,7 @@
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Kapasitas Maksimum</label>
                                 <input type="number" name="max_attendees" value="{{ old('max_attendees', $event->max_attendees) }}" min="1" 
-                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_attendees') border-red-500 @enderror" required>
+                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_attendees') border-red-500 @enderror" required>
                                 @error('max_attendees')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -98,7 +98,7 @@
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Tanggal Event</label>
                                 <input type="date" name="event_date" value="{{ old('event_date', $event->event_date->format('Y-m-d')) }}" 
-                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('event_date') border-red-500 @enderror" required>
+                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('event_date') border-red-500 @enderror" required>
                                 @error('event_date')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -109,7 +109,7 @@
                                 <div>
                                     <label class="block text-sm font-semibold text-custom-dark mb-2">Waktu Mulai</label>
                                     <input type="time" name="start_time" value="{{ old('start_time', $event->start_time->format('H:i')) }}" 
-                                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('start_time') border-red-500 @enderror" required>
+                                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('start_time') border-red-500 @enderror" required>
                                     @error('start_time')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
@@ -117,7 +117,7 @@
                                 <div>
                                     <label class="block text-sm font-semibold text-custom-dark mb-2">Waktu Selesai</label>
                                     <input type="time" name="end_time" value="{{ old('end_time', $event->end_time->format('H:i')) }}" 
-                                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('end_time') border-red-500 @enderror" required>
+                                        class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('end_time') border-red-500 @enderror" required>
                                     @error('end_time')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
@@ -128,7 +128,7 @@
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Deskripsi</label>
                                 <textarea name="description" rows="4" 
-                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror" required>{{ old('description', $event->description) }}</textarea>
+                                    class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror" required>{{ old('description', $event->description) }}</textarea>
                                 @error('description')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -137,7 +137,7 @@
                             <!-- Status -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Status</label>
-                                <select name="status" class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('status') border-red-500 @enderror">
+                                <select name="status" class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('status') border-red-500 @enderror">
                                     <option value="draft" {{ $event->status == 'draft' ? 'selected' : '' }}>Draft</option>
                                     <option value="published" {{ $event->status == 'published' ? 'selected' : '' }}>Published</option>
                                     <option value="cancelled" {{ $event->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
@@ -201,7 +201,7 @@
                                     <div class="flex justify-between items-start mb-2">
                                         <div class="flex-1">
                                             <h3 class="font-semibold text-custom-dark text-lg">{{ $ticket->name }}</h3>
-                                            <p class="text-sm text-gray-600 mt-1 font-bold text-[#837ab6]">
+                                            <p class="text-sm mt-1 font-bold text-[#837ab6]">
                                                 Rp {{ number_format($ticket->price, 0, ',', '.') }}
                                             </p>
                                         </div>
