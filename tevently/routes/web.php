@@ -16,6 +16,7 @@ use App\Http\Controllers\Organizer\OrgEventController;
 use App\Http\Controllers\Organizer\TicketController as OrganizerTicketController;
 use App\Http\Controllers\Organizer\OrderController as OrganizerOrderController;
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
@@ -23,7 +24,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 
     Route::get('/', [GuestEventController::class, 'home'])->name('home');
-    
+
 // Guest
 Route::prefix('guest')->name('guest.')->group(function () {
     Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
@@ -127,7 +128,7 @@ Route::middleware(['auth', 'verified', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Users
         Route::prefix('users')->name('users.')->group(function () {
