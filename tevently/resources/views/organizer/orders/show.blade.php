@@ -41,10 +41,10 @@
             <div class="text-right">
                 @php
                     $statusClasses = [
-                        'approved' => 'bg-green-500',
-                        'confirmed' => 'bg-blue-500',
-                        'pending' => 'bg-yellow-500',
-                        'cancelled' => 'bg-red-500',
+                        'expired' => 'bg-red-500',
+                        'confirmed' => 'bg-main-purple',
+                        'pending' => 'bg-pink-accent',
+                        'cancelled' => 'bg-pink-accent',
                     ];
                     $statusClass = $statusClasses[$order->status ?? 'pending'] ?? 'bg-gray-500';
                 @endphp
@@ -54,8 +54,8 @@
                     {{ strtoupper($order->status ?? '-') }}
                 </span>
 
-                <p class="text-xl font-extrabold text-main-purple mt-2">
-                    Total: Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
+                <p class="text-xl font-extrabold text-main-purple mt-4">
+                    Total: Rp{{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
                 </p>
             </div>
         </div>
@@ -132,39 +132,6 @@
                             Setujui Pesanan
                         </button>
                     </form>
-
-                    <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
-                        @csrf
-                        <button
-                            class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md flex items-center gap-1"
-                            onclick="return confirm('Apakah Anda yakin ingin menolak atau membatalkan pesanan ini? Aksi ini akan mengembalikan kuantitas tiket.')">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Batalkan Pesanan
-                        </button>
-                    </form>
-
-                @elseif($order->status === 'approved' || $order->status === 'confirmed')
-
-                    <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
-                        @csrf
-                        <button
-                            class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md flex items-center gap-1"
-                            onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan yang sudah disetujui? Aksi ini akan mengembalikan kuantitas tiket.')">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Batalkan Pesanan
-                        </button>
-                    </form>
-
                 @else
                     <p class="text-gray-600 text-sm italic">
                         Pesanan berstatus **{{ ucfirst($order->status) }}**. Tidak ada aksi lebih lanjut yang tersedia.

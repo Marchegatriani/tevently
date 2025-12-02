@@ -9,16 +9,15 @@
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
-            background-color: #F8F3F7; /* Latar belakang lembut */
+            background-color: #F8F3F7;
         }
         .text-custom-dark { 
-            color: #250e2c; /* Warna teks utama */
+            color: #250e2c;
         } 
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
     
-    <!-- Kontainer Login/Register Tunggal, Terpusat -->
     <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100">
         <div class="max-w-sm mx-auto">
             
@@ -29,11 +28,9 @@
                 <p class="text-gray-600">Daftar akun baru Anda</p>
             </div>
             
-            <!-- Form Register -->
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <!-- Nama Lengkap -->
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-custom-dark mb-2">Nama Lengkap</label>
                     <input 
@@ -50,7 +47,6 @@
                     @enderror
                 </div>
 
-                <!-- Email -->
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-medium text-custom-dark mb-2">Email</label>
                     <input 
@@ -67,7 +63,6 @@
                     @enderror
                 </div>
 
-                <!-- Pilihan Role -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-custom-dark mb-2">Jenis Akun</label>
                     <div class="grid grid-cols-2 gap-3">
@@ -107,7 +102,6 @@
                     @enderror
                 </div>
 
-                <!-- Password -->
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-custom-dark mb-2">Password</label>
                     <input 
@@ -123,7 +117,6 @@
                     @enderror
                 </div>
 
-                <!-- Confirm Password -->
                 <div class="mb-8">
                     <label for="password_confirmation" class="block text-sm font-medium text-custom-dark mb-2">Konfirmasi Password</label>
                     <input 
@@ -139,7 +132,6 @@
                     @enderror
                 </div>
 
-                <!-- Submit Button -->
                 <button 
                     type="submit" 
                     class="w-full bg-[#837ab6] hover:bg-[#9d85b6] text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-lg shadow-[#837ab6]/30 transform hover:-translate-y-0.5"
@@ -148,7 +140,6 @@
                 </button>
             </form>
 
-            <!-- Login Link -->
             <div class="mt-8 text-center border-t border-gray-100 pt-6">
                 <p class="text-sm text-gray-600">
                     Sudah punya akun? 

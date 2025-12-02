@@ -34,12 +34,12 @@
                 <div class="flex items-center gap-4 flex-nowrap">
                     <a href="{{ route('user.home') }}" class="text-2xl font-extrabold text-custom-dark flex items-center h-10 hover:text-main-purple transition">Tevently</a>
 
-                    <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
-                        <a href="{{ route('user.home') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.home') ? 'active' : '' }}">Beranda</a>
-                        <a href="{{ route('user.events.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.events.*') ? 'active' : '' }}">Daftar Acara</a>
-                        <a href="{{ route('user.favorites.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.favorites.index') ? 'active' : '' }}">Favorit Saya</a>
-                        <a href="{{ route('user.orders.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('user.orders.*') ? 'active' : '' }}">Riwayat Pesanan</a>
-                    </nav>
+                <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
+                    <a href="{{ route('user.home') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('user.home') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Beranda</a>
+                    <a href="{{ route('user.events.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('user.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Daftar Acara</a>
+                    <a href="{{ route('user.favorites.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('user.favorites.index') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Favorit Saya</a>
+                    <a href="{{ route('user.orders.index') }}" class="nav-link inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('user.orders.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Riwayat Pesanan</a>
+                </nav>
 
                     <div class="md:hidden">
                         <button id="user-nav-toggle" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none" aria-expanded="false" aria-controls="user-mobile-nav">
@@ -52,7 +52,7 @@
 
                 <div class="hidden md:block">
                     <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="flex items-center text-sm font-medium text-custom-dark hover:text-main-purple focus:outline-none bg-soft-pink-light px-4 py-2 rounded-xl transition">
+                        <button @click="open = !open" class="flex items-center text-sm text-white font-semibold focus:outline-none bg-main-purple px-4 py-2 rounded-xl transition">
                             <span>Hai, {{ auth()->user()->name ?? 'User' }}</span>
                             <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -83,11 +83,11 @@
         <div id="user-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-custom-dark">
-                    <a href="{{ route('user.home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('home') ? 'bg-soft-pink-light font-medium' : '' }}">Beranda</a>
-                    <a href="{{ route('user.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('events.*') ? 'bg-soft-pink-light font-medium' : '' }}">Daftar Acara</a>
+                    <a href="{{ route('user.home') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.home') ? 'bg-soft-pink-light font-medium' : '' }}">Beranda</a>
+                    <a href="{{ route('user.events.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.events.*') ? 'bg-soft-pink-light font-medium' : '' }}">Daftar Acara</a>
                     <a href="{{ route('user.favorites.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.favorites.index') ? 'bg-soft-pink-light font-medium' : '' }}">Favorit Saya</a>
                     <a href="{{ route('user.orders.index') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('user.orders.*') ? 'bg-soft-pink-light font-medium' : '' }}">Riwayat Pesanan</a>
-                    <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('profile.edit') ? 'bg-soft-pink-light font-medium' : '' }}">Profil Saya</a>
+                    <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('profile.*') ? 'bg-soft-pink-light font-medium' : '' }}">Profil Saya</a>
 
                     <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-t">
                         @csrf
@@ -111,12 +111,11 @@
         </script>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-1">
-        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            
-            @yield('content')
-        </div>
-    </main>
+    @yield('full-width-content')
+
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+        @yield('content')
+    </main>    
 
     <footer class="mt-auto py-6 bg-white/50 text-center text-gray-600 text-sm border-t border-gray-200">
         &copy; {{ date('Y') }} Tevently — Panel Pengguna

@@ -9,13 +9,12 @@
 </style>
 
 <div class="font-sans bg-custom-light min-h-screen p-8">
-    <!-- Event Detail Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">  
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8 border border-gray-100">
-                    @if($event->image)
-                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="w-full h-96 object-cover">
+                    @if($event->image_url)
+                        <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-96 object-cover">
                     @else
                         <div class="w-full h-96 bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">
                             <span class="text-white text-6xl font-bold">{{ substr($event->title, 0, 2) }}</span>
@@ -83,7 +82,6 @@
             </div>
 
             <div class="lg:col-span-1">
-                <!-- Ticket Options -->
                 <div class="bg-white rounded-3xl shadow-xl p-4 sticky top-4 border border-gray-100">
                     <h2 class="text-2xl font-bold text-custom-dark mb-6">Tiket Tersedia</h2>
 

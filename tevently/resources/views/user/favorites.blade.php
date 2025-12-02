@@ -12,7 +12,7 @@
     .bg-soft-pink-light { background-color: #f7c2ca; }
 </style>
 
-<div class="max-w-7xl mx-auto px-4 py-8">
+<div class="max-w-7xl mx-auto px-8 py-8">
     
     @if($favorites->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,7 +61,6 @@
                         <div class="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50/50">
                             <span class="text-sm text-gray-500">Oleh {{ $event->organizer->name ?? 'N/A' }}</span>
                             
-                            <!-- Remove from favorites button -->
                             <form action="{{ route('user.favorites.destroy', $event) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

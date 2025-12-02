@@ -28,7 +28,7 @@
                         
                         <a href="{{ route('guests.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition
                             hover:bg-[#9d85b6] font-semibold
-                            {{ request()->routeIs('events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
+                            {{ request()->routeIs('guests.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
                     </nav>
 
                     <div class="md:hidden">

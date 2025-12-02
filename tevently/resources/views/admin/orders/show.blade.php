@@ -36,7 +36,7 @@
                         </tr>
                         <tr class="border-b border-gray-100">
                             <th class="py-3 text-left font-semibold">Jenis Tiket</th>
-                            <td class="py-3 font-medium text-custom-dark">{{ $order->ticket->name }} (Rp {{ number_format($order->ticket->price, 0, ',', '.') }})</td>
+                            <td class="py-3 font-medium text-custom-dark">{{ optional($order->ticket)->name ?? 'Tiket tidak tersedia' }} (Rp {{ optional($order->ticket)->price ?? 'Tiket dihapus' }})</td>
                         </tr>
                         <tr class="border-b border-gray-100">
                             <th class="py-3 text-left font-semibold">Kuantitas</th>
@@ -51,10 +51,10 @@
                             <td class="py-3">
                                 @php
                                     $statusClasses = [
-                                        'approved' => 'bg-green-100 text-green-800',
+                                        'confirmed' => 'bg-main-purple text-white',
                                         'pending' => 'bg-yellow-100 text-yellow-800',
-                                        'cancelled' => 'bg-red-100 text-red-800',
-                                        'completed' => 'bg-blue-100 text-blue-800',
+                                        'cancelled' => 'bg-pink-accent text-red-800',
+                                        'cancelled' => 'bg-pink-accent text-white',
                                     ];
                                     $currentStatusClass = $statusClasses[$order->status] ?? 'bg-gray-100 text-gray-700';
                                 @endphp

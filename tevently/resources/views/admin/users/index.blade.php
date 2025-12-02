@@ -29,7 +29,6 @@
             </div>
         @endif
 
-        <!-- Pending Organizers Alert -->
         @if($pendingCount > 0)
             <div class="mb-6 bg-yellow-50 border border-yellow-300 rounded-xl p-4 shadow-sm">
                 <div class="flex items-center">
@@ -43,12 +42,10 @@
             </div>
         @endif
 
-        <!-- Filters & Search -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl mb-6 border border-gray-100">
             <div class="p-6">
                 <form method="GET" action="{{ route('admin.users.index') }}" class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- Search -->
                         <div>
                             <label class="block text-sm font-medium text-custom-dark mb-1">Cari</label>
                             <input type="text" name="search" value="{{ request('search') }}" 
@@ -56,7 +53,6 @@
                                    class="w-full rounded-xl border-gray-300 shadow-sm focus:border-main-purple focus:ring-main-purple transition bg-gray-50 px-4 py-2">
                         </div>
 
-                        <!-- Filter by Role -->
                         <div>
                             <label class="block text-sm font-medium text-custom-dark mb-1">Role</label>
                             <select name="role" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-main-purple focus:ring-main-purple transition bg-gray-50 px-4 py-2">
@@ -67,7 +63,6 @@
                             </select>
                         </div>
 
-                        <!-- Filter by Status -->
                         <div>
                             <label class="block text-sm font-medium text-custom-dark mb-1">Status</label>
                             <select name="status" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-main-purple focus:ring-main-purple transition bg-gray-50 px-4 py-2">
@@ -91,7 +86,6 @@
             </div>
         </div>
 
-        <!-- Users Table -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
             <div class="p-6">
                 <div class="overflow-x-auto">
@@ -108,7 +102,6 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($users as $user)
                                 <tr>
-                                    <!-- User Info -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
@@ -125,7 +118,6 @@
                                         </div>
                                     </td>
 
-                                    <!-- Role -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
                                             {{ $user->role === 'admin' ? 'bg-pink-accent/20 text-pink-accent' : '' }}
@@ -135,7 +127,6 @@
                                         </span>
                                     </td>
 
-                                    <!-- Status -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($user->status)
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -149,16 +140,13 @@
                                         @endif
                                     </td>
 
-                                    <!-- Joined Date -->
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $user->created_at->format('d M Y') }}
                                     </td>
 
-                                    <!-- Actions -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         @if($user->status === 'pending')
                                             <div class="flex justify-end gap-3">
-                                                <!-- Approve Button -->
                                                 <form method="POST" action="{{ route('admin.users.approve', $user) }}">
                                                     @csrf
                                                     @method('PATCH')
@@ -167,7 +155,6 @@
                                                     </button>
                                                 </form>
 
-                                                <!-- Reject Button -->
                                                 <form method="POST" action="{{ route('admin.users.reject', $user) }}" 
                                                     onsubmit="return confirm('Apakah Anda yakin ingin menolak permintaan organizer ini?')">
                                                     @csrf
@@ -193,7 +180,6 @@
                     </table>
                 </div>
 
-                <!-- Pagination -->
                 <div class="mt-8">
                     {{ $users->links() }}
                 </div>

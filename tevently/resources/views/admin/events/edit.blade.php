@@ -68,7 +68,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Location -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Lokasi</label>
                                 <input type="text" name="location" value="{{ old('location', $event->location) }}" 
@@ -78,7 +77,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Max Attendees -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Kapasitas Maksimum</label>
                                 <input type="number" name="max_attendees" value="{{ old('max_attendees', $event->max_attendees) }}" min="1" 
@@ -88,7 +86,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Event Date -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Tanggal Event</label>
                                 <input type="date" name="event_date" value="{{ old('event_date', $event->event_date->format('Y-m-d')) }}" 
@@ -98,7 +95,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Time Split -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-semibold text-custom-dark mb-2">Waktu Mulai</label>
@@ -118,7 +114,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Description (Full Width) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Deskripsi</label>
                                 <textarea name="description" rows="4" 
@@ -128,7 +123,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Status -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Status</label>
                                 <select name="status" class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('status') border-red-500 @enderror">
@@ -142,7 +136,6 @@
                                 @enderror
                             </div>
                             
-                            <!-- Event Image Upload/Remove -->
                             <div>
                                 <label class="block text-sm font-semibold text-custom-dark mb-2">Gambar Event</label>
                                 <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-custom-dark hover:file:bg-gray-300">
@@ -164,7 +157,6 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="flex gap-4 pt-4 border-t border-gray-100 mt-6">
                             <button type="submit" class="bg-main-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-[#9d85b6] transition duration-300 shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">
                                 Perbarui Event
@@ -177,7 +169,6 @@
                 </div>
             </div>
 
-            <!-- Tickets Management -->
             <div class="lg:col-span-1 order-1 lg:order-2">
                 <div class="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 sticky top-4">
                     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-100">
@@ -255,7 +246,6 @@
                     @endif
                 </div>
 
-                <!-- Quick Stats -->
                 <div class="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 mt-6">
                     <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Statistik Cepat</h3>
                     <div class="space-y-3 text-sm">

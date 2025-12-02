@@ -18,14 +18,12 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="flex flex-col lg:flex-row gap-10">
-            <!-- Filter Sidebar -->
             <div class="lg:w-72 flex-shrink-0">
                 <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-6 border border-gray-100">
                     <h2 class="font-bold text-2xl mb-6 text-custom-dark">Filter Acara</h2>
                     
                     <form method="GET" action="{{ route('user.events.index') }}">
                         
-                        <!-- Pencarian -->
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-custom-dark mb-2">Cari</label>
                             <input type="text" 
@@ -35,7 +33,6 @@
                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
                         </div>
 
-                        <!-- Kategori -->
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-custom-dark mb-2">Kategori</label>
                             <select name="category" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
@@ -48,7 +45,6 @@
                             </select>
                         </div>
 
-                        <!-- Rentang Tanggal -->
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-custom-dark mb-2">Dari Tanggal</label>
                             <input type="date" 
@@ -65,7 +61,6 @@
                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
                         </div>
 
-                        <!-- Urutkan -->
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-custom-dark mb-2">Urutkan Berdasarkan</label>
                             <select name="sort" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f6a5c0] bg-white text-custom-dark transition shadow-sm">
@@ -88,7 +83,6 @@
                 </div>
             </div>
 
-            <!-- Events Grid -->
             <div class="flex-1">
                 <div class="mb-6 border-b border-gray-200 pb-4">
                     <p class="text-[#837ab6] font-medium">
@@ -101,8 +95,8 @@
                         @foreach($events as $event)
                             <a href="{{ route('user.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-1 transition-all duration-300 border border-gray-100 block h-full flex flex-col">
                                 <div class="h-48 overflow-hidden relative">
-                                    @if($event->image)
-                                        <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    @if($event->image_url)
+                                        <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     @else
                                         <div class="w-full h-full bg-gradient-to-br from-[#837ab6] to-[#cc8db3] flex items-center justify-center">
                                             <span class="text-white text-4xl font-bold opacity-80">{{ substr($event->name, 0, 2) }}</span>
@@ -138,7 +132,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Organizer & Details -->
                                     <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
                                         <div class="flex items-center gap-2">
                                             <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
@@ -156,7 +149,6 @@
                         @endforeach
                     </div>
 
-                    <!-- Pagination -->
                     <div class="mt-12 flex justify-center">
                         {{ $events->appends(request()->query())->links() }}
                     </div>

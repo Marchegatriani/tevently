@@ -13,7 +13,6 @@ class ReportController extends Controller
 {
     public function index()
     {
-        // Total statistics
         $totalRevenue = Order::where('status', 'confirmed')->sum('total_amount');
         $totalOrders = Order::count();
         $totalEvents = Event::count();

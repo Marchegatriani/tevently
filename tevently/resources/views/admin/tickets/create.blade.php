@@ -26,7 +26,6 @@
         </nav>
     </div>
 
-    <!-- Form -->
     <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <h1 class="text-2xl font-bold text-custom-dark mb-1">Buat Jenis Tiket Baru</h1>
         <p class="text-gray-600 mt-1 mb-6">Untuk acara: <strong>{{ $event->title }}</strong></p>
@@ -38,7 +37,6 @@
         @endif
             @csrf
 
-            <!-- Ticket Name -->
             <div class="mb-5">
                 <label for="name" class="block text-sm font-semibold text-custom-dark mb-2">
                     Nama Tiket <span class="text-red-500">*</span>
@@ -55,7 +53,6 @@
                 @enderror
             </div>
 
-            <!-- Description -->
             <div class="mb-5">
                 <label for="description" class="block text-sm font-semibold text-custom-dark mb-2">
                     Deskripsi
@@ -70,7 +67,6 @@
                 @enderror
             </div>
 
-            <!-- Price & Quota Row -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
                 <div>
                     <label for="price" class="block text-sm font-semibold text-custom-dark mb-2">
@@ -90,7 +86,6 @@
                     @enderror
                 </div>
 
-                <!-- Quantity Available (Quota) -->
                 <div>
                     <label for="quantity_available" class="block text-sm font-semibold text-custom-dark mb-2">
                         Kuantitas Tersedia <span class="text-red-500">*</span>
@@ -108,7 +103,6 @@
                     @enderror
                 </div>
 
-                <!-- Max Per Order -->
                 <div>
                     <label for="max_per_order" class="block text-sm font-semibold text-custom-dark mb-2">
                         Maksimal per Pesanan <span class="text-red-500">*</span>
@@ -129,7 +123,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- Sales Start -->
                 <div>
                     <label for="sales_start" class="block text-sm font-semibold text-custom-dark mb-2">
                         Penjualan Dimulai <span class="text-red-500">*</span>
@@ -145,7 +138,6 @@
                     @enderror
                 </div>
 
-                <!-- Sales End -->
                 <div>
                     <label for="sales_end" class="block text-sm font-semibold text-custom-dark mb-2">
                         Penjualan Berakhir <span class="text-red-500">*</span>
@@ -162,11 +154,9 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="flex gap-4 pt-4 border-t border-gray-100">
                 <button type="submit" 
                     class="bg-main-purple hover:bg-[#9d85b6] text-white font-bold py-3 px-6 rounded-xl transition shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">
-                    {{-- Change button text based on context --}}
                     @if ($event->exists)
                         Buat Tiket
                     @else

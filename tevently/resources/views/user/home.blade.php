@@ -1,19 +1,11 @@
 @extends('layouts.user')
 
 @section('title', 'Beranda')
-
-@section('content')
-<style>
-    .text-custom-dark { color: #250e2c; }
-    .bg-main-purple { background-color: #837ab6; }
-</style>
-
-<div class="font-sans">
-
-    <div class="bg-gradient-to-br from-[#f7c2ca] to-[#cc8db3] text-custom-dark rounded-xl shadow-lg -mt-4 mb-10 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
+@section('full-width-content')
+    <div class="bg-gradient-to-br from-[#f7c2ca] to-[#cc8db3] text-custom-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 text-custom-dark">
             <div class="text-center">
-                <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight text-custom-dark">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight text-custom-dark">
                     Temukan Acara Luar Biasa
                 </h1>
                 <p class="text-lg md:text-xl mb-10 text-[#837ab6] max-w-3xl mx-auto">
@@ -34,9 +26,14 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex justify-between items-center mb-8 border-b pb-3">
+@section('content')
+<style>
+    .text-custom-dark { color: #250e2c; }
+    .bg-main-purple { background-color: #837ab6; }
+</style>
+        <div class="flex justify-between items-center mb-8 border-b pb-3 px-4">
             <h2 class="text-3xl font-bold text-custom-dark">Acara Unggulan</h2>
             <a href="{{ route('user.events.index') }}" class="text-main-purple hover:text-custom-dark font-semibold transition-colors flex items-center gap-1">
                 Lihat Semua →
@@ -44,7 +41,7 @@
         </div>
 
         @if($featuredEvents->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-8">
                 @foreach($featuredEvents as $event)
                     <a href="{{ route('user.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-2 transition-all duration-300 border border-gray-100">
                         
@@ -103,6 +100,4 @@
                 </a>
             </div>
         @endif
-    </div>
-</div>
 @endsection

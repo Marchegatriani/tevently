@@ -18,7 +18,6 @@
         <p class="text-gray-600 mt-2">Apakah Anda yakin ingin membatalkan pesanan ini? Tindakan ini tidak dapat diurungkan.</p>
     </div>
 
-    {{-- Order Summary --}}
     <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mt-8">
         <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Detail Pesanan #{{ $order->id }}</h2>
         <div class="space-y-4 text-sm">

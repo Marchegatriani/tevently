@@ -21,7 +21,6 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         
-        <!-- Total Users -->
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-main-purple">
             <div class="flex items-center gap-4">
                 <div class="bg-main-purple text-white rounded-xl p-3 shadow-md shadow-[#837ab6]/40">
@@ -34,7 +33,6 @@
             </div>
         </div>
 
-        <!-- Pending Organizers -->
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-medium-purple">
             <div class="flex items-center gap-4">
                 <div class="bg-medium-purple text-white rounded-xl p-3 shadow-md shadow-[#9d85b6]/40">
@@ -47,7 +45,6 @@
             </div>
         </div>
 
-        <!-- Total Events -->
         <div class="bg-white rounded-xl p-5 shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl hover:border-pink-accent">
             <div class="flex items-center gap-4">
                 <div class="bg-pink-accent text-white rounded-xl p-3 shadow-md shadow-[#cc8db3]/40">
@@ -61,12 +58,10 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
     <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
         <h4 class="text-lg font-bold text-deep-purple mb-4">Aksi Cepat</h4>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             
-            <!-- Manage Users -->
             <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
                 <div class="bg-main-purple text-white rounded-full p-3 shadow-lg shadow-[#837ab6]/40">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1z" /></svg>
@@ -75,7 +70,6 @@
                 <p class="text-xs text-gray-500 text-center">Lihat & kelola semua akun</p>
             </a>
 
-            <!-- Manage Events -->
             <a href="{{ route('admin.events.index') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
                 <div class="bg-medium-purple text-white rounded-full p-3 shadow-lg shadow-[#9d85b6]/40">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -84,7 +78,6 @@
                 <p class="text-xs text-gray-500 text-center">Setujui acara & kelola tiket</p>
             </a>
 
-            <!-- View Reports -->
             <a href="{{ route('admin.reports') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
                 <div class="bg-pink-accent text-white rounded-full p-3 shadow-lg shadow-[#cc8db3]/40">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +88,6 @@
                 <p class="text-xs text-gray-500 text-center">Penjualan dan statistik sistem</p>
             </a>
             
-            <!-- Manage Orders -->
             <a href="{{ route('admin.orders.index') }}" class="flex flex-col items-center justify-center gap-2 p-5 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white transition duration-300 shadow-sm hover:shadow-lg">
                 <div class="bg-gray-500 text-white rounded-full p-3 shadow-lg shadow-gray-500/40">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

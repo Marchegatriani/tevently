@@ -109,4 +109,8 @@ class TicketController extends Controller
         $status = $ticket->is_active ? 'activated' : 'deactivated';
         return back()->with('success', "Ticket {$status} successfully!");
     }
+
+    public function show(Ticket $ticket) {
+        return view('organizer.tickets.show', compact('ticket'));
+    }
 }

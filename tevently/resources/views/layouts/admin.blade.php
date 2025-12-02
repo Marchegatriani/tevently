@@ -48,11 +48,11 @@
                     <a href="{{ route('admin.dashboard') }}" class="text-2xl font-extrabold text-custom-dark flex items-center h-10 hover:text-main-purple transition">Tevently</a>
 
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
-                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.dashboard') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Dashboard</a>
-                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.users.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pengguna</a>
-                        <a href="{{ route('admin.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.events.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Event</a>
-                        <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.orders.*') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Pesanan Tiket</a>
-                        <a href="{{ route('admin.reports') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('admin.reports') ? 'bg-soft-pink-light font-bold text-custom-dark' : '' }}">Laporan</a>
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('admin.dashboard') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Dashboard</a>
+                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('admin.users.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Pengguna</a>
+                        <a href="{{ route('admin.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('admin.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Event</a>
+                        <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('admin.orders.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Pesanan Tiket</a>
+                        <a href="{{ route('admin.reports') }}" class="inline-flex items-center h-9 px-3 rounded-xl font-semibold transition hover:bg-[#9d85b6] {{ request()->routeIs('admin.reports') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Laporan</a>
                     </nav>
 
                     <div class="md:hidden">

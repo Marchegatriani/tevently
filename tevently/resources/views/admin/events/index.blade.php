@@ -36,7 +36,6 @@
             </div>
         @endif
 
-        <!-- Filters & Search -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl mb-6 border border-gray-100">
             <div class="p-6">
                 <form method="GET" class="flex flex-col md:flex-row gap-4 items-end">
@@ -70,7 +69,6 @@
             </div>
         </div>
 
-        <!-- Events Table -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
             <div class="p-6">
                 @if($events->count() > 0)
@@ -149,7 +147,6 @@
                         </table>
                     </div>
 
-                    <!-- Pagination -->
                     <div class="mt-8">
                         {{ $events->links() }}
                     </div>

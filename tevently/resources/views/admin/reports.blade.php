@@ -13,8 +13,6 @@
 </style>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-2">
-    
-    <!-- Total Pembelian -->
     <div class="bg-gradient-to-br from-[#837ab6] to-[#9d85b6] rounded-2xl p-6 text-white shadow-xl">
         <div class="flex items-center justify-between">
             <div>
@@ -29,7 +27,6 @@
         </div>
     </div>
 
-    <!-- Total Orders -->
     <div class="bg-gradient-to-br from-[#cc8db3] to-[#f6a5c0] rounded-2xl p-6 text-custom-dark shadow-xl">
         <div class="flex items-center justify-between">
             <div>
@@ -44,7 +41,6 @@
         </div>
     </div>
 
-    <!-- Total Events -->
     <div class="bg-gradient-to-br from-[#837ab6] to-[#9d85b6] rounded-2xl p-6 text-white shadow-xl">
         <div class="flex items-center justify-between">
             <div>
@@ -59,7 +55,6 @@
         </div>
     </div>
 
-    <!-- Total Users -->
     <div class="bg-gradient-to-br from-[#cc8db3] to-[#f6a5c0] rounded-2xl p-6 text-custom-dark shadow-xl">
         <div class="flex items-center justify-between">
             <div>
@@ -75,80 +70,78 @@
     </div>
 </div>
 
-<!-- Top Events by Revenue -->
-<div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 mb-8">
-    <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Top 5 Event Berdasarkan Pendapatan</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-soft-pink-light">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">No.</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Nama Event</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Total Pesanan</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Total Pendapatan</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($topEvents as $event)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 text-sm font-medium text-custom-dark">{{ $loop->iteration }}</td>
-                    <td class="px-6 py-4">
-                        <div class="text-sm font-medium text-custom-dark">{{ $event->name }}</div>
-                        <div class="text-xs text-gray-500">{{ $event->location }}</div>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-custom-dark font-medium">
-                        {{ number_format($event->total_orders) }}
-                    </td>
-                    <td class="px-6 py-4 text-sm font-bold text-[#837ab6]">
-                        Rp {{ number_format($event->total_revenue ?? 0, 0, ',', '.') }}
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                        Belum ada data event dengan pendapatan.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 mb-8">
+        <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Top 5 Event Berdasarkan Pendapatan</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-soft-pink-light">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">No.</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Nama Event</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Total Pesanan</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Total Pendapatan</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($topEvents as $event)
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 text-sm font-medium text-custom-dark">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-medium text-custom-dark">{{ $event->name }}</div>
+                            <div class="text-xs text-gray-500">{{ $event->location }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-custom-dark font-medium">
+                            {{ number_format($event->total_orders) }}
+                        </td>
+                        <td class="px-6 py-4 text-sm font-bold text-[#837ab6]">
+                            Rp {{ number_format($event->total_revenue ?? 0, 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            Belum ada data event dengan pendapatan.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<!-- Recent Orders -->
-<div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-    <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">5 Pesanan Terbaru yang Disetujui</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-soft-pink-light">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">No.</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Pengguna</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Event</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Jumlah</th>
-                    <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Tanggal</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($recentOrders as $order)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 text-sm font-semibold text-custom-dark">{{ $loop->iteration }}</td>
-                    <td class="px-6 py-4 text-sm text-custom-dark">{{ $order->user->name ?? 'N/A' }}</td>
-                    <td class="px-6 py-4 text-sm text-custom-dark">{{ $order->event->title ?? 'N/A' }}</td>
-                    <td class="px-6 py-4 text-sm font-semibold text-main-purple">
-                        Rp {{ number_format($order->total_amount, 0, ',', '.') }}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">{{ $order->created_at->format('d M Y H:i') }}</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                        Belum ada pesanan yang disetujui baru-baru ini.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+        <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">5 Pesanan Terbaru yang Disetujui</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-soft-pink-light">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">No.</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Pengguna</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Event</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Jumlah</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($recentOrders as $order)
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 text-sm font-semibold text-custom-dark">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4 text-sm text-custom-dark">{{ $order->user->name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 text-sm text-custom-dark">{{ $order->event->title ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-main-purple">
+                            Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $order->created_at->format('d M Y H:i') }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            Belum ada pesanan yang disetujui baru-baru ini.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 @endsection

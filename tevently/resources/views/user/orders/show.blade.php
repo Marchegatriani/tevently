@@ -7,9 +7,10 @@
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-soft-pink-light { background-color: #f7c2ca; }
+    .text-main-purple { color: #837ab6; }
 </style>
 
-<div class="space-y-8">
+<div class="space-y-8 px-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-extrabold text-custom-dark">Detail Pesanan</h1>
@@ -31,7 +32,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div class="lg:col-span-2 space-y-6">
-            {{-- Order Summary --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Ringkasan Pesanan</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -56,33 +56,39 @@
                 </div>
             </div>
 
-            {{-- Ticket Details --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h2 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Detail Tiket</h2>
                 <ul class="divide-y divide-gray-200">
                     @foreach($order->orderItems as $item)
                     <li class="py-4 flex justify-between items-center">
                         <div>
-                            <p class="font-bold text-custom-dark">{{ $item->ticket->name }}</p>
-                            <p class="text-sm text-gray-500">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                            <p class="font-bold text-custom-dark">{{ $item->ticket->name ?? 'Tiket Dihapus' }}</p>
+                            
+                            <p class="text-sm text-gray-500">
+                                {{ $item->quantity }} x Rp {{ number_format($item->unit_price, 0, ',', '.') }}
+                            </p>
                         </div>
-                        <p class="font-semibold text-gray-800">Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</p>
+                        
+                        <p class="font-semibold text-gray-800">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                     </li>
                     @endforeach
                 </ul>
             </div>
 
-            <div class="flex items-center gap-4 pt-4 border-t">
+            <div class="flex flex-wrap items-center gap-4 pt-4 border-t">
                 @if($order->status === 'pending')
-                    <a href="{{ route('user.orders.cancel', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
+                    <a href="{{ route('user.orders.cancel', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-main-purple text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
                         Batalkan Pesanan
                     </a>
+                @endif
+
+                @if($order->status === 'confirmed')
+                    <p class="text-sm text-gray-600">Pesanan telah dikonfirmasi. Tiket Anda sudah tersedia.</p>
                 @endif
             </div>
         </div>
 
         <div class="lg:col-span-1 space-y-6">
-            {{-- Event Info --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h3 class="text-lg font-bold text-custom-dark mb-4">Informasi Acara</h3>
                 @if($order->event)
@@ -102,7 +108,6 @@
                 @endif
             </div>
 
-            {{-- Buyer Info --}}
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h3 class="text-lg font-bold text-custom-dark mb-4">Informasi Pembeli</h3>
                 @if($order->user)
@@ -121,7 +126,17 @@
                 @endif
             </div>
         </div>
-
     </div>
+
+    @if($order->status === 'confirmed')
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <h2 class="text-xl font-bold text-custom-dark mb-4">Tiket Anda</h2>
+        @foreach ($order->orderItems as $item)
+            <a href="{{ route('user.tickets', $item) }}" class="inline-block bg-main-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-[#9d85b6] transition shadow-lg transform hover:-translate-y-0.5 mt-2">
+                Lihat Tiket ({{ $item->ticket->name ?? 'Tiket' }})
+            </a>
+        @endforeach
+    </div>
+    @endif
 </div>
 @endsection

@@ -64,7 +64,6 @@
                     @enderror
                 </div>
                 
-                <!-- Description Input -->
                 <div>
                     <label for="description" class="block text-custom-dark font-semibold mb-2">Deskripsi <span class="text-red-500">*</span></label>
                     <textarea id="description" name="description" 
@@ -75,7 +74,6 @@
                     @enderror
                 </div>
 
-                <!-- Category Selection -->
                 <div>
                     <label for="category_id" class="block text-custom-dark font-semibold mb-2">Kategori <span class="text-red-500">*</span></label>
                     <select id="category_id" name="category_id" 
@@ -94,7 +92,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Date -->
                     <div>
                         <label for="event_date" class="block text-custom-dark font-semibold mb-2">Tanggal Event <span class="text-red-500">*</span></label>
                         <input type="date" id="event_date" name="event_date" value="{{ old('event_date') }}"
@@ -105,7 +102,6 @@
                           <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <!-- Time -->
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                           <label for="start_time" class="block text-custom-dark font-semibold mb-2">Waktu Mulai <span class="text-red-500">*</span></label>
@@ -128,7 +124,6 @@
                     </div>
                 </div>
 
-                <!-- Location Input -->
                 <div>
                     <label for="location" class="block text-custom-dark font-semibold mb-2">Lokasi <span class="text-red-500">*</span></label>
                     <input type="text" id="location" name="location" value="{{ old('location') }}"
@@ -140,7 +135,6 @@
                     @enderror
                 </div>
 
-                <!-- Max Attendees Input -->
                 <div>
                     <label for="max_attendees" class="block text-custom-dark font-semibold mb-2">Kapasitas Maksimum <span class="text-red-500">*</span></label>
                     <input type="number" id="max_attendees" name="max_attendees" value="{{ old('max_attendees', 50) }}"
@@ -152,7 +146,6 @@
                     @enderror
                 </div>
 
-                <!-- Status Selection -->
                 <div>
                     <label for="status" class="block text-custom-dark font-semibold mb-2">Status</label>
                     <select id="status" name="status" 
@@ -165,7 +158,6 @@
                     </p>
                 </div>
                 
-                <!-- Submit Buttons -->
                 <div class="flex justify-start space-x-4 pt-4">
                     <button type="submit" 
                         class="bg-main-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-[#9d85b6] transition duration-300 shadow-lg shadow-[#837ab6]/40 transform hover:-translate-y-0.5">

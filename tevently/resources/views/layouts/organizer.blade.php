@@ -7,10 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f7c2ca (Soft Pink) */
         body { 
             font-family: 'Poppins', sans-serif; 
-            background-color: #F8F3F7; /* Latar belakang lembut */
+            background-color: #F8F3F7;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -20,7 +19,6 @@
         .bg-pink-accent { background-color: #cc8db3; }
         .bg-soft-pink-light { background-color: #f7c2ca; }
 
-        /* Style untuk pagination link agar terlihat bagus dengan theme */
         .pagination { display: flex; list-style: none; }
         .pagination svg { height: 1.25rem; }
         .pagination a, .pagination span { 
@@ -43,7 +41,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
@@ -51,9 +48,9 @@
                     <a href="{{ route('organizer.dashboard') }}" class="text-2xl font-extrabold text-custom-dark flex items-center h-10 hover:text-main-purple transition">Tevently</a>
 
                     <nav class="hidden md:flex items-center space-x-2 text-sm text-gray-700 ml-3 whitespace-nowrap">
-                        <a href="{{ route('organizer.dashboard') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.dashboard') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Dashboard</a>
-                        <a href="{{ route('organizer.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.events.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Kelola Acara</a>
-                        <a href="{{ route('organizer.orders.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.orders.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Pesanan</a>
+                        <a href="{{ route('organizer.dashboard') }}" class="inline-flex font-semibold items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.dashboard') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Dashboard</a>
+                        <a href="{{ route('organizer.events.index') }}" class="inline-flex font-semibold items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.events.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Kelola Acara</a>
+                        <a href="{{ route('organizer.orders.index') }}" class="inline-flex font-semibold items-center h-9 px-3 rounded-xl transition hover:bg-soft-pink-light {{ request()->routeIs('organizer.orders.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Pesanan</a>
                     </nav>
 
                     <div class="md:hidden">
@@ -66,10 +63,10 @@
                 </div>
 
                 <div class="hidden md:flex items-center gap-3">
-                    <span class="text-sm text-gray-700 px-2">Hai, {{ auth()->user()->name }}</span>
+                    <span class="text-sm font-semibold text-gray-700 px-2">Hai, {{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-sm bg-pink-accent text-white px-4 py-2 rounded-xl font-semibold bg-[#837ab6] hover:bg-[#9d85b6] transition shadow-sm">
+                        <button type="submit" class="text-sm bg-pink-accent text-white px-4 py-2 rounded-xl font-semibold bg-main-purple hover:bg-[#9d85b6] transition shadow-sm">
                             Logout
                         </button>
                     </form>
@@ -80,9 +77,9 @@
         <div id="org-mobile-nav" class="md:hidden bg-white border-t shadow-sm hidden">
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-custom-dark">
-                    <a href="{{ route('organizer.dashboard') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('organizer.dashboard') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Dashboard</a>
-                    <a href="{{ route('organizer.events.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('organizer.events.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Kelola Acara</a>
-                    <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-xl hover:bg-gray-50 {{ request()->routeIs('organizer.orders.*') ? 'text-white bg-[#837ab6] hover:bg-[#9d85b6] transition font-semibold' : '' }}">Pemesanan</a>
+                    <a href="{{ route('organizer.dashboard') }}" class="block px-3 py-2 rounded-xl hover:bg-[#9d85b6] transition {{ request()->routeIs('organizer.dashboard') ? 'text-white bg-[#837ab6] font-semibold' : '' }}">Dashboard</a>
+                    <a href="{{ route('organizer.events.index') }}" class="block px-3 py-2 rounded-xl hover:bg-[#9d85b6] transition {{ request()->routeIs('organizer.events.*') ? 'text-white bg-[#837ab6] font-semibold' : '' }}">Kelola Acara</a>
+                    <a href="{{ route('organizer.orders.index') }}" class="block px-3 py-2 rounded-xl hover:bg-[#9d85b6] transition {{ request()->routeIs('organizer.orders.*') ? 'text-white bg-[#837ab6] font-semibold' : '' }}">Pemesanan</a>
 
                     <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-t border-gray-100">
                         @csrf

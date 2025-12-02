@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('total_tickets')->default(1);
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'expired'])->default('pending');
             $table->dateTime('order_date');
-            $table->dateTime('expired_at'); // untuk expired order pending
+            $table->dateTime('expired_at');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();

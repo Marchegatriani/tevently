@@ -6,7 +6,6 @@
 
 @section('content')
 <style>
-    /* Palet: #250e2c (Dark), #837ab6 (Main), #cc8db3 (Pink Accent), #f6a5c0 (Light Pink) */
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
@@ -16,7 +15,6 @@
 <div class="py-6 bg-soft-light">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
-        <!-- Header Actions -->
         <div class="flex justify-between items-center mb-6">
             <div class="flex space-x-3">
                 <a href="{{ route('organizer.events.edit', $event) }}" class="bg-[#cc8db3] text-custom-dark px-4 py-2 rounded-xl font-semibold hover:bg-[#f6a5c0] transition shadow-md">
@@ -27,7 +25,6 @@
                 </a>
             </div>
             
-            <!-- Status Tag Header -->
             <span class="px-4 py-2 rounded-xl text-sm font-bold shadow-md
                 {{ $event->status === 'published' ? 'bg-green-600 text-white' : '' }}
                 {{ $event->status === 'draft' ? 'bg-yellow-500 text-white' : '' }}
@@ -39,10 +36,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Kiri (2/3) - Detail Utama & Tiket -->
             <div class="lg:col-span-2 space-y-8">
                 
-                <!-- Event Details & Description -->
                 <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                     
                     @if($event->image_url)
@@ -73,7 +68,6 @@
                     </div>
                 </div>
 
-                <!-- Tickets Summary -->
                 <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                     <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3">Daftar Tiket</h3>
                     
@@ -119,10 +113,8 @@
 
             </div>
 
-            <!-- Kanan (1/3) - Sidebar Statistik & Info -->
             <div class="lg:col-span-1 space-y-6 order-1 lg:order-2">
                 
-                <!-- Statistics -->
                 <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 sticky top-4">
                     <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Informasi Penjualan</h3>
                     <div class="space-y-3 text-sm">
@@ -149,7 +141,6 @@
                     </div>
                 </div>
 
-                <!-- Event Info & Dates -->
                 <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
                     <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Informasi Event</h3>
                     <div class="space-y-3 text-sm">

@@ -39,7 +39,6 @@
             $upcomingEvents = $userEvents->where('status', 'published')->where('event_date', '>=', now())->count();
         @endphp
 
-        <!-- Total Events -->
         <div class="bg-white rounded-xl shadow-lg border p-6 transition duration-300 hover:shadow-2xl hover:border-main-purple">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 bg-main-purple text-white rounded-xl p-3 shadow-md shadow-[#837ab6]/40">
@@ -54,7 +53,6 @@
             </div>
         </div>
 
-        <!-- Published -->
         <div class="bg-white rounded-xl shadow-lg border p-6 transition duration-300 hover:shadow-2xl hover:border-green-400">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 bg-green-500 text-white rounded-xl p-3 shadow-md shadow-green-500/40">
@@ -69,7 +67,6 @@
             </div>
         </div>
 
-        <!-- Draft -->
         <div class="bg-white rounded-xl shadow-lg border p-6 transition duration-300 hover:shadow-2xl hover:border-yellow-400">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 bg-yellow-500 text-white rounded-xl p-3 shadow-md shadow-yellow-500/40">
@@ -84,7 +81,6 @@
             </div>
         </div>
 
-        <!-- Upcoming -->
         <div class="bg-white rounded-xl shadow-lg border p-6 transition duration-300 hover:shadow-2xl hover:border-pink-accent">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 bg-pink-accent text-white rounded-xl p-3 shadow-md shadow-[#cc8db3]/40">
@@ -100,7 +96,6 @@
         </div>
     </div>
 
-    <!-- Recent Events -->
     <div class="bg-white rounded-xl shadow-xl border">
         <div class="p-6">
             <div class="flex justify-between items-center mb-6 border-b pb-4">

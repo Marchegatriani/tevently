@@ -72,7 +72,11 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        $event->load(['category', 'organizer', 'tickets']);
+        $event->load(['category', 'organizer', 'tickets' => function($query) {
+            $query->where('is_active', true)
+                ->where('sales_start', '<=', now())
+                ->where('sales_end', '>=', now());
+        }]);
 
         if ($event->status !== 'published') {
             abort(404, 'Event not found');

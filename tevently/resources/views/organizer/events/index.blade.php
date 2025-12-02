@@ -30,32 +30,27 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             
-            <!-- Total Events -->
             <div class="bg-white rounded-xl shadow-lg border p-5 transition duration-300 hover:shadow-2xl hover:border-main-purple">
                 <p class="text-sm font-medium text-gray-600">Total Acara</p>
                 <p class="text-3xl font-extrabold text-custom-dark mt-1">{{ $stats['total'] }}</p>
             </div>
             
-            <!-- Published -->
             <div class="bg-white rounded-xl shadow-lg border p-5 transition duration-300 hover:shadow-2xl hover:border-green-400">
                 <p class="text-sm font-medium text-gray-600">Dipublikasi</p>
                 <p class="text-3xl font-extrabold text-green-600 mt-1">{{ $stats['published'] }}</p>
             </div>
             
-            <!-- Draft -->
             <div class="bg-white rounded-xl shadow-lg border p-5 transition duration-300 hover:shadow-2xl hover:border-yellow-400">
                 <p class="text-sm font-medium text-gray-600">Draft</p>
                 <p class="text-3xl font-extrabold text-yellow-600 mt-1">{{ $stats['draft'] }}</p>
             </div>
             
-            <!-- Cancelled -->
             <div class="bg-white rounded-xl shadow-lg border p-5 transition duration-300 hover:shadow-2xl hover:border-red-400">
                 <p class="text-sm font-medium text-gray-600">Dibatalkan</p>
                 <p class="text-3xl font-extrabold text-red-600 mt-1">{{ $stats['cancelled'] }}</p>
             </div>
         </div>
 
-        <!-- Filters -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl mb-6 border border-gray-100">
             <div class="p-6">
                 <form method="GET" action="{{ route('organizer.events.index') }}" class="flex flex-col md:flex-row gap-4 items-end">
@@ -90,7 +85,6 @@
             </div>
         </div>
 
-        <!-- Events Table -->
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
             <div class="p-6">
                 @if($events->count() > 0)
@@ -166,7 +160,6 @@
                         </table>
                     </div>
 
-                    <!-- Pagination -->
                     <div class="mt-8">
                         {{ $events->links() }}
                     </div>
