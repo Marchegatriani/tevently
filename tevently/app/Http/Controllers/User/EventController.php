@@ -75,7 +75,9 @@ class EventController extends Controller
 
         $isFavorited = false;
         if (Auth::check()) {
-            $isFavorited = Auth::user()->favoriteEvents()->where('event_id', $event->id)->exists();
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $isFavorited = $user->favoriteEvents()->where('event_id', $event->id)->exists();
         }
 
         $relatedEvents = Event::where('status', 'published')

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Event;
 
 class User extends Authenticatable
 {
@@ -48,25 +49,22 @@ class User extends Authenticatable
             'status' => 'string',
         ];
     }
-
-    // ========== RELATIONSHIPS ==========
     
-    // User bisa punya banyak events (sebagai organizer)
     public function events()
     {
         return $this->hasMany(Event::class, 'organizer_id');
     }
 
-    // User bisa punya banyak orders
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
-    // User bisa favorite banyak events
-    public function favoriteEvents()
+    public function favoriteEvents(): BelongsToMany
     {
-        return $this->belongsToMany(Event::class, 'favorites')
-                    ->withTimestamps();
+        return $this->belongsToMany(
+            Event::class, 
+            'favorites'
+        )->withTimestamps();
     }
 }

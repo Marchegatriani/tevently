@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="hidden md:flex items-center gap-3">
-                    <span class="text-sm text-gray-700">Hi, {{ auth()->user()->name ?? 'Admin' }}</span>
+                    <span class="text-sm text-gray-700 font-semibold">Hi, {{ auth()->user()->name ?? 'Admin' }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="text-sm bg-pink-accent text-white px-4 py-2 rounded-xl font-semibold hover:bg-[#f6a5c0] transition shadow-sm">

@@ -153,7 +153,6 @@
                 
                 <hr class="my-6 border-gray-100">
 
-                @php $isFavorited = false;
                 <form action="{{ route('user.favorites.toggle', $event) }}" method="POST">
                     @csrf
                     <button type="submit" class="flex items-center justify-center w-full text-center px-6 py-3 rounded-xl font-semibold transition-colors duration-300 shadow-md
@@ -167,10 +166,8 @@
                         <span>{{ $isFavorited ? 'Hapus dari Favorit' : 'Tambahkan ke Favorit' }}</span>
                     </button>
                 </form>
-
-            </div> {{-- END Daftar Tiket --}}
-        </div> {{-- END Kolom Kanan --}}
-        
+            </div>
+        </div>
     </div>
 </div>
 @endsection

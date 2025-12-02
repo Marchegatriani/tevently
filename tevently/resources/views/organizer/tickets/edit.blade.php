@@ -2,7 +2,7 @@
 
 @section('title', 'Edit Tiket')
 @section('heading', 'Edit Tiket')
-@section('subheading', 'Perbarui detail tiket untuk event {{ $event->title }}')
+@section('subheading', 'Perbarui detail tiket untuk event')
 
 @section('content')
 <style>
@@ -17,16 +17,6 @@
             {{ session('success') }}
         </div>
     @endif
-
-    <div class="mb-6">
-        <nav class="text-sm text-gray-600">
-            <a href="{{ route('organizer.events.index') }}" class="hover:text-main-purple">Daftar Acara</a>
-            <span class="mx-2">/</span>
-            <a href="{{ route('organizer.events.show', $event) }}" class="hover:text-main-purple">{{ Str::limit($event->title, 30) }}</a>
-            <span class="mx-2">/</span>
-            <span class="font-bold text-custom-dark">Edit Tiket</span>
-        </nav>
-    </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <h1 class="text-2xl font-bold text-custom-dark mb-1">Edit Jenis Tiket: {{ $ticket->name }}</h1>

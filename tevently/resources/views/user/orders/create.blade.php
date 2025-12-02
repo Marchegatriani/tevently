@@ -14,7 +14,7 @@
 <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
         
-        <h2 class="text-3xl font-bold text-custom-dark mb-2">Checkout Pemesanan</h2>
+        <h2 class="text-3xl font-bold text-custom-dark mb-2">Checkout Pesanan</h2>
         <p class="text-gray-600 mb-6">Acara: <strong class="text-main-purple">{{ $event->title }}</strong></p>
 
         @if(session('error'))

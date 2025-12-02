@@ -25,7 +25,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-soft-pink-light">
                     <tr>
-                        <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">ID</th>
+                        <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider w-10">No</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Event</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Tiket</th>
                         <th class="p-4 text-left text-xs font-bold text-custom-dark uppercase tracking-wider">Pelanggan</th>
@@ -36,9 +36,9 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @forelse($orders as $o)
+                    @forelse($orders as $i => $o)
                         <tr class="border-t hover:bg-gray-50 transition">
-                            <td class="p-4 font-semibold text-gray-700">{{ $o->id }}</td>
+                            <td class="p-4 font-semibold text-gray-700">{{ $orders->firstItem() + $i }}</td>
                             
                             <td class="p-4 text-sm text-gray-700">
                                 <div class="font-medium text-custom-dark">{{ $o->event->title ?? '-' }}</div>
