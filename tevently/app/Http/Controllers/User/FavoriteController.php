@@ -19,7 +19,7 @@ class FavoriteController extends Controller
                             ->latest()
                             ->paginate(12);
 
-        return view('user.favorites.index', compact('favorites'));
+        return view('user.favorites', compact('favorites'));
     }
 
     public function store(Request $request, Event $event)

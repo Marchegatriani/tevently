@@ -8,7 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class OrgEventController extends Controller
+class EventController extends Controller
 {
 
     public function index(Request $request)
@@ -124,7 +124,7 @@ class OrgEventController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
             'category_id' => 'required|exists:categories,id',
             'max_attendees' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'status' => 'required|in:draft,published,cancelled,completed',
         ]);
 

@@ -1,4 +1,4 @@
-@extends('admin.partials.navbar')
+@extends('layouts.admin')
 
 @section('title', 'Buat Event')
 @section('heading', 'Buat Event Baru')

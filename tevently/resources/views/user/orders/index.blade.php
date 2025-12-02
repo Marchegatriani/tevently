@@ -1,4 +1,4 @@
-@extends('user.partials.navbar')
+@extends('layouts.user')
 
 @section('title', 'Kelola Pemesanan')
 @section('heading', 'Kelola Pemesanan')

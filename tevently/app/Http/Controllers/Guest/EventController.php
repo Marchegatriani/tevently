@@ -18,7 +18,7 @@ class EventController extends Controller
             ->take(6)
             ->get();
 
-        return view('guest.home', compact('featuredEvents'));
+        return view('guests.home', compact('featuredEvents'));
     }
 
     public function index(Request $request)
@@ -67,7 +67,7 @@ class EventController extends Controller
 
         $categories = Category::all();
 
-        return view('guest.events.index', compact('events', 'categories'));
+        return view('guests.events.index', compact('events', 'categories'));
     }
 
     public function show(Event $event)
@@ -78,6 +78,6 @@ class EventController extends Controller
             abort(404, 'Event not found');
         }
 
-        return view('guest.events.show', compact('event'));
+        return view('guests.events.show', compact('event'));
     }
 }

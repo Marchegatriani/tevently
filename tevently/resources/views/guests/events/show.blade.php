@@ -1,43 +1,18 @@
-@extends('guest.partials.navbar')
+@extends('layouts.guests')
 
 @section('title', 'Detail Event')
 
 @section('content')
 <style>
-    /* Latar belakang Utama dari layout adalah #F8F3F7 (Soft Light) */
     .bg-custom-light { background-color: #F8F3F7; }
-    /* Warna teks utama (ungu gelap) */
     .text-custom-dark { color: #250e2c; } 
 </style>
 
-<div class="font-sans bg-custom-light min-h-screen">
+<div class="font-sans bg-custom-light min-h-screen p-8">
     <!-- Event Detail Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Breadcrumb -->
-        <div class="mb-8">
-            <nav class="flex" aria-label="Breadcrumb">
-                <ol class="flex items-center space-x-2 text-sm">
-                    <li>
-                        <a href="/" class="text-gray-500 hover:text-[#837ab6]">Beranda</a>
-                    </li>
-                    <li>
-                        <span class="text-gray-400">/</span>
-                    </li>
-                    <li>
-                        <a href="{{ route('guest.events.index') }}" class="text-gray-500 hover:text-[#837ab6]">Jelajahi Event</a>
-                    </li>
-                    <li>
-                        <span class="text-gray-400">/</span>
-                    </li>
-                    <li class="text-custom-dark font-medium">{{ Str::limit($event->title, 30) }}</li>
-                </ol>
-            </nav>
-        </div>
-
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">  
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <!-- Main Content (2/3 width) -->
             <div class="lg:col-span-2">
-                <!-- Event Image -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8 border border-gray-100">
                     @if($event->image)
                         <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="w-full h-96 object-cover">
@@ -107,10 +82,9 @@
                 </div>
             </div>
 
-            <!-- Sidebar (1/3 width) -->
             <div class="lg:col-span-1">
                 <!-- Ticket Options -->
-                <div class="bg-white rounded-3xl shadow-xl p-8 sticky top-4 border border-gray-100">
+                <div class="bg-white rounded-3xl shadow-xl p-4 sticky top-4 border border-gray-100">
                     <h2 class="text-2xl font-bold text-custom-dark mb-6">Tiket Tersedia</h2>
 
                     @if($event->tickets->count() > 0)
@@ -145,14 +119,14 @@
                                             @endif
                                         @else
                                             <a href="{{ route('login') }}" class="bg-[#837ab6] hover:bg-[#9d85b6] text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md">
-                                                Login untuk Membeli
+                                                Beli Sekarang
                                             </a>
                                         @endauth
                                     </div>
 
                                     @if($remaining > 0 && $remaining <= 10)
                                         <div class="mt-3 text-xs text-[#cc8db3] font-bold">
-                                            ⚠️ Hanya tersisa {{ $remaining }} tiket!
+                                            ⚠️ Hanya Tersisa {{ $remaining }} tiket!
                                         </div>
                                     @endif
                                 </div>

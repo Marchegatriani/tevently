@@ -26,9 +26,9 @@
                             hover:bg-[#9d85b6] font-semibold
                             {{ request()->is('/') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Beranda</a>
                         
-                        <a href="{{ route('guest.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition
+                        <a href="{{ route('guests.events.index') }}" class="inline-flex items-center h-9 px-3 rounded-xl transition
                             hover:bg-[#9d85b6] font-semibold
-                            {{ request()->routeIs('guest.events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
+                            {{ request()->routeIs('events.*') ? 'bg-[#837ab6] font-semibold text-white' : '' }}">Jelajahi Event</a>
                     </nav>
 
                     <div class="md:hidden">
@@ -40,12 +40,12 @@
                     </div>
                 </div>
 
-                <div class="hidden md:flex items-center gap-3">
-                    <a href="{{ route('login') }}" class="text-sm text-custom-dark hover:text-[#837ab6] font-medium transition">
+                <div class="hidden md:flex items-center gap-3 px-2">
+                    <a href="{{ route('login') }}" class="text-sm text-custom-dark hover:text-[#837ab6] font-semibold transition px-2">
                         Login
                     </a>
                     <a href="{{ route('register') }}" class="bg-[#837ab6] hover:bg-[#9d85b6] text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md">
-                        Daftar
+                        Register
                     </a>
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <div class="max-w-7xl mx-auto px-4 py-2">
                 <nav class="flex flex-col gap-1 text-sm text-custom-dark">
                     <a href="/" class="block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->is('/') ? 'bg-[#f6a5c0]/50 font-medium' : '' }}">Beranda</a>
-                    <a href="{{ route('guest.events.index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->routeIs('guest.events.*') ? 'bg-[#f6a5c0]/50 font-medium' : '' }}">Jelajah Event</a>
+                    <a href="{{ route('guests.events.index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->routeIs('events.*') ? 'bg-[#f6a5c0]/50 font-medium' : '' }}">Jelajah Event</a>
 
                     <div class="mt-2 pt-2 border-t">
                         <a href="{{ route('login') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 text-custom-dark font-medium">
@@ -92,7 +92,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <!-- About -->
                 <div>
-                    <h3 class="text-xl font-bold mb-5 text-[#837ab6]">Tevently</h3>
+                    <h3 class="text-xl font-bold mb-5 text-[#837ab6] px-2">Tevently</h3>
                     <p class="text-gray-600 text-sm leading-relaxed">Platform manajemen event terpercaya untuk menemukan dan mengatur acara impian Anda.</p>
                 </div>
                 
@@ -101,7 +101,7 @@
                     <h3 class="text-lg font-bold mb-5 text-custom-dark">Link Cepat</h3>
                     <ul class="space-y-3 text-sm">
                         <li><a href="/" class="text-gray-600 hover:text-[#837ab6] transition">Beranda</a></li>
-                        <li><a href="{{ route('guest.events.index') }}" class="text-gray-600 hover:text-[#837ab6] transition">Jelajah Event</a></li>
+                        <li><a href="{{ route('guests.events.index') }}" class="text-gray-600 hover:text-[#837ab6] transition">Jelajah Event</a></li>
                         <li><a href="{{ route('login') }}" class="text-gray-600 hover:text-[#837ab6] transition">Login</a></li>
                         <li><a href="{{ route('register') }}" class="text-gray-600 hover:text-[#837ab6] transition">Daftar</a></li>
                     </ul>

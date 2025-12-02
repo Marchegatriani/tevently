@@ -1,116 +1,179 @@
-@extends('organizer.partials.navbar')
+@extends('layouts.organizer')
 
 @section('title', 'Detail Pesanan')
 @section('heading', 'Detail Pesanan')
-@section('subheading', 'Informasi lengkap dan aksi terkait pesanan #{{ $order->id }}')
+@section('subheading', 'Informasi lengkap dan aksi terkait pesanan')
 
 @section('content')
 <style>
     .text-custom-dark { color: #250e2c; }
     .bg-main-purple { background-color: #837ab6; }
+    .text-main-purple { color: #837ab6; }
     .bg-pink-accent { background-color: #cc8db3; }
 </style>
 
 <div class="space-y-6">
-    
+
     <div class="flex justify-start">
-        <a href="{{ route('organizer.orders.index') }}" class="bg-gray-300 text-custom-dark px-5 py-2 rounded-xl font-semibold hover:bg-gray-400 transition shadow-md">
-            ← Kembali ke Daftar Pesanan
+        <a href="{{ route('organizer.orders.index') }}"
+            class="bg-gray-200 text-custom-dark px-5 py-2 rounded-xl font-semibold hover:bg-gray-300 transition shadow-md flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+            </svg>
+            Kembali ke Daftar Pesanan
         </a>
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-        
+
         <div class="flex flex-wrap items-start justify-between border-b border-gray-100 pb-4 mb-6">
             <div class="mb-4 md:mb-0">
-                <h3 class="text-2xl font-extrabold text-custom-dark mb-1">Pesanan #{{ $order->id }}</h3>
-                <p class="text-gray-600 text-sm">Pelanggan: <span class="font-medium text-custom-dark">{{ $order->user->name ?? '-' }} ({{ $order->user->email ?? '-' }})</span></p>
-                <p class="text-gray-600 text-sm">Event: <span class="font-medium text-custom-dark">{{ $order->event->title ?? '-' }}</span></p>
+                <p class="text-lg text-gray-600">
+                    Event:
+                    <span class="font-bold text-main-purple">
+                        {{ $order->event->title ?? '-' }}
+                    </span>
+                </p>
             </div>
-            
+
             <div class="text-right">
                 @php
-                    $statusClass = [
-                        'approved' => 'bg-green-600',
+                    $statusClasses = [
+                        'approved' => 'bg-green-500',
+                        'confirmed' => 'bg-blue-500',
                         'pending' => 'bg-yellow-500',
-                        'cancelled' => 'bg-red-600',
-                        'completed' => 'bg-blue-600',
-                    ][$order->status ?? 'pending'] ?? 'bg-gray-500';
+                        'cancelled' => 'bg-red-500',
+                    ];
+                    $statusClass = $statusClasses[$order->status ?? 'pending'] ?? 'bg-gray-500';
                 @endphp
-                <p class="text-sm text-gray-500 mb-1">Status:</p>
-                <span class="px-4 py-2 rounded-full text-sm font-bold text-white {{ $statusClass }} shadow-md">
-                    {{ ucfirst($order->status ?? '-') }}
+
+                <p class="text-sm text-gray-500 mb-1 py-2">Status Pesanan:</p>
+                <span class="px-5 py-2 rounded-full text-md font-extrabold text-white {{ $statusClass }} shadow-lg">
+                    {{ strtoupper($order->status ?? '-') }}
                 </span>
-                <p class="text-lg font-extrabold text-main-purple mt-2">Rp {{ number_format($order->total_amount ?? 0,0,',','.') }}</p>
+
+                <p class="text-xl font-extrabold text-main-purple mt-2">
+                    Total: Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
+                </p>
             </div>
         </div>
 
-        <div class="mb-8">
-            <h4 class="text-xl font-bold text-custom-dark mb-4 border-b pb-2">Detail Pembelian</h4>
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm">
-                
-                <div class="border-b border-gray-100 pb-2">
-                    <dt class="text-gray-500 font-medium">Jenis Tiket</dt>
-                    <dd class="font-bold text-custom-dark text-lg">{{ $order->ticket->name ?? '-' }}</dd>
-                    <dd class="text-gray-500">Harga Satuan: Rp {{ number_format($order->ticket->price ?? 0, 0, ',', '.') }}</dd>
+        <div class="mb-8 p-4 bg-gray-50 rounded-lg">
+            <h4 class="text-xl font-bold text-custom-dark mb-4">Informasi Pelanggan</h4>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-md">
+                <div class="flex">
+                    <dt class="text-gray-500 w-1/3">Nama:</dt>
+                    <dd class="font-medium text-custom-dark w-2/3">
+                        {{ $order->user->name ?? '-' }}
+                    </dd>
                 </div>
-                
-                <div class="border-b border-gray-100 pb-2">
-                    <dt class="text-gray-500 font-medium">Kuantitas</dt>
-                    <dd class="font-bold text-custom-dark text-lg">{{ $order->total_tickets ?? $order->quantity }}</dd>
+                <div class="flex">
+                    <dt class="text-gray-500 w-1/3">Email:</dt>
+                    <dd class="font-medium text-custom-dark w-2/3">
+                        {{ $order->user->email ?? '-' }}
+                    </dd>
                 </div>
-
-                <div class="border-b border-gray-100 pb-2">
-                    <dt class="text-gray-500 font-medium">Tanggal Pesanan</dt>
-                    <dd class="font-medium text-custom-dark">{{ $order->created_at->format('d F Y H:i') }}</dd>
+                <div class="flex">
+                    <dt class="text-gray-500 w-1/3">Tgl Pesanan:</dt>
+                    <dd class="font-medium text-custom-dark w-2/3">
+                        {{ $order->created_at->format('d F Y H:i') }}
+                    </dd>
                 </div>
-                
-                <div class="border-b border-gray-100 pb-2">
-                    <dt class="text-gray-500 font-medium">Total Harga</dt>
-                    <dd class="font-extrabold text-main-purple text-xl">Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}</dd>
-                </div>
-
             </dl>
         </div>
 
+        <div class="mb-8">
+            <h4 class="text-xl font-bold text-custom-dark mb-4 border-b pb-2">Tiket yang Dipesan</h4>
+
+            @forelse($order->orderItems as $item)
+                <div class="flex justify-between items-center py-3 border-b border-dashed">
+                    <div>
+                        <p class="font-extrabold text-custom-dark text-lg">
+                            {{ $item->ticket->name ?? 'Tiket Dihapus' }}
+                        </p>
+                        <p class="text-gray-500 text-sm">
+                            Rp{{ number_format($item->unit_price ?? 0, 0, ',', '.') }} x {{ $item->quantity }}
+                        </p>
+                    </div>
+
+                    <div class="font-bold text-custom-dark">
+                        Rp {{ number_format($item->unit_price * $item->quantity, 0, ',', '.') }}
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-600">Tidak ada item tiket dalam pesanan ini.</p>
+            @endforelse
+
+            <div class="flex justify-between items-center py-4 mt-4 bg-main-purple/10 rounded-lg p-3">
+                <p class="text-xl font-extrabold text-custom-dark">TOTAL PEMBAYARAN</p>
+                <p class="text-2xl font-extrabold text-main-purple">
+                    Rp {{ number_format($order->total_amount ?? 0, 0, ',', '.') }}
+                </p>
+            </div>
+        </div>
+
         <div class="mt-6 pt-4 border-t border-gray-100">
-            <h4 class="text-xl font-bold text-custom-dark mb-4">Aksi Cepat</h4>
-            
-            <div class="flex gap-4">
+            <div class="flex flex-wrap gap-4">
+
                 @if($order->status === 'pending')
-                    
+
                     <form method="POST" action="{{ route('organizer.orders.approve', $order->id) }}">
                         @csrf
-                        <button class="px-5 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition shadow-md">
+                        <button
+                            class="px-5 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition shadow-md flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
                             Setujui Pesanan
                         </button>
                     </form>
-                    
+
                     <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
                         @csrf
-                        <button class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md"
-                                onclick="return confirm('Apakah Anda yakin ingin menolak atau membatalkan pesanan ini?')">
-                            Batalkan Pesanan
-                        </button>
-                    </form>
-                    
-                @elseif($order->status === 'approved' || $order->status === 'confirmed')
-                    
-                    <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
-                        @csrf
-                        <button class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md"
-                                onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan yang sudah disetujui? Stok akan dikembalikan.')">
+                        <button
+                            class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md flex items-center gap-1"
+                            onclick="return confirm('Apakah Anda yakin ingin menolak atau membatalkan pesanan ini? Aksi ini akan mengembalikan kuantitas tiket.')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
                             Batalkan Pesanan
                         </button>
                     </form>
 
-                    <p class="text-sm text-gray-500 self-center">Pesanan telah disetujui.</p>
+                @elseif($order->status === 'approved' || $order->status === 'confirmed')
+
+                    <form method="POST" action="{{ route('organizer.orders.cancel', $order->id) }}">
+                        @csrf
+                        <button
+                            class="px-5 py-3 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition shadow-md flex items-center gap-1"
+                            onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan yang sudah disetujui? Aksi ini akan mengembalikan kuantitas tiket.')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Batalkan Pesanan
+                        </button>
+                    </form>
 
                 @else
-                    <p class="text-gray-600 text-sm">Tidak ada aksi lebih lanjut yang tersedia untuk status **{{ ucfirst($order->status) }}**.</p>
+                    <p class="text-gray-600 text-sm italic">
+                        Pesanan berstatus **{{ ucfirst($order->status) }}**. Tidak ada aksi lebih lanjut yang tersedia.
+                    </p>
                 @endif
+
             </div>
         </div>
+
     </div>
 </div>
 @endsection

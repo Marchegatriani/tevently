@@ -1,4 +1,4 @@
-@extends('admin.partials.navbar')
+@extends('layouts.admin')
 
 @section('title', $event->title)
 @section('heading', 'Detail Event: ' . Str::limit($event->title, 40))

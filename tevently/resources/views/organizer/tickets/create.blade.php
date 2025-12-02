@@ -1,8 +1,7 @@
-@extends('organizer.partials.navbar')
+@extends('layouts.organizer')
 
 @section('title', 'Buat Tiket Baru')
 @section('heading', 'Buat Tiket Baru')
-@section('subheading', 'Tambahkan jenis tiket untuk event {{ $event->title }}')
 
 @section('content')
 <style>
@@ -17,16 +16,6 @@
             {{ session('success') }}
         </div>
     @endif
-
-    <div class="mb-6">
-        <nav class="text-sm text-gray-600">
-            <a href="{{ route('organizer.events.index') }}" class="hover:text-main-purple">Daftar Acara</a>
-            <span class="mx-2">/</span>
-            <a href="{{ route('organizer.events.show', $event) }}" class="hover:text-main-purple">{{ Str::limit($event->title, 30) }}</a>
-            <span class="mx-2">/</span>
-            <span class="font-bold text-custom-dark">Buat Tiket</span>
-        </nav>
-    </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <h1 class="text-2xl font-bold text-custom-dark mb-1">Buat Jenis Tiket Baru</h1>

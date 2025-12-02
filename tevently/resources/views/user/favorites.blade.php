@@ -1,4 +1,4 @@
-@extends('user.partials.navbar')
+@extends('layouts.user')
 
 @section('title', 'Event Favorit Saya')
 @section('heading', 'Event Favorit Saya')

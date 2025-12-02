@@ -1,4 +1,4 @@
-@extends('organizer.partials.navbar')
+@extends('layouts.organizer')
 
 @section('title', 'Edit Tiket')
 @section('heading', 'Edit Tiket')

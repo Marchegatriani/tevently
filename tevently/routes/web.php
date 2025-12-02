@@ -6,13 +6,13 @@ use App\Http\Controllers\Guest\EventController as GuestEventController;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\EventController as UserEventController;
-use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 
-use App\Http\Controllers\Organizer\DashboardController;
+use App\Http\Controllers\Organizer\DashboardController as OrganizerDashboardController;
 use App\Http\Controllers\Organizer\OrganizerRequestController;
-use App\Http\Controllers\Organizer\OrgEventController;
+use App\Http\Controllers\Organizer\EventController as OrganizerEventController;
 use App\Http\Controllers\Organizer\TicketController as OrganizerTicketController;
 use App\Http\Controllers\Organizer\OrderController as OrganizerOrderController;
 
@@ -23,13 +23,11 @@ use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 
-    Route::get('/', [GuestEventController::class, 'home'])->name('home');
 
-// Guest
-Route::prefix('guest')->name('guest.')->group(function () {
-    Route::get('/events', [GuestEventController::class, 'index'])->name('events.index');
-    Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('events.show');
-});
+Route::get('/', [GuestEventController::class, 'home'])->name('guests.home');
+Route::get('/events', [GuestEventController::class, 'index'])->name('guests.events.index');
+Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('guests.events.show');
+
 
 require __DIR__ . '/auth.php';
 
@@ -42,8 +40,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// USer
+// User
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -52,10 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // User home
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserEventController::class, 'home'])->name('home');
+        
     });
 
     // Events
-    Route::prefix('events')->name('events.')->group(function () {
+    Route::prefix('user.events')->name('user.events.')->group(function () {
         Route::get('/', [UserEventController::class, 'index'])->name('index');
         Route::get('/search', [UserEventController::class, 'search'])->name('search');
         Route::get('/category/{category:slug}', [UserEventController::class, 'byCategory'])->name('category');
@@ -63,30 +64,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Favorites
-    Route::prefix('favorites')->name('favorites.')->group(function () {
+    Route::prefix('user/favorites')->name('user.favorites.')->group(function () {
         Route::get('/', [FavoriteController::class, 'index'])->name('index');
+        Route::post('/{event}/toggle', [FavoriteController::class, 'toggle'])->name('toggle');
         Route::post('/{event}', [FavoriteController::class, 'store'])->name('store');
         Route::delete('/{event}', [FavoriteController::class, 'destroy'])->name('destroy');
-        Route::post('/{event}/toggle', [FavoriteController::class, 'toggle'])->name('toggle');
         Route::get('/count', [FavoriteController::class, 'count'])->name('count');
-        Route::delete('/', [FavoriteController::class, 'clear'])->name('clear');
+        Route::delete('/clear', [FavoriteController::class, 'clear'])->name('clear');
     });
 
     // Orders
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/', [UserOrderController::class, 'index'])->name('index');
-        Route::get('/{order}', [UserOrderController::class, 'show'])->name('show');
-        Route::get('/{order}/cancel', [UserOrderController::class, 'showCancelForm'])->name('cancel.confirm');
-        Route::delete('/{order}/cancel', [UserOrderController::class, 'cancel'])->name('cancel');
-    });
-
-    // Bookings
-    Route::prefix('bookings')->name('bookings.')->group(function () {
-        Route::get('/', [BookingController::class, 'index'])->name('index');
-        Route::get('/events/{event}/tickets/{ticket}/checkout', [BookingController::class, 'create'])->name('create');
-        Route::post('/events/{event}/tickets/{ticket}/book', [BookingController::class, 'store'])->name('store');
-        Route::get('/{order}', [BookingController::class, 'show'])->name('show');
-    });
+   Route::prefix('user')->name('user.')->group(function () {
+    Route::resource('orders', UserOrderController::class)->except(['create', 'store']);
+    
+    Route::get('events/{event}/tickets/{ticket}/book', [UserOrderController::class, 'create'])->name('orders.create'); // route name: user.orders.create
+    Route::post('events/{event}/tickets/{ticket}/book', [UserOrderController::class, 'store'])->name('orders.store'); // route name: user.orders.store
+    Route::post('orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel'); // route name: user.orders.cancel
+    Route::get('orders/statistics', [UserOrderController::class, 'statistics'])->name('orders.statistics'); // route name: user.orders.statistics
+});
 });
 
 
@@ -96,10 +91,10 @@ Route::middleware(['auth', 'verified', 'organizer'])
     ->name('organizer.')
     ->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('dashboard');
 
         // Events
-        Route::resource('events', OrgEventController::class);
+        Route::resource('events', OrganizerEventController::class);
 
         // Tickets
         Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {

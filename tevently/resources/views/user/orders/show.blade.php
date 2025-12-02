@@ -1,6 +1,6 @@
-@extends('user.partials.navbar')
+@extends('layouts.user')
 
-@section('title', 'Detail Pesanan #' . $order->id)
+@section('title', 'Detail Pesanan')
 
 @section('content')
 <style>
@@ -12,7 +12,7 @@
 <div class="space-y-8">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-extrabold text-custom-dark">Detail Pesanan #{{ $order->id }}</h1>
+            <h1 class="text-3xl font-extrabold text-custom-dark">Detail Pesanan</h1>
             <p class="text-gray-500 mt-1">Dibuat pada {{ $order->created_at->format('d F Y, H:i') }}</p>
         </div>
         <a href="{{ route('user.orders.index') }}" class="inline-flex items-center gap-2 text-main-purple hover:text-custom-dark font-semibold transition">
@@ -73,14 +73,8 @@
             </div>
 
             <div class="flex items-center gap-4 pt-4 border-t">
-                @if($order->status === 'confirmed')
-                    <a href="{{ route('user.orders.download-ticket', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition shadow-md">
-                        Download E-Ticket
-                    </a>
-                @endif
-
                 @if($order->status === 'pending')
-                    <a href="{{ route('user.orders.cancel.confirm', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
+                    <a href="{{ route('user.orders.cancel', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
                         Batalkan Pesanan
                     </a>
                 @endif

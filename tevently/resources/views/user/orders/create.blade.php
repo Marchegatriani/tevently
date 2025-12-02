@@ -1,4 +1,4 @@
-@extends('user.partials.navbar')
+@extends('layouts.user')
 
 @section('title', 'Checkout Tiket')
 @section('heading', 'Checkout Tiket')
@@ -20,7 +20,7 @@
         @if(session('error'))
             <div class="bg-red-100 border border-red-400 text-red-800 p-4 rounded-xl mb-6 font-medium shadow-sm">{{ session('error') }}</div>
         @endif
-        <form method="POST" action="{{ route('bookings.store', [$event, $ticket]) }}">
+        <form method="POST" action="{{ route('user.orders.store', [$event, $ticket]) }}">
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="space-y-6">

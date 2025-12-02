@@ -1,4 +1,4 @@
-@extends('organizer.partials.navbar')
+@extends('layouts.organizer')
 
 @section('title', $event->title)
 @section('heading', 'Detail Event: ' . Str::limit($event->title, 40))
@@ -124,7 +124,7 @@
                 
                 <!-- Statistics -->
                 <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 sticky top-4">
-                    <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Statistik Penjualan</h3>
+                    <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Informasi Penjualan</h3>
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Total Tiket Dibuat:</span>
@@ -151,7 +151,7 @@
 
                 <!-- Event Info & Dates -->
                 <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-                    <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Informasi Metadata</h3>
+                    <h3 class="text-xl font-bold text-custom-dark mb-4 border-b pb-3 border-gray-100">Informasi Event</h3>
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Dibuat pada:</span>
@@ -162,7 +162,7 @@
                             <span class="font-medium text-custom-dark">{{ $event->updated_at->format('d M Y') }}</span>
                         </div>
                         <div class="flex justify-between pt-3 border-t border-gray-100 mt-3">
-                            <span class="text-gray-600">Organizer Email:</span>
+                            <span class="text-gray-600">Organizer:  </span>
                             <span class="font-medium text-custom-dark">{{ $event->organizer->email }}</span>
                         </div>
                     </div>

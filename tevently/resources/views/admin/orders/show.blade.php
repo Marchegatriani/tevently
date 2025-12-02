@@ -1,4 +1,4 @@
-@extends('admin.partials.navbar')
+@extends('layouts.admin')
 
 @section('title', 'Detail Pesanan')
 @section('heading', 'Detail Pesanan #{{ $order->id }}')

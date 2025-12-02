@@ -1,4 +1,4 @@
-@extends('guest.partials.navbar')
+@extends('layouts.guests')
 
 @section('title', 'Beranda')
 
@@ -19,7 +19,7 @@
                     Cari dan pesan tiket untuk acara terbaik di sekitar Anda
                 </p>
                 
-                <form action="{{ route('guest.events.index') }}" method="GET" class="max-w-3xl mx-auto">
+                <form action="{{ route('guests.events.index') }}" method="GET" class="max-w-3xl mx-auto">
                     <div class="relative">
                         <input type="text" 
                                name="search" 
@@ -34,11 +34,11 @@
         </div>
     </div>
 
-    <div class="bg-custom-light">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="bg-custom-light px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 px-4">
             <div class="flex justify-between items-center mb-10">
                 <h2 class="text-4xl font-extrabold text-custom-dark">Acara Unggulan</h2>
-                <a href="{{ route('guest.events.index') }}" class="text-[#837ab6] hover:text-custom-dark font-semibold transition-colors flex items-center gap-1">
+                <a href="{{ route('guests.events.index') }}" class="text-[#837ab6] hover:text-custom-dark font-semibold transition-colors flex items-center gap-1">
                     Lihat Semua 
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -49,7 +49,7 @@
             @if($featuredEvents->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 @foreach($featuredEvents as $event)
-                    <a href="{{ route('guest.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-2 transition-all duration-500 border border-gray-100"> 
+                    <a href="{{ route('guests.events.show', $event) }}" class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#cc8db3]/40 hover:-translate-y-2 transition-all duration-500 border border-gray-100"> 
                         <div class="h-56 overflow-hidden">
                             @if($event->image_url)
                                 <img src="{{ asset('storage/' . $event->image_url) }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">

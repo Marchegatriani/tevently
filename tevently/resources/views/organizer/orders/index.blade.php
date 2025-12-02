@@ -1,7 +1,7 @@
-@extends('organizer.partials.navbar')
+@extends('layouts.organizer')
 
-@section('title', 'Kelola Pemesanan')
-@section('heading', 'Kelola Pemesanan')
+@section('title', 'Kelola Pesanan')
+@section('heading', 'Kelola Pesanan')
 @section('subheading', 'Daftar dan status pesanan tiket acara Anda')
 
 @section('content')

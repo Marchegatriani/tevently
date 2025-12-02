@@ -1,4 +1,4 @@
-@extends('user.partials.navbar')
+@extends('layouts.user')
 
 @section('title', 'Detail Event: ' . $event->title)
 @section('heading', 'Detail Event')
@@ -111,7 +111,7 @@
 
                                     <div class="mt-4">
                                         @if($canBuy)
-                                            <a href="{{ route('bookings.create', ['event' => $event->id, 'ticket' => $ticket->id]) }}" 
+                                            <a href="{{ route('user.orders.create', ['event' => $event->id, 'ticket' => $ticket->id]) }}" 
                                             class="block w-full text-center bg-pink-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-[#f6a5c0] transition shadow-md">
                                                 Pesan Sekarang
                                             </a>
