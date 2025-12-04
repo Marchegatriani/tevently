@@ -28,21 +28,29 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Ambil user dari request
         $user = $request->user();
 
-        // Redirect based on role
         if ($user->role === 'admin') {
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        if ($user->role === 'organizer' && $user->status === 'approved') {
-            return redirect()->intended(route('organizer.dashboard'));
+        if ($user->role === 'organizer') {
+            if ($user->status === 'pending') {
+                return redirect()->route('organizer.pending');
+            }
+
+            if ($user->status === 'rejected') {
+                return redirect()->route('organizer.rejected');
+            }
+
+            if ($user->status === 'approved') {
+                return redirect()->route('organizer.dashboard');
+            }
         }
 
-        // Default ke dashboard (untuk user & organizer pending/rejected)
         return redirect()->intended(route('dashboard'));
-    }
+
+        }
 
     /**
      * Destroy an authenticated session.

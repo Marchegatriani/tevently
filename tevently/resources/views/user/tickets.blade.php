@@ -46,7 +46,7 @@
                     <span class="text-xs text-gray-500 block">WAKTU</span>
                     <p class="font-semibold">
                         @if($event->start_time)
-                            {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB
+                            {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WITA
                         @else
                             -
                         @endif

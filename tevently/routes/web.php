@@ -32,6 +32,13 @@ Route::get('/events/{event}', [GuestEventController::class, 'show'])->name('gues
 
 require __DIR__ . '/auth.php';
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])->name('organizer.pending');
+    Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])->name('organizer.rejected');
+    Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])->name('organizer.delete-account');
+    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
+});
+
 // User
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -66,7 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('events/{event}/tickets/{ticket}/book', [UserOrderController::class, 'create'])->name('orders.create');
         Route::post('events/{event}/tickets/{ticket}/book', [UserOrderController::class, 'store'])->name('orders.store');
-        Route::post('orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel');
+        Route::delete('orders/{order}/cancel', [UserOrderController::class, 'cancel'])->name('orders.cancel');
     });
 
     Route::get('/my-ticket/{orderItem}', [UserTicketController::class, 'show'])
@@ -82,12 +89,7 @@ Route::middleware(['auth', 'verified', 'organizer'])
 
     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('dashboard');
     Route::resource('events', OrganizerEventController::class);
-    
-    Route::get('/organizer/pending', [OrganizerRequestController::class, 'pending'])->name('organizer.pending');
-    Route::get('/organizer/rejected', [OrganizerRequestController::class, 'rejected'])->name('organizer.rejected');
-    Route::delete('/organizer/delete-account', [OrganizerRequestController::class, 'deleteAccount'])->name('organizer.delete-account');
-    Route::post('/organizer/request', [OrganizerRequestController::class, 'store'])->name('organizer.request');
-        
+     
     Route::prefix('events/{event}/tickets')->name('tickets.')->group(function () {
         Route::get('/', [OrganizerTicketController::class, 'index'])->name('index');
         Route::get('/create', [OrganizerTicketController::class, 'create'])->name('create');
@@ -125,7 +127,6 @@ Route::middleware(['auth', 'verified', 'admin'])
     });
 
     Route::resource('events', AdminEventController::class);
-    Route::get('events/create', [AdminEventController::class, 'create'])->name('events.create');
 
     Route::get('tickets/create-for-pending-event', [AdminTicketController::class, 'createForPendingEvent'])
         ->name('tickets.create_for_pending_event');

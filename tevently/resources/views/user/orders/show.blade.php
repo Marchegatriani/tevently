@@ -77,9 +77,14 @@
 
             <div class="flex flex-wrap items-center gap-4 pt-4 border-t">
                 @if($order->status === 'pending')
-                    <a href="{{ route('user.orders.cancel', $order) }}" class="w-full sm:w-auto text-center px-6 py-3 bg-main-purple text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
-                        Batalkan Pesanan
-                    </a>
+                    <form action="{{ route('user.orders.cancel', $order) }}" method="POST" class="w-full sm:w-auto">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="w-full text-center px-6 py-3 bg-main-purple text-white rounded-xl font-semibold hover:bg-red-600 transition shadow-md">
+                            Batalkan Pesanan
+                        </button>
+                    </form>
                 @endif
 
                 @if($order->status === 'confirmed')

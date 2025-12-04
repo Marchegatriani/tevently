@@ -55,7 +55,7 @@
                             <svg class="w-6 h-6 text-[#cc8db3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="font-semibold">{{ $event->start_time->format('H:i') }} WIB</span>
+                            <span class="font-semibold">{{ $event->start_time->format('H:i') }} WITA</span>
                         </div>
 
                         <div class="flex items-center gap-3 text-gray-700">

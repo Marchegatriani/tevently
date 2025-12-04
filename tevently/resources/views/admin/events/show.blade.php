@@ -59,8 +59,8 @@
                         </div>
                         <div class="space-y-3">
                             <p class="text-sm"><strong>Tanggal:</strong> <span class="text-custom-dark font-medium">{{ $event->event_date->format('d F Y') }}</span></p>
-                            <p class="text-sm"><strong>Waktu Mulai:</strong> <span class="text-custom-dark font-medium">{{ $event->start_time->format('H:i') }} WIB</span></p>
-                            <p class="text-sm"><strong>Waktu Selesai:</strong> <span class="text-custom-dark font-medium">{{ $event->end_time->format('H:i') }} WIB</span></p>
+                            <p class="text-sm"><strong>Waktu Mulai:</strong> <span class="text-custom-dark font-medium">{{ $event->start_time->format('H:i') }} WITA</span></p>
+                            <p class="text-sm"><strong>Waktu Selesai:</strong> <span class="text-custom-dark font-medium">{{ $event->end_time->format('H:i') }} WITA</span></p>
                         </div>
                     </div>
                 </div>

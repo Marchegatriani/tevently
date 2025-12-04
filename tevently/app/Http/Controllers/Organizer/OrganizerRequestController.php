@@ -15,7 +15,7 @@ class OrganizerRequestController extends Controller
         $user = Auth::user();
         
         if (!$user || $user->status !== 'pending') {
-            return redirect()->route('dashboard');
+            return redirect()->route('organizer.dashboard');
         }
         
         return view('organizer.pending');
@@ -26,7 +26,7 @@ class OrganizerRequestController extends Controller
         $user = Auth::user();
         
         if (!$user || $user->status !== 'rejected') {
-            return redirect()->route('dashboard');
+            return redirect()->route('organizer.dashboard');
         }
         
         return view('organizer.rejected');

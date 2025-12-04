@@ -39,7 +39,6 @@
     <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
         <form action="{{ route('user.orders.cancel', $order) }}" method="POST" class="w-full sm:w-auto">
             @csrf
-            @method('DELETE')
             <button type="submit" class="w-full text-center px-8 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition shadow-md transform hover:-translate-y-0.5">
                 Ya, Batalkan Pesanan
             </button>

@@ -33,7 +33,6 @@
             
             <p class="text-gray-600 mb-8 max-w-sm mx-auto leading-relaxed">
                 Maaf, permohonan Anda untuk menjadi Event Organizer **tidak disetujui** oleh administrator. 
-                Anda tetap dapat menggunakan akun ini sebagai Pengguna Biasa, atau menghapusnya.
             </p>
 
             <div class="bg-red-50 border border-red-300 rounded-xl px-4 py-3 mb-8 shadow-inner">

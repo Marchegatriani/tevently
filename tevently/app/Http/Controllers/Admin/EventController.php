@@ -80,7 +80,7 @@ class EventController extends Controller
             'start_time' => 'required',
             'end_time' => 'required',
             'max_attendees' => 'required|integer|min:1',
-            'image_url' => 'required|image|max:2048',
+            'image_url' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published,cancelled,completed',
         ]);
 

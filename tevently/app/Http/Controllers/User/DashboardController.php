@@ -12,14 +12,6 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        
-        if ($user->status === 'pending') {
-            return redirect()->route('organizer.pending');
-        }
-        
-        if ($user->status === 'rejected') {
-            return redirect()->route('organizer.rejected');
-        }
     
         $featuredEvents = Event::with(['category', 'organizer'])
             ->where('status', 'published')
