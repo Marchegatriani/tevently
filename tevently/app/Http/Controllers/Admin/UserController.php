@@ -33,7 +33,7 @@ class UserController extends Controller
         return view('admin.users.index', compact('users', 'pendingCount'));
     }
 
-    public function approve(Request $request, User $user)
+    public function approve(User $user)
     {
         if ($user->status !== 'pending') {
             return back()->with('error', 'Only pending requests can be approved.');
@@ -48,7 +48,7 @@ class UserController extends Controller
     }
 
 
-    public function reject(Request $request, User $user)
+    public function reject(User $user)
     {
         if ($user->status !== 'pending') {
             return back()->with('error', 'Only pending requests can be rejected.');

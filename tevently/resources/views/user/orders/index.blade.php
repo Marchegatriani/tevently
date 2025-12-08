@@ -39,9 +39,6 @@
                             <td class="p-4 text-sm text-gray-700 whitespace-nowrap">
                                 <div class="font-medium text-custom-dark">{{ $o->event->title ?? '-' }}</div>
                                 <div class="text-xs text-gray-500 mt-0.5">
-                                    {{ $o->ticket->name ?? 'Tiket' }} &bull; {{ $o->total_tickets ?? $o->quantity }} pcs
-                                </div>
-                                <div class="text-xs text-gray-500 mt-0.5">
                                     {{ $o->user->name ?? '-' }} ({{ $o->user->email ?? $o->user_email ?? '-' }})
                                 </div>
                                 <div class="text-xs text-gray-500 mt-0.5">

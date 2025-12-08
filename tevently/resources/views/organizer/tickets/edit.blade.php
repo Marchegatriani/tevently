@@ -35,7 +35,7 @@
                        name="name" 
                        value="{{ old('name', $ticket->name) }}"
                        placeholder="Contoh: VIP, Reguler, Early Bird"
-                       class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('name') border-red-500 @enderror" 
+                       class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('name') border-red-500 @enderror" 
                        required>
                 @error('name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -50,7 +50,7 @@
                           name="description" 
                           rows="3"
                           placeholder="Jelaskan jenis tiket ini (opsional)"
-                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description', $ticket->description) }}</textarea>
+                          class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('description') border-red-500 @enderror">{{ old('description', $ticket->description) }}</textarea>
                 @error('description')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -68,7 +68,7 @@
                            min="0"
                            step="100"
                            placeholder="50000"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('price') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('price') border-red-500 @enderror" 
                            required>
                     @error('price')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -85,7 +85,7 @@
                            value="{{ old('quantity_available', $ticket->quantity_available) }}"
                            min="{{ $ticket->quantity_sold }}"
                            placeholder="100"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('quantity_available') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('quantity_available') border-red-500 @enderror" 
                            required>
                     <p class="text-xs text-red-500 mt-1">Minimal {{ $ticket->quantity_sold }} (sudah terjual).</p>
                     @error('quantity_available')
@@ -103,7 +103,7 @@
                            value="{{ old('max_per_order', $ticket->max_per_order) }}"
                            min="1"
                            placeholder="5"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_per_order') border-red-500 @enderror" 
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('max_per_order') border-red-500 @enderror" 
                            required>
                     <p class="text-xs text-gray-500 mt-1">Maks tiket yang dapat dibeli oleh 1 pembeli.</p>
                     @error('max_per_order')
@@ -121,7 +121,7 @@
                            id="sales_start" 
                            name="sales_start" 
                            value="{{ old('sales_start', \Carbon\Carbon::parse($ticket->sales_start)->format('Y-m-d\TH:i')) }}"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_start') border-red-500 @enderror"
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_start') border-red-500 @enderror"
                            required>
                     @error('sales_start')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -136,7 +136,7 @@
                            id="sales_end" 
                            name="sales_end" 
                            value="{{ old('sales_end', \Carbon\Carbon::parse($ticket->sales_end)->format('Y-m-d\TH:i')) }}"
-                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_end') border-red-500 @enderror"
+                           class="w-full px-4 py-3 bg-gray-50 rounded-xl border shadow-sm focus:ring-main-purple focus:border-main-purple transition @error('sales_end') border-red-500 @enderror"
                            required>
                     @error('sales_end')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

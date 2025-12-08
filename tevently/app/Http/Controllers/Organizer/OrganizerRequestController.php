@@ -52,7 +52,7 @@ class OrganizerRequestController extends Controller
         return redirect()->route('login')->with('message', 'Akun telah dihapus. Anda dapat mendaftar kembali.');
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $user = Auth::user();
 

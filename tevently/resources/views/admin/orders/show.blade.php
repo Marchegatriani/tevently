@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Detail Pesanan')
-@section('heading', 'Detail Pesanan #{{ $order->id }}')
+@section('heading', 'Detail Pesanan')
 @section('subheading', 'Informasi dan aksi terkait pesanan')
 
 @section('content')
@@ -80,14 +80,14 @@
                     <div class="flex flex-col gap-3">
                         <form action="{{ route('admin.orders.approve', $order) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-xl hover:bg-green-700 transition shadow-md">
+                            <button type="submit" class="w-full bg-pink-accent text-white font-semibold py-3 rounded-xl hover:bg-main-purple transition shadow-md">
                                 Setujui Pesanan
                             </button>
                         </form>
                         
                         <form action="{{ route('admin.orders.cancel', $order) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-red-600 text-white font-semibold py-3 rounded-xl hover:bg-red-700 transition shadow-md" 
+                            <button type="submit" class="w-full bg-main-purple text-white font-semibold py-3 rounded-xl hover:bg-pink-accent transition shadow-md" 
                                     onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
                                 Batalkan Pesanan
                             </button>

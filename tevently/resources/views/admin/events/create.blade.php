@@ -32,11 +32,11 @@
                         class="w-full h-48 rounded-2xl border-4 border-gray-200 object-cover cursor-pointer shadow-lg transition hover:border-[#cc8db3]" 
                         onclick="document.getElementById('image').click();">
                     
-                    <input type="file" id="image" name="image" class="hidden" onchange="previewEventImage(event);">
+                    <input type="file" id="image" name="image_url" class="hidden" onchange="previewEventImage(event);">
                 </div>
                 
                 <p class="text-gray-500 text-xs mt-3 text-center">Klik gambar untuk mengunggah (Maks 2MB)</p>
-                @error('image')
+                @error('image_url')
                     <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                 @enderror
             </div>

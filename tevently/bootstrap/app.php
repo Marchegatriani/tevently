@@ -11,7 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Daftarkan middleware alias
         $middleware->alias([
             'admin' => \App\Http\Middleware\Admin::class,
             'organizer' => \App\Http\Middleware\Organizer::class,

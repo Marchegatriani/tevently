@@ -7,7 +7,6 @@ use App\Models\Event;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -46,8 +45,8 @@ class EventController extends Controller
         $request->session()->forget('pending_event');
 
         $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('events/pending', 'public');
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('events/pending', 'public');
             $data['image_url'] = $imagePath;
         }
 
