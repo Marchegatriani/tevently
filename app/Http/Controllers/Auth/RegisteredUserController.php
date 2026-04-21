@@ -54,6 +54,6 @@ class RegisteredUserController extends Controller
             return redirect()->route('organizer.pending');
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('user.home');
     }
 }

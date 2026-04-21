@@ -46,13 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserEventController::class, 'home'])->name('home');
-        
-    });
-
-    Route::prefix('user.events')->name('user.events.')->group(function () {
+    
+    Route::prefix('user/events')->name('user.events.')->group(function () {
         Route::get('/', [UserEventController::class, 'index'])->name('index');
         Route::get('/search', [UserEventController::class, 'search'])->name('search');
         Route::get('/category/{category:slug}', [UserEventController::class, 'byCategory'])->name('category');
